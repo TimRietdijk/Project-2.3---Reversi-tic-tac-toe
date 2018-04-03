@@ -1,20 +1,21 @@
 public class Framework {
 
-    public int[][] field;
+    int[][] field;
 
     
-    private void generateField(int length, int width){
+    public void generateField(int length, int width){
         field = new int[length][width];
         
-        for(int i=0; i<field.length; i++) {
-            for(int j=0; j<field[i].length; j++) {
-                System.out.println("Values at arr["+i+"]["+j+"] is "+mat[i][j]);
-            }
-        }
+// test code
+//        for(int i=0; i<field.length; i++) {
+//            for(int j=0; j<field[i].length; j++) {
+//                System.out.println("Values at arr["+i+"]["+j+"] is "+field[i][j]);
+//            }
+//        }
     }
 }
 
-public class main{
+class main{
     public static void main(String[] args){
         Framework framework = new Framework();
         framework.generateField(12,12);
