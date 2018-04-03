@@ -1,3 +1,5 @@
+import java.text.DateFormat.Field;
+
 public class Framework {
 
     int[][] field;
@@ -12,16 +14,24 @@ public class Framework {
     	return field[length][width];
     }
     public void setSate(int length, int width, int value) {
-    	if(value >= numberofstates)
-    	{
-    		System.out.println("Error: given state is not supported");
-    	}else { 
-    		if(value == getState(length, width))
-    		{
-    			System.out.println("!: Dit vakje is al van jou, probeer een ander vakje");
+    	if(length >= field.length) {
+    		System.out.println("error: the given position does not exist on this board");
+    	}else {
+    		if(width >= field[1].length) {
+    			System.out.println("error: the given position does not exist on this board");
     		}else {
-    			field[length][width] = value;
-    		} 		
+		    	if(value >= numberofstates)
+		    	{
+		    		System.out.println("Error: given state is not supported");
+		    	}else { 
+		    		if(value == getState(length, width))
+		    		{
+		    			System.out.println("!: Dit vakje is al van jou, probeer een ander vakje");
+		    		}else {
+		    			field[length][width] = value;
+		    		} 		
+		    	}
+    		}
     	}
     }
     public void showField() {
@@ -37,8 +47,7 @@ class main{
     public static void main(String[] args){
         Framework framework = new Framework();
         framework.setField(3,3);   
-        framework.setSate(2, 2, 1);
-        framework.setSate(2, 2, 1);
+        framework.setSate(1, 3, 1);
         framework.showField();
         
     }
