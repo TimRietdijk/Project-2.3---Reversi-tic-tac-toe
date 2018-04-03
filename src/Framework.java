@@ -1,17 +1,28 @@
 public class Framework {
 
     int[][] field;
+    int numberofstates = 3;
 
     
-    public void generateField(int length, int width){
+    public void setField(int length, int width){
         field = new int[length][width];
 
     }
-    public void getState(int length, int width) {
-    	System.out.println(field[length][width]);
+    public int getState(int length, int width) {
+    	return field[length][width];
     }
     public void setSate(int length, int width, int value) {
-    	field[length][width] = value;
+    	if(value >= numberofstates)
+    	{
+    		System.out.println("Error: given state is not supported");
+    	}else { 
+    		if(value == getState(length, width))
+    		{
+    			System.out.println("!: Dit vakje is al van jou, probeer een ander vakje");
+    		}else {
+    			field[length][width] = value;
+    		} 		
+    	}
     }
     public void showField() {
 	      for(int i=0; i<field.length; i++) {
@@ -25,9 +36,9 @@ public class Framework {
 class main{
     public static void main(String[] args){
         Framework framework = new Framework();
-        framework.generateField(12,12);
-        
-        framework.setSate(5, 3, 1);
+        framework.setField(3,3);   
+        framework.setSate(2, 2, 1);
+        framework.setSate(2, 2, 1);
         framework.showField();
         
     }
