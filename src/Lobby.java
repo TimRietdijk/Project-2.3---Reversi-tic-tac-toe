@@ -92,11 +92,26 @@ public class Lobby extends Application{
        // for (int i = 0; i < Gamelist.length; i++ ) {
             ImageView page = new ImageView(
                     new Image("http://www.pressibus.org/reversi/gen/images/depart.gif", 200 , 200 , false , false));
-        ImageView page2 = new ImageView(
-        new Image("https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/2000px-Tic_tac_toe.svg.png" , 200 , 200 , false, false));
-
-            river.getChildren().addAll(page, page2);
+        Button rev = new Button(null, page);
+        rev.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                System.out.println("Hello World!");
+            }
+        });
+            ImageView page2 = new ImageView(
+                new Image("https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/2000px-Tic_tac_toe.svg.png" , 200 , 200 , false, false));
+        Button tic = new Button(null, page2);
+        tic.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                System.out.println("Hello World!");
+            }
+        });
+            river.getChildren().addAll(rev, tic);
        // }
+        tic.setPrefSize(200,200);
+        rev.setPrefSize(200,200);
+        tic.setBackground(river.getBackground());
+        rev.setBackground(river.getBackground());
     river.setAlignment(Pos.CENTER_LEFT);
         return river;
     }
