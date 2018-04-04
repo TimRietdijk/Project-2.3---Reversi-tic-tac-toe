@@ -17,6 +17,8 @@ import java.util.Collection;
 public class Framework extends Application {
 	
     int[][] field;
+    int fieldLength;
+    int fieldWidth;
     int numberofstates = 3;
     int tileWidth = 50;
     int tileHeight = 50;
@@ -35,11 +37,8 @@ public class Framework extends Application {
     	for(int i=0; i<field[1].length; i++) {
   	      for(int j=0; j<field.length; j++) {
   	    	StackPane stackPane = new StackPane();
-  	    	Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\x.gif");    	
-            ImageView imageView = new ImageView(im);
 			stackPane.setPrefSize(tileWidth, tileHeight);
 			stackPanes.add(stackPane);
-			stackPane.getChildren().add(imageView);
 			stackPane.setStyle("-fx-border-color: black");
 			gridpane.add(stackPane, i, j);
   	      }
@@ -50,7 +49,10 @@ public class Framework extends Application {
     	int position = ((width-1)*field.length)+(length-1);
     	StackPane stackPane = new StackPane();
     	stackPane = stackPanes.get(position);
-        stackPane.getChildren().remove(0);
+    	if(stackPane.getChildren().isEmpty()) {}
+    	else {
+    		stackPane.getChildren().remove(0);
+    	}     
     	Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\o.gif");
         ImageView imageView = new ImageView(im);
         stackPane.getChildren().add(imageView);
@@ -100,14 +102,8 @@ public class Framework extends Application {
         
         b.setOnAction((e) -> updateField(5, 1, 1));
         primaryStage.setScene(scene);
-        setField(6,6);
+        setField(fieldLength,fieldWidth);
         primaryStage.show();
         
 	}
-}
-
-class main{
-    public static void main(String[] args){   	
-    	Application.launch(Framework.class, args);       
-    }
 }
