@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Lobby extends Application{
@@ -46,11 +47,26 @@ public class Lobby extends Application{
             btn.setText("'start game'");
             btn.setPrefSize(100, 20);
 
+            Button connectBtn = new Button();
+            connectBtn.setText("'connection'");
+            connectBtn.setPrefSize(100, 20);
+
             hbox.setAlignment(Pos.CENTER);
-            hbox.getChildren().addAll(btn);
+            hbox.getChildren().addAll(btn, connectBtn);
             btn.setOnAction(new EventHandler<ActionEvent>() {
                 public void handle(ActionEvent event) {
                     System.out.println("Hello World!");
+                }
+            });
+            connectBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    ServerConnection connection = new ServerConnection();
+                    try {
+                        connection.start();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             BorderPane.setAlignment(hbox, Pos.CENTER);
