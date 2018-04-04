@@ -24,6 +24,7 @@ public class Lobby extends Application{
     private ComboBox comboBox1;
     private String[] optionList;
     public void start(Stage fright) {
+
         try {
 
             BorderPane root = new BorderPane();
