@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class CommandCenter {
 
     public CommandCenter() throws IOException {
-        // sendingCommand houdt het command dat verstuurd wordt naar de server
+        // sendingCommand houdt het command dat naar de server verstuurd wordt
         String sendingCommand;
         Socket s = new Socket("127.0.0.1", 80);
         Scanner sc1 = new Scanner(s.getInputStream());
