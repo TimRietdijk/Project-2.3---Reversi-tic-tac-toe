@@ -42,7 +42,7 @@ public class board extends Application {
         for (int i = 1; i <= 3; i++) {
             for (int j = 1; j <= 3; j++) {
                 StackPane stackPane = new StackPane();
-                Image im = new Image("file:\\C:/Users\\glubb\\Google Drive\\HBO\\Jaar 2\\Periode 3\\Java\\src\\14.2\\x.gif");
+                Image im = new Image("file:\\C:\\Users\\glubb\\Google Drive\\HBO\\Jaar 2\\Periode 3\\Project\\src\\weekopdrTicTacToe\\x.gif");
                 ImageView imageView = new ImageView(im);
                 stackPane.setPrefSize(50.0, 50.0);
                 stackPanes.add(stackPane);
