@@ -3,13 +3,20 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+import javax.swing.*;
+import java.util.ArrayList;
+
 public class Lobby extends Application{
+    private String[] Gamelist;
 
     public void start(Stage fright) {
         try {
@@ -17,7 +24,7 @@ public class Lobby extends Application{
             BorderPane root = new BorderPane();
 
             root.setBottom(addHBox());
-
+            root.setLeft(addFlowPane());
             final Scene s = new Scene(root, 1000, 600);
 
             fright.setTitle("Lobby");
@@ -49,4 +56,19 @@ public class Lobby extends Application{
             BorderPane.setAlignment(hbox, Pos.CENTER);
             return hbox;
         }
+    public FlowPane addFlowPane() {
+        FlowPane flow = new FlowPane();
+        flow.setPadding(new Insets(5, 0, 5, 0));
+        flow.setVgap(4);
+        flow.setHgap(4);
+        flow.setPrefWrapLength(170); // preferred width allows for two columns
+        flow.setStyle("-fx-background-color: DAE6F3;");
+       // for (int i = 0; i < Gamelist.length; i++ ) {
+            ImageView page = new ImageView(
+                    new Image("http://www.pressibus.org/reversi/gen/images/depart.gif"));
+            flow.getChildren().add(page);
+       // }
+
+        return flow;
+    }
     }
