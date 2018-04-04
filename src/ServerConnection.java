@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.ini4j.Wini;
 
@@ -55,10 +56,11 @@ public class ServerConnection {
                 //Schrijven van ip adres en poort naar ini bestand
                 try {
                     writeIniFile(ip, port);
-                    label2.setText("Settings succesfully saved");
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
+                label2.setText("Settings succesfully saved");
+                label2.setTextFill(Color.GREEN);
             }
         });
         Stage primaryStage = new Stage();
