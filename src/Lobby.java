@@ -65,8 +65,11 @@ public class Lobby extends Application{
         flow.setStyle("-fx-background-color: DAE6F3;");
        // for (int i = 0; i < Gamelist.length; i++ ) {
             ImageView page = new ImageView(
-                    new Image("http://www.pressibus.org/reversi/gen/images/depart.gif"));
-            flow.getChildren().add(page);
+                    new Image("http://www.pressibus.org/reversi/gen/images/depart.gif", 200 , 200 , false , false));
+        ImageView page2 = new ImageView(
+        new Image("https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/2000px-Tic_tac_toe.svg.png" , 200 , 200 , false, false));
+
+            flow.getChildren().addAll(page, page2);
        // }
 
         return flow;
