@@ -18,8 +18,12 @@ public class ServerConnection {
         GridPane pane = new GridPane();
 
         // Titel
-        Label label1 = new Label("Server connect");
+        Label label1 = new Label("Connect to a server");
         pane.add(label1, 0, 0);
+
+        // Status
+        Label label2 = new Label();
+        pane.add(label2,0,4);
 
         TextField textField1 = new TextField();
         textField1.setPromptText("Server name");
@@ -51,16 +55,17 @@ public class ServerConnection {
                 //Schrijven van ip adres en poort naar ini bestand
                 try {
                     writeIniFile(ip, port);
+                    label2.setText("Settings succesfully saved");
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
         });
         Stage primaryStage = new Stage();
-        Scene scene = new Scene(pane, 200, 100);
+        Scene scene = new Scene(pane, 200, 120);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Test");
-        primaryStage.setMinHeight(100);
+        primaryStage.setMinHeight(120);
         primaryStage.setMinWidth(200);
         primaryStage.show();
     }
