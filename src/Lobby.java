@@ -5,16 +5,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,8 +18,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Lobby extends Application{
-    private String[] Gamelist;
-
+    private String Game;
+    private TextField textField;
+    private ComboBox comboBox2;
+    private ComboBox comboBox1;
+    private String[] optionList;
     public void start(Stage fright) {
         try {
 
@@ -47,7 +44,7 @@ public class Lobby extends Application{
         }
     }
 
-        public HBox addHBox () {
+        private HBox addHBox () {
             HBox hbox = new HBox();
             hbox.setPadding(new Insets(15, 12, 15, 12));
             hbox.setSpacing(10);
@@ -62,40 +59,55 @@ public class Lobby extends Application{
 
             hbox.setAlignment(Pos.CENTER);
             hbox.getChildren().addAll(btn, connectBtn);
-            btn.setOnAction(new EventHandler<ActionEvent>() {
-                public void handle(ActionEvent event) {
-                    System.out.println("Hello World!");
-                }
-            });
-            connectBtn.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    ServerConnection connection = new ServerConnection();
-                    try {
-                        connection.start();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+            btn.setOnAction(e -> startgame());
+            connectBtn.setOnAction(e -> Serverconnect());
+
+
             BorderPane.setAlignment(hbox, Pos.CENTER);
             hbox.setPrefHeight(100);
             return hbox;
         }
-    public FlowPane addFlowPane() {
+    public void Serverconnect() {
+        ServerConnection connection = new ServerConnection();
+        try {
+            connection.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void startgame() {
+        if(Game != null && comboBox1.getValue().toString() != null && comboBox2.getValue().toString() != null){
+        System.out.println("Starting: " + Game);
+        String name = textField.getCharacters().toString();
+        String option1 = comboBox1.getValue().toString();
+        String option2 = comboBox2.getValue().toString();
+        optionList = new String[]{Game, name, option1, option2};
+    }else{
+            Pane root = new Pane();
+
+            Label warning = new Label("Setting missing");
+            warning.setAlignment(Pos.CENTER);
+            root.getChildren().addAll(warning);
+            final Scene s = new Scene(root, 100, 20);
+            Stage fright = new Stage();
+            fright.setTitle("Lobby");
+            fright.setScene(s);
+            fright.show();
+        }
+    }
+    private FlowPane addFlowPane() {
         FlowPane river = new FlowPane();
         river.setHgap(4);
         river.setVgap(4);
         river.setPrefWrapLength(120);
-       // preferred width allows for two columns
         river.setStyle("-fx-background-color: #336666;");
-       // for (int i = 0; i < Gamelist.length; i++ ) {
+
             ImageView page = new ImageView(
                     new Image("http://www.pressibus.org/reversi/gen/images/depart.gif", 200 , 200 , false , false));
         Button rev = new Button(null, page);
         rev.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
+                Game = "Reversi";
             }
         });
             ImageView page2 = new ImageView(
@@ -103,7 +115,7 @@ public class Lobby extends Application{
         Button tic = new Button(null, page2);
         tic.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
+                Game = "TicTacToe";
             }
         });
             river.getChildren().addAll(rev, tic);
@@ -115,9 +127,9 @@ public class Lobby extends Application{
     river.setAlignment(Pos.CENTER_LEFT);
         return river;
     }
-    public HBox nameset(){
+    private HBox nameset(){
     Label label = new Label("Name:");
-    TextField textField = new TextField ();
+    textField = new TextField ();
     HBox hb = new HBox();
     hb.getChildren().addAll(label, textField);
     hb.setSpacing(10);
@@ -127,7 +139,7 @@ public class Lobby extends Application{
     return hb;
     }
 
-    public VBox options(){
+    private VBox options(){
 
     VBox elevator = new VBox();
     Label labell = new Label("mode");
@@ -137,7 +149,7 @@ public class Lobby extends Application{
                     "Player vs AI",
                     "AI vs AI"
             );
-        final ComboBox comboBox1 = new ComboBox(options1);
+        comboBox1 = new ComboBox(options1);
         Label label2 = new Label("difficulty");
         ObservableList<String> options2 =
                 FXCollections.observableArrayList(
@@ -145,7 +157,7 @@ public class Lobby extends Application{
                         "2",
                         "3"
                 );
-        final ComboBox comboBox2 = new ComboBox(options2);
+        comboBox2 = new ComboBox(options2);
         comboBox1.setPrefWidth(120);
         comboBox2.setPrefWidth(120);
         elevator.getChildren().addAll(labell, comboBox1, label2, comboBox2);

@@ -34,7 +34,7 @@ public class Framework extends Application {
     	for(int i=0; i<field[1].length; i++) {
   	      for(int j=0; j<field.length; j++) {
   	    	StackPane stackPane = new StackPane();
-  	    	PaneArrayList paneArrayList = new PaneArrayList;
+
   	    	Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\x.gif");
   	    	
             ImageView imageView = new ImageView(im);
