@@ -1,14 +1,18 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.text.DateFormat.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+
+
 
 public class Framework extends Application {
 
@@ -27,10 +31,11 @@ public class Framework extends Application {
     }
 
     private void makeField(){
-    	for(int i=0; i<field.length; i++) {
-  	      for(int j=0; j<field[i].length; j++) {
+
+    	for(int i=0; i<field[1].length; i++) {
+  	      for(int j=0; j<field.length; j++) {
   	    	StackPane stackPane = new StackPane();
-  	    	Image im = new Image("file:\\C:\\Users\\glubb\\Google Drive\\HBO\\Jaar 2\\Periode 3\\Project\\src\\weekopdrTicTacToe\\x.gif");
+  	    	Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\x.gif");
             ImageView imageView = new ImageView(im);
 			stackPane.setPrefSize(tileWidth, tileHeight);
 			stackPanes.add(stackPane);
@@ -42,8 +47,15 @@ public class Framework extends Application {
 				
 	}
     public void updateField(int length, int width, int state) {
-    	int position = length*width;
- 
+    	int position = ((width-1)*field.length)+(length-1);
+    	StackPane stackPane = new StackPane();
+    	stackPane = stackPanes.get(position);
+        stackPane.getChildren().remove(0);
+    	Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\o.gif");
+        ImageView imageView = new ImageView(im);
+        stackPane.getChildren().add(imageView);
+
+    	
     }
 
     public int getState(int length, int width) {
@@ -81,9 +93,14 @@ public class Framework extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-        Scene scene = new Scene(gridpane);
+		Button b = new Button("Update");
+		VBox vbox = new VBox();
+		vbox.getChildren().addAll(gridpane, b);
+        Scene scene = new Scene(vbox);
+        
+        b.setOnAction((e) -> updateField(5, 1, 1));
         primaryStage.setScene(scene);
-        setField(4,6);
+        setField(6,6);
         primaryStage.show();
         
 	}
