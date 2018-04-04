@@ -17,26 +17,34 @@ public class Framework extends Application {
     int tileWidth = 50;
     int tileHeight = 50;
 
-    Collection<StackPane> stackPanes = new ArrayList<StackPane>();
+    ArrayList<StackPane> stackPanes = new ArrayList<StackPane>();
     GridPane gridpane = new GridPane();
 
     
     public void setField(int length, int width){
         field = new int[length][width];
-
+        makeField();
     }
 
-    private void makeField(int length, int width){
-        for (int i = 1; i <= length; i++) {
-		    for (int j = 1; j <= width; j++) {
-				StackPane stackPane = new StackPane();
-				stackPane.setPrefSize(tileWidth, tileHeight);
-				stackPanes.add(stackPane);
-				stackPane.setStyle("-fx-border-color: black");
-				gridpane.add(stackPane, i, j);
-			}
-		}
+    private void makeField(){
+    	for(int i=0; i<field.length; i++) {
+  	      for(int j=0; j<field[i].length; j++) {
+  	    	StackPane stackPane = new StackPane();
+  	    	Image im = new Image("file:\\C:\\Users\\glubb\\Google Drive\\HBO\\Jaar 2\\Periode 3\\Project\\src\\weekopdrTicTacToe\\x.gif");
+            ImageView imageView = new ImageView(im);
+			stackPane.setPrefSize(tileWidth, tileHeight);
+			stackPanes.add(stackPane);
+			stackPane.getChildren().add(imageView);
+			stackPane.setStyle("-fx-border-color: black");
+			gridpane.add(stackPane, i, j);
+  	      }
+  	  }
+				
 	}
+    public void updateField(int length, int width, int state) {
+    	int position = length*width;
+ 
+    }
 
     public int getState(int length, int width) {
     	return field[length][width];
@@ -75,17 +83,14 @@ public class Framework extends Application {
 	public void start(Stage primaryStage) throws Exception {
         Scene scene = new Scene(gridpane);
         primaryStage.setScene(scene);
-        makeField(8,8);
+        setField(4,6);
         primaryStage.show();
+        
 	}
 }
 
 class main{
-    public static void main(String[] args){
-        Framework framework = new Framework();
-        framework.setField(3,3);   
-        framework.setSate(1, 3, 1);
-        framework.showField();
-        
+    public static void main(String[] args){   	
+    	Application.launch(Framework.class, args);       
     }
 }
