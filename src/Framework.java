@@ -31,12 +31,11 @@ public class Framework extends Application {
     }
 
     private void makeField(){
+
     	for(int i=0; i<field[1].length; i++) {
   	      for(int j=0; j<field.length; j++) {
   	    	StackPane stackPane = new StackPane();
-
   	    	Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\x.gif");
-  	    	
             ImageView imageView = new ImageView(im);
 			stackPane.setPrefSize(tileWidth, tileHeight);
 			stackPanes.add(stackPane);
@@ -48,15 +47,14 @@ public class Framework extends Application {
 				
 	}
     public void updateField(int length, int width, int state) {
+    	int position = ((width-1)*field.length)+(length-1);
     	StackPane stackPane = new StackPane();
-    	int position = 4;
     	stackPane = stackPanes.get(position);
         stackPane.getChildren().remove(0);
     	Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\o.gif");
-//    	stackPane.getChildren().Image =
         ImageView imageView = new ImageView(im);
         stackPane.getChildren().add(imageView);
-    	stackPanes.set(position, stackPane);
+
     	
     }
 
@@ -100,9 +98,9 @@ public class Framework extends Application {
 		vbox.getChildren().addAll(gridpane, b);
         Scene scene = new Scene(vbox);
         
-        b.setOnAction((e) -> updateField(3, 3, 1));
+        b.setOnAction((e) -> updateField(5, 1, 1));
         primaryStage.setScene(scene);
-        setField(4,6);
+        setField(6,6);
         primaryStage.show();
         
 	}
