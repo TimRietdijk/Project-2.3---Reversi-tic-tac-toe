@@ -1,15 +1,43 @@
-import java.text.DateFormat.Field;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
-public class Framework {
+import java.text.DateFormat.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class Framework extends Application {
 
     int[][] field;
     int numberofstates = 3;
+    int tileWidth = 50;
+    int tileHeight = 50;
+
+    Collection<StackPane> stackPanes = new ArrayList<StackPane>();
+    GridPane gridpane = new GridPane();
 
     
     public void setField(int length, int width){
         field = new int[length][width];
 
     }
+
+    private void makeField(int length, int width){
+        for (int i = 1; i <= length; i++) {
+		    for (int j = 1; j <= width; j++) {
+				StackPane stackPane = new StackPane();
+				stackPane.setPrefSize(tileWidth, tileHeight);
+				stackPanes.add(stackPane);
+				stackPane.setStyle("-fx-border-color: black");
+				gridpane.add(stackPane, i, j);
+			}
+		}
+	}
+
     public int getState(int length, int width) {
     	return field[length][width];
     }
@@ -34,6 +62,7 @@ public class Framework {
     		}
     	}
     }
+
     public void showField() {
 	      for(int i=0; i<field.length; i++) {
 	      for(int j=0; j<field[i].length; j++) {
@@ -41,6 +70,14 @@ public class Framework {
 	      }
 	  }
     }
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+        Scene scene = new Scene(gridpane);
+        primaryStage.setScene(scene);
+        makeField(8,8);
+        primaryStage.show();
+	}
 }
 
 class main{
