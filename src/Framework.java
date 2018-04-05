@@ -18,14 +18,8 @@ public class Framework extends Application {
 
 	int[][] field;
 	int numberofstates = 3;
-<<<<<<< HEAD
 	int tileWidth = 90;
 	int tileHeight = 90;
-=======
-	int tileWidth = 80;
-	int tileHeight = 80;
->>>>>>> 49203e0e2d2c81d52f5081c0a3f77440e8a52fd2
-
 	int fieldLength;
 	int fieldWidth;
 	String[] states;
@@ -124,7 +118,8 @@ public class Framework extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		VBox vbox = new VBox();
-		vbox.getChildren().addAll(gridpane);
+		Button b = new Button();
+		vbox.getChildren().addAll(gridpane,b);
 		Scene scene = new Scene(vbox);
 		scene.getStylesheets().add("TicTacToe.css");
 		setField(fieldLength,fieldWidth);

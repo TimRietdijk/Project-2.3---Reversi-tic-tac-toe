@@ -10,6 +10,11 @@ public class TicTacToe extends Framework {
         super();
         setFieldLength(length);
         setFieldWidth(width);
+        setStates(states);
+    }
+    public void start() {
+    	Application.launch(TicTacToe.class, args);
+
     }
 }
 class main{

@@ -12,14 +12,15 @@ import java.net.Socket;
 import java.util.Map;
 import java.util.Scanner;
 
+
 public class CommandCenter {
 
     private String lastIp;
     private Integer lastPort;
-    static Socket s;
-
+    static Socket s;}
 
     public CommandCenter(Map<String, String> options) throws IOException {
+
         File inioutfile = new File("test.ini");
         if (inioutfile.exists()) {
             Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
