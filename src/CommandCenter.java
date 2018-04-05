@@ -31,6 +31,7 @@ public class CommandCenter {
         String L = options.get("name");
         setupConnection(lastIp, lastPort);
         doLogin(L);
+        consoleCommandTyping();
         Scanner sc1 = new Scanner(s.getInputStream());
         ReadReceived(sc1);
     }
@@ -69,6 +70,27 @@ public class CommandCenter {
     /*
     -=Uitgaande commando's=-
      */
+
+    // Vrij commando's uitvoeren in console
+    public void consoleCommandTyping() {
+        new Thread(new Runnable() {
+            public void run() {
+                String sendingText;
+                Scanner sc = new Scanner(System.in);
+                while(true) {
+                    sendingText = sc.nextLine();
+                    PrintStream p = null;
+                    try {
+                        p = new PrintStream(s.getOutputStream());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    p.println(sendingText);
+
+                }
+            };
+        }).start();
+    }
 
     // Commando om in te loggen op server
     public void doLogin(String player) throws IOException {
