@@ -12,7 +12,6 @@ public class TicTacToe extends Framework {
         setFieldWidth(width);
     }
 }
-
 class main{
     public static void main(String[] args){
         Application.launch(TicTacToe.class, args);

@@ -18,11 +18,19 @@ public class Framework extends Application {
 
 	int[][] field;
 	int numberofstates = 3;
-	int tileWidth = 50;
-	int tileHeight = 50;
+<<<<<<< HEAD
+	int tileWidth = 90;
+	int tileHeight = 90;
+=======
+	int tileWidth = 80;
+	int tileHeight = 80;
+>>>>>>> 49203e0e2d2c81d52f5081c0a3f77440e8a52fd2
 
 	int fieldLength;
 	int fieldWidth;
+	String[] states;
+
+	int changeState = 1; //for testing different symbols
 
 	ArrayList<StackPane> stackPanes = new ArrayList<StackPane>();
 	GridPane gridpane = new GridPane();
@@ -34,9 +42,7 @@ public class Framework extends Application {
 	}
 
 	private void buttonAction(Button button){
-        Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\o.gif"));
-        ImageView iv = new ImageView(image);
-        button.setGraphic(iv);
+		updateField(button.translateXProperty().intValue(), button.translateYProperty().intValue(), 1);
 	}
 
 	private void makeField(){
@@ -44,6 +50,8 @@ public class Framework extends Application {
 		for(int i=0; i<field[1].length; i++) {
 			for(int j=0; j<field.length; j++) {
 				Button button = new Button();
+				button.setTranslateX(j);
+				button.setTranslateY(i);
 				button.setOnAction((e) -> buttonAction(button));
 				button.setPrefSize(tileWidth, tileHeight);
 				StackPane stackPane = new StackPane(button);
@@ -56,19 +64,17 @@ public class Framework extends Application {
 
 	}
 	public void updateField(int length, int width, int state) {
-		int position = ((width-1)*field.length)+(length-1);
-		StackPane stackPane = new StackPane();
+		setSate(length, width, state);
+		int position = ((width)*field.length)+(length);
+		StackPane stackPane;
 		stackPane = stackPanes.get(position);
-		stackPane.getChildren().remove(0);
-		if(stackPane.getChildren().isEmpty()) {}
-    	else {
-    		stackPane.getChildren().remove(0);
-    	}     
-    	Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\o.gif");
-		ImageView imageView = new ImageView(im);
-		stackPane.getChildren().add(imageView);
 
+		Button button;
+		button = (Button) stackPane.getChildren().get(0);
 
+		Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\" + states[state] + ".gif"));
+		ImageView iv = new ImageView(image);
+		button.setGraphic(iv);
 	}
 
 	public int getState(int length, int width) {
@@ -95,7 +101,6 @@ public class Framework extends Application {
 			}
 		}
 	}
-
 	public void showField() {
 		for(int i=0; i<field.length; i++) {
 			for(int j=0; j<field[i].length; j++) {
@@ -112,15 +117,18 @@ public class Framework extends Application {
 		this.fieldWidth = fieldWidth;
 	}
 
+	public void setStates(String[] states) {
+		this.states = states;
+	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Button b = new Button("Update");
 		VBox vbox = new VBox();
-		vbox.getChildren().addAll(gridpane, b);
+		vbox.getChildren().addAll(gridpane);
 		Scene scene = new Scene(vbox);
+		scene.getStylesheets().add("TicTacToe.css");
 		setField(fieldLength,fieldWidth);
-		b.setOnAction((e) -> updateField(1, 1, 1));
+		b.setOnAction((e) -> showField());
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
