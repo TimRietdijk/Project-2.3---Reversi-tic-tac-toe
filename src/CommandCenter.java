@@ -17,6 +17,7 @@ public class CommandCenter {
     private Integer lastPort;
     static Socket s;
 
+
     public CommandCenter(String[] options) throws IOException {
         File inioutfile = new File("test.ini");
         if (inioutfile.exists()) {
