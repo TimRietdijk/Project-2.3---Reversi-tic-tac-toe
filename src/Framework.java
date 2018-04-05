@@ -7,7 +7,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.ini4j.Wini;
 
+<<<<<<< Updated upstream
+=======
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat.Field;
+>>>>>>> Stashed changes
 import java.util.ArrayList;
 
 
@@ -18,6 +25,10 @@ public class Framework extends Application {
 	int numberofstates = 3;
 	int tileWidth = 90;
 	int tileHeight = 90;
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 	int fieldLength;
 	int fieldWidth;
 	String[] states;
@@ -130,15 +141,53 @@ public class Framework extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		createIniFile(3,3, "x", "O", "TicTacToe.ini");
 		VBox vbox = new VBox();
 		Button b = new Button();
 		vbox.getChildren().addAll(gridpane,b);
 		Scene scene = new Scene(vbox);
 		scene.getStylesheets().add("TicTacToe.css");
 		setField(fieldLength,fieldWidth);
-		b.setOnAction((e) -> showField());
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
+	}
+
+	// Schrijven van poort en ip adres naar ini file. Als file niet bestaat, nieuwe file maken.
+	/*
+	length=lengte van bord
+	width=breedte van bord
+	player_one=teken speler 1 (bv x)
+	player_two=teken speler 2 (bv O)
+	path=bestandnaam (bv TicTacToe.ini)
+	 */
+	private void createIniFile(int length, int width, String player_one, String player_two, String path) throws IOException {
+		File inioutfile = new File(path);
+		if (!inioutfile.exists()) {
+			inioutfile.createNewFile();
+		}
+		Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
+
+		ini.put("board", "length", length);
+		ini.put("board", "width", width);
+		ini.put("state", "empty", "");
+		ini.put("state", "player_one", player_one);
+		ini.put("state", "player_two", player_two);
+		ini.store();
+	}
+
+	// Ini file uitlezen. Als file niet bestaat, nieuwe write met lege waarden.
+	private String[] readIniFile() throws IOException {
+		File inioutfile = new File("test.ini");
+		if (inioutfile.exists()) {
+			Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
+			int length = ini.get("board", "length", Integer.class);
+			int width = ini.get("board", "width", Integer.class);
+			String state0 = ini.get("state", "empty", String.class);
+			String state1 = ini.get("state", "player_one", String.class);
+			String state2 = ini.get("state", "player_two", String.class);
+			System.out.println(length + ", " + width + ", " + state0 + ", " + state1 + ", " + state2);
+		}
+		return null;
 	}
 }

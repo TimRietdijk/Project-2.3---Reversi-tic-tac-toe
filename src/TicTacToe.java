@@ -11,10 +11,13 @@ public class TicTacToe extends Framework {
         setFieldLength(length);
         setFieldWidth(width);
         setStates(states);
+<<<<<<< Updated upstream
     }
     public void start() {
     	Application.launch(TicTacToe.class, args);
 
+=======
+>>>>>>> Stashed changes
     }
 }
 class main{
