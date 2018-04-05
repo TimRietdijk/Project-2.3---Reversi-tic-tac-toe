@@ -14,7 +14,7 @@ public class CommandCenter {
 
     public CommandCenter() throws IOException {
 
-        setupConnection("127.0.0.1", 80);
+        setupConnection("145.33.225.170", 7789);
         Scanner sc1 = new Scanner(s.getInputStream());
         ReadReceived(sc1);
     }
@@ -25,7 +25,7 @@ public class CommandCenter {
 
     // Connectie opzetten met server
     public void setupConnection(String host, int port) throws IOException {
-        Socket s = new Socket(host, port);
+        s = new Socket(host, port);
     }
 
     // Versturen van commandos naar server
