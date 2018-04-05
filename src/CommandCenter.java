@@ -3,6 +3,9 @@
  * en regelt alle mogelijke inkomende en uitgaande commando's
  */
 
+import org.ini4j.Wini;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -10,11 +13,22 @@ import java.util.Scanner;
 
 public class CommandCenter {
 
+    private String lastIp;
+    private Integer lastPort;
     static Socket s;
 
-    public CommandCenter() throws IOException {
 
-        setupConnection("127.0.0.1", 80);
+    public CommandCenter(String[] options) throws IOException {
+        File inioutfile = new File("test.ini");
+        if (inioutfile.exists()) {
+            Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
+            lastIp = ini.get("connection", "server ip", String.class);
+            String parse = ini.get("connection", "server port", String.class);
+            lastPort = Integer.valueOf(parse);
+            System.out.println(lastIp + lastPort);
+        }
+
+        setupConnection(lastIp, lastPort);
         Scanner sc1 = new Scanner(s.getInputStream());
         ReadReceived(sc1);
     }
@@ -25,7 +39,7 @@ public class CommandCenter {
 
     // Connectie opzetten met server
     public void setupConnection(String host, int port) throws IOException {
-        Socket s = new Socket(host, port);
+        s = new Socket(host, port);
     }
 
     // Versturen van commandos naar server
