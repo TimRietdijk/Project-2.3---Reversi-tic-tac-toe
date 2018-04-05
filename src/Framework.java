@@ -15,7 +15,7 @@ import java.util.Collection;
 
 
 public class Framework extends Application {
-	
+
     int[][] field;
     int fieldLength;
     int fieldWidth;
@@ -33,7 +33,7 @@ public class Framework extends Application {
     }
 
     private void makeField(){
-	    
+
     	for(int i=0; i<field[1].length; i++) {
   	      for(int j=0; j<field.length; j++) {
   	    	StackPane stackPane = new StackPane();
@@ -56,7 +56,7 @@ public class Framework extends Application {
     	Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\o.gif");
         ImageView imageView = new ImageView(im);
         stackPane.getChildren().add(imageView);
-        
+
     	
     }
 
