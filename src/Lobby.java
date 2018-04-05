@@ -3,7 +3,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -22,8 +21,8 @@ public class Lobby extends Application{
     private TextField textField;
     private ComboBox comboBox2;
     private ComboBox comboBox1;
-    private String[] optionList;
-    public void start(Stage fright) {
+    private Stage fright;
+    public void start(Stage start) {
 
         try {
 
@@ -35,7 +34,7 @@ public class Lobby extends Application{
             root.setRight(options());
 
             final Scene s = new Scene(root, 1000, 600);
-
+            fright = new Stage();
             fright.setTitle("Lobby");
             fright.setScene(s);
             fright.show();
@@ -68,7 +67,7 @@ public class Lobby extends Application{
             hbox.setPrefHeight(100);
             return hbox;
         }
-    public void Serverconnect() {
+    private void Serverconnect() {
         ServerConnection connection = new ServerConnection();
         try {
             connection.start();
@@ -76,14 +75,22 @@ public class Lobby extends Application{
             e.printStackTrace();
         }
     }
-    public void startgame() {
+    private void startgame() {
         if(Game != null && comboBox1.getValue().toString() != null && comboBox2.getValue().toString() != null){
         System.out.println("Starting: " + Game);
         String name = textField.getCharacters().toString();
         String option1 = comboBox1.getValue().toString();
         String option2 = comboBox2.getValue().toString();
-        optionList = new String[]{Game, name, option1, option2};
-    }else{
+        String[] optionList = new String[]{Game, name, option1, option2};
+            try {
+                fright.close();
+                CommandCenter s = new CommandCenter(optionList);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }else{
             Pane root = new Pane();
 
             Label warning = new Label("Setting missing");
