@@ -33,8 +33,10 @@ public class Framework extends Application {
 		makeField();
 	}
 
-	private void buttonAction(){
-
+	private void buttonAction(Button button){
+        Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\o.gif"));
+        ImageView iv = new ImageView(image);
+        button.setGraphic(iv);
 	}
 
 	private void makeField(){
@@ -42,7 +44,7 @@ public class Framework extends Application {
 		for(int i=0; i<field[1].length; i++) {
 			for(int j=0; j<field.length; j++) {
 				Button button = new Button();
-				button.setOnAction((e) -> buttonAction());
+				button.setOnAction((e) -> buttonAction(button));
 				button.setPrefSize(tileWidth, tileHeight);
 				StackPane stackPane = new StackPane(button);
 				Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\x.gif");
