@@ -47,11 +47,8 @@ public class Framework extends Application {
 				button.setOnAction((e) -> buttonAction(button));
 				button.setPrefSize(tileWidth, tileHeight);
 				StackPane stackPane = new StackPane(button);
-				Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\x.gif");
-				ImageView imageView = new ImageView(im);
 				stackPane.setPrefSize(tileWidth, tileHeight);
 				stackPanes.add(stackPane);
-				stackPane.getChildren().add(imageView);
 				stackPane.setStyle("-fx-border-color: black");
 				gridpane.add(stackPane, i, j);
 			}
@@ -63,7 +60,11 @@ public class Framework extends Application {
 		StackPane stackPane = new StackPane();
 		stackPane = stackPanes.get(position);
 		stackPane.getChildren().remove(0);
-		Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\o.gif");
+		if(stackPane.getChildren().isEmpty()) {}
+    	else {
+    		stackPane.getChildren().remove(0);
+    	}     
+    	Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\o.gif");
 		ImageView imageView = new ImageView(im);
 		stackPane.getChildren().add(imageView);
 
