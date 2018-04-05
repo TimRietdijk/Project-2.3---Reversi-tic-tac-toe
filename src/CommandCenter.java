@@ -38,7 +38,7 @@ public class CommandCenter {
 
     // Connectie opzetten met server
     public void setupConnection(String host, int port) throws IOException {
-        Socket s = new Socket(host, port);
+        s = new Socket(host, port);
     }
 
     // Versturen van commandos naar server
