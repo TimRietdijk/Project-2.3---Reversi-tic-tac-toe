@@ -19,6 +19,10 @@ public class CommandCenter {
         ReadReceived(sc1);
     }
 
+    /*
+    -=Communicatie met server=-
+     */
+
     // Connectie opzetten met server
     public void setupConnection(String host, int port) throws IOException {
         Socket s = new Socket(host, port);
@@ -44,5 +48,64 @@ public class CommandCenter {
                 }
             }
         }).start();
+    }
+
+    /*
+    -=Uitgaande commando's=-
+     */
+
+    // Commando om in te loggen op server
+    public void doLogin(String player) throws IOException {
+        sendCommand("login " + player);
+    }
+
+    // Commando om te uit te loggen van server
+    public void doLogout() throws IOException {
+        sendCommand("logout");
+    }
+
+    // Commando om game lijst op te vragen
+    public void doGetGameList() throws IOException {
+        sendCommand("get gamelist");
+    }
+
+    // Commando om speler lijst op te vragen
+    public void doGetPlayerList() throws IOException {
+        sendCommand("get playerlist");
+    }
+
+    // Commando om in te schrijven voor spel type
+    public void doSubscribe(String gametype) throws IOException {
+        sendCommand("subscribe " + gametype);
+    }
+
+    // Commando om zet te doen
+    public void doMove(String move) throws IOException {
+        sendCommand("move " + move);
+    }
+
+    // Commando om op te geven
+    public void doForfeit() throws IOException {
+        sendCommand("forfeit");
+    }
+
+    // Commando om speler uit te dagen voor spel
+    public void doChallenge(String player, String gametype) throws IOException {
+        sendCommand("challenge " + player + " " + gametype);
+    }
+
+    // Commando om ontvangen uitdaging te accepteren
+    public void doChallengeAccept(String challengeNumber) throws IOException {
+        sendCommand("challenge accept " + challengeNumber);
+    }
+
+    // Commando om hulp te vragen
+    public void doHelp() throws IOException {
+        sendCommand("help");
+    }
+
+    // Commando om hulp op te vragen bij specifiek commando
+    public void doHelpCommand(String commandName) throws IOException {
+        sendCommand("help " + commandName);
     }
 }
