@@ -29,8 +29,8 @@ public class CommandCenter {
             System.out.println(lastIp + lastPort);
         }
         String L = options.get("name");
-        doLogin(L);
         setupConnection(lastIp, lastPort);
+        doLogin(L);
         Scanner sc1 = new Scanner(s.getInputStream());
         ReadReceived(sc1);
     }
