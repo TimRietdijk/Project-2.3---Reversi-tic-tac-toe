@@ -16,6 +16,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 public class Lobby extends Application{
     private String Game;
     private TextField textField;
