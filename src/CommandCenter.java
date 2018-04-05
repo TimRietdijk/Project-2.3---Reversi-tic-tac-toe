@@ -148,4 +148,8 @@ public class CommandCenter {
     public void doHelpCommand(String commandName) throws IOException {
         sendCommand("help " + commandName);
     }
+
+    /*
+    -=Inkomende commando's=-
+     */
 }
