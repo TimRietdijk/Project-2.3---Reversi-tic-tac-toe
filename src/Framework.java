@@ -18,8 +18,8 @@ public class Framework extends Application {
 
 	int[][] field;
 	int numberofstates = 3;
-	int tileWidth = 50;
-	int tileHeight = 50;
+	int tileWidth = 90;
+	int tileHeight = 90;
 
 	int fieldLength;
 	int fieldWidth;
@@ -95,7 +95,6 @@ public class Framework extends Application {
 			}
 		}
 	}
-
 	public void showField() {
 		for(int i=0; i<field.length; i++) {
 			for(int j=0; j<field[i].length; j++) {
@@ -115,12 +114,11 @@ public class Framework extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Button b = new Button("Update");
 		VBox vbox = new VBox();
-		vbox.getChildren().addAll(gridpane, b);
+		vbox.getChildren().addAll(gridpane);
 		Scene scene = new Scene(vbox);
-		setField(fieldLength,fieldWidth);
-		b.setOnAction((e) -> updateField(1, 1, 1));
+		scene.getStylesheets().add("TicTacToe.css");
+		setField(fieldLength,fieldWidth);	
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
