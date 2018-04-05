@@ -32,6 +32,7 @@ public class CommandCenter {
         setupConnection(lastIp, lastPort);
         doLogin(L);
         consoleCommandTyping();
+        //doChallenge("Kaaas", "Tic-tac-toe");
         Scanner sc1 = new Scanner(s.getInputStream());
         ReadReceived(sc1);
     }
@@ -130,7 +131,7 @@ public class CommandCenter {
 
     // Commando om speler uit te dagen voor spel
     public void doChallenge(String player, String gametype) throws IOException {
-        sendCommand("challenge " + player + " " + gametype);
+        sendCommand("challenge \"" + player + "\" \"" + gametype + "\"");
     }
 
     // Commando om ontvangen uitdaging te accepteren
