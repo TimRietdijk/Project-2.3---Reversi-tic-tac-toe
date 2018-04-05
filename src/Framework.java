@@ -13,20 +13,21 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat.Field;
 import java.util.ArrayList;
-
+import java.util.List;
+import java.util.Map;
 
 
 public class Framework extends Application {
+	private Wini ini;
+	private int[][] field;
+	private int numberofstates = 3;
+	private int tileWidth = 90;
+	private int tileHeight = 90;
+	private int fieldLength;
+	private int fieldWidth;
+	private Map states;
 
-	int[][] field;
-	int numberofstates = 3;
-	int tileWidth = 90;
-	int tileHeight = 90;
-	int fieldLength;
-	int fieldWidth;
-	String[] states;
-
-	Boolean myTurn = false;
+	private Boolean myTurn = false;
 
 	ArrayList<StackPane> stackPanes = new ArrayList<StackPane>();
 	GridPane gridpane = new GridPane();
@@ -83,7 +84,7 @@ public class Framework extends Application {
 		Button button;
 		button = (Button) stackPane.getChildren().get(0);
 
-		Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\" + states[state] + ".gif"));
+		Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\" + states.get(state) + ".gif"));
 		ImageView iv = new ImageView(image);
 		button.setGraphic(iv);
 	}
@@ -128,7 +129,7 @@ public class Framework extends Application {
 		this.fieldWidth = fieldWidth;
 	}
 
-	public void setStates(String[] states) {
+	public void setStates(Map states) {
 		this.states = states;
 	}
 
@@ -140,6 +141,14 @@ public class Framework extends Application {
 		vbox.getChildren().addAll(gridpane,b);
 		Scene scene = new Scene(vbox);
 		scene.getStylesheets().add("TicTacToe.css");
+		String[] work = readIniFile();
+        fieldLength = Integer.valueOf(work[0]);
+        fieldWidth = Integer.valueOf(work[1]);
+        for(int i = 3; i < (work.length); i++){
+            String s = work[i];
+            states.put("", "d");
+        }
+
 		setField(fieldLength,fieldWidth);
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -163,7 +172,7 @@ public class Framework extends Application {
 
 		ini.put("board", "length", length);
 		ini.put("board", "width", width);
-		ini.put("state", "empty", "");
+		ini.put("state", "empty", " 0");
 		ini.put("state", "player_one", player_one);
 		ini.put("state", "player_two", player_two);
 		ini.store();
@@ -171,15 +180,17 @@ public class Framework extends Application {
 
 	// Ini file uitlezen. Als file niet bestaat, nieuwe write met lege waarden.
 	private String[] readIniFile() throws IOException {
-		File inioutfile = new File("test.ini");
+		File inioutfile = new File("TicTacToe.ini");
 		if (inioutfile.exists()) {
-			Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
-			int length = ini.get("board", "length", Integer.class);
-			int width = ini.get("board", "width", Integer.class);
+			ini = new Wini(new File(inioutfile.getAbsolutePath()));
+			String length = ini.get("board", "length", Integer.class).toString();
+			String width = ini.get("board", "width", Integer.class).toString();
 			String state0 = ini.get("state", "empty", String.class);
 			String state1 = ini.get("state", "player_one", String.class);
 			String state2 = ini.get("state", "player_two", String.class);
 			System.out.println(length + ", " + width + ", " + state0 + ", " + state1 + ", " + state2);
+			String[] s = {length, width, state0, state1, state2};
+			return s;
 		}
 		return null;
 	}

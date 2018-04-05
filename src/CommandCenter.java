@@ -17,7 +17,7 @@ public class CommandCenter {
 
     private String lastIp;
     private Integer lastPort;
-    static Socket s;}
+    static Socket s;
 
     public CommandCenter(Map<String, String> options) throws IOException {
 
