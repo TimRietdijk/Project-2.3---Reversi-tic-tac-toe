@@ -3,6 +3,10 @@
  * en regelt alle mogelijke inkomende en uitgaande commando's
  */
 
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.ini4j.Wini;
 
@@ -14,7 +18,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 
-public class CommandCenter extends Framework{
+public class CommandCenter extends Framework {
 
     private String lastIp;
     private Integer lastPort;
@@ -65,10 +69,10 @@ public class CommandCenter extends Framework{
     // Ontvangst commandos van server
     private static void ReadReceived(Scanner sc1) {
         new Thread(new Runnable() {
-            public void run(){
+            public void run() {
                 // receivedCommand houdt het ontvangen command van de server
                 String receivedCommand;
-                while(true) {
+                while (true) {
                     receivedCommand = sc1.nextLine();
                     commandHandling(receivedCommand);
                     System.out.println(receivedCommand);
@@ -87,7 +91,7 @@ public class CommandCenter extends Framework{
             public void run() {
                 String sendingText;
                 Scanner sc = new Scanner(System.in);
-                while(true) {
+                while (true) {
                     sendingText = sc.nextLine();
                     PrintStream p = null;
                     try {
@@ -98,7 +102,9 @@ public class CommandCenter extends Framework{
                     p.println(sendingText);
 
                 }
-            };
+            }
+
+            ;
         }).start();
     }
 
@@ -168,7 +174,7 @@ public class CommandCenter extends Framework{
             // Het is jouw beurt
             System.out.println("YOURTURN detected");
             // Move maken binnen tien seconden
-        } else if(command.contains("CHALLENGE")) {
+        } else if (command.contains("CHALLENGE")) {
             // Er is een challenge
             System.out.println("CHALLENGE detected");
             // Challenge accepteren/afwijzen dmv popup?
@@ -181,5 +187,30 @@ public class CommandCenter extends Framework{
                 // Gelijk gespeeld, doe een popup
             }
         }
+    }
+
+
+    public void updateField(int length, int width, int state) {
+        setState(length, width, state);
+        int position = ((width) * field.length) + (length);
+        StackPane stackPane;
+        stackPane = stackPanes.get(position);
+
+        Button button;
+        button = (Button) stackPane.getChildren().get(0);
+
+        Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\" + states[state] + ".gif"));
+        ImageView iv = new ImageView(image);
+        button.setGraphic(iv);
+        try {
+            doMove( Integer.toString(position));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void enemyMove(){
+
     }
 }

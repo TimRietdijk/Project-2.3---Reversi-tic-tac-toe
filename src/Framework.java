@@ -19,13 +19,13 @@ import java.util.Map;
 
 public class Framework extends Application {
 	private Wini ini;
-	private int[][] field;
+	protected int[][] field;
 	private int numberofstates = 3;
 	private int tileWidth = 90;
 	private int tileHeight = 90;
 	private int fieldLength;
 	private int fieldWidth;
-	private String[] states = new String[100];
+	protected String[] states = new String[100];
 
 	private Boolean myTurn = false;
 
@@ -87,11 +87,14 @@ public class Framework extends Application {
 		Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\" + states[state] + ".gif"));
 		ImageView iv = new ImageView(image);
 		button.setGraphic(iv);
+
 	}
 
 	public int getState(int length, int width) {
 		return field[length][width];
 	}
+
+
 	public void setState(int length, int width, int value) {
 		if(length >= field.length) {
 			System.out.println("error: the given position does not exist on this board");
