@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CommandCenter {
@@ -18,7 +19,7 @@ public class CommandCenter {
     static Socket s;
 
 
-    public CommandCenter(String[] options) throws IOException {
+    public CommandCenter(Map<String, String> options) throws IOException {
         File inioutfile = new File("test.ini");
         if (inioutfile.exists()) {
             Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
@@ -27,8 +28,11 @@ public class CommandCenter {
             lastPort = Integer.valueOf(parse);
             System.out.println(lastIp + lastPort);
         }
-
+        String L = options.get("name");
         setupConnection(lastIp, lastPort);
+        doLogin(L);
+        consoleCommandTyping();
+        //doChallenge("Kaaas", "Tic-tac-toe");
         Scanner sc1 = new Scanner(s.getInputStream());
         ReadReceived(sc1);
     }
@@ -68,8 +72,30 @@ public class CommandCenter {
     -=Uitgaande commando's=-
      */
 
+    // Vrij commando's uitvoeren in console
+    public void consoleCommandTyping() {
+        new Thread(new Runnable() {
+            public void run() {
+                String sendingText;
+                Scanner sc = new Scanner(System.in);
+                while(true) {
+                    sendingText = sc.nextLine();
+                    PrintStream p = null;
+                    try {
+                        p = new PrintStream(s.getOutputStream());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    p.println(sendingText);
+
+                }
+            };
+        }).start();
+    }
+
     // Commando om in te loggen op server
     public void doLogin(String player) throws IOException {
+        System.out.println(player);
         sendCommand("login " + player);
     }
 
@@ -105,7 +131,7 @@ public class CommandCenter {
 
     // Commando om speler uit te dagen voor spel
     public void doChallenge(String player, String gametype) throws IOException {
-        sendCommand("challenge " + player + " " + gametype);
+        sendCommand("challenge \"" + player + "\" \"" + gametype + "\"");
     }
 
     // Commando om ontvangen uitdaging te accepteren

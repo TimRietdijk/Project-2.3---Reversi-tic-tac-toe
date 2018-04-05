@@ -15,6 +15,8 @@ import javafx.event.EventHandler;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Lobby extends Application{
@@ -82,10 +84,15 @@ public class Lobby extends Application{
         String name = textField.getCharacters().toString();
         String option1 = comboBox1.getValue().toString();
         String option2 = comboBox2.getValue().toString();
-        String[] optionList = new String[]{Game, name, option1, option2};
+        Map<String, String> optionlist = new HashMap<String, String>();
+        optionlist.put("name", name);
+        optionlist.put("Game", Game);
+        optionlist.put("option1", option1);
+        optionlist.put("option2", option2);
+
             try {
                 fright.close();
-                CommandCenter s = new CommandCenter(optionList);
+                CommandCenter s = new CommandCenter(optionlist);
 
             } catch (IOException e) {
                 e.printStackTrace();
