@@ -70,6 +70,7 @@ public class CommandCenter extends Framework{
                 String receivedCommand;
                 while(true) {
                     receivedCommand = sc1.nextLine();
+                    commandHandling(receivedCommand);
                     System.out.println(receivedCommand);
                 }
             }
@@ -160,4 +161,25 @@ public class CommandCenter extends Framework{
     /*
     -=Inkomende commando's=-
      */
+
+    // Functie om inkomende commando's af te handelen in een aparte thread
+    private static void commandHandling(String command) {
+        if (command.contains("YOURTURN")) {
+            // Het is jouw beurt
+            System.out.println("YOURTURN detected");
+            // Move maken binnen tien seconden
+        } else if(command.contains("CHALLENGE")) {
+            // Er is een challenge
+            System.out.println("CHALLENGE detected");
+            // Challenge accepteren/afwijzen dmv popup?
+        } else if (command.contains("GAME")) {
+            if (command.contains("WIN")) {
+                // Gewonnen, doe een popup
+            } else if (command.contains("LOSS")) {
+                // Verloren, doe een popup
+            } else if (command.contains("DRAW")) {
+                // Gelijk gespeeld, doe een popup
+            }
+        }
+    }
 }
