@@ -8,9 +8,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.text.DateFormat.Field;
 import java.util.ArrayList;
-import java.util.Collection;
 
 
 
@@ -24,7 +22,7 @@ public class Framework extends Application {
 	int fieldWidth;
 	String[] states;
 
-	int changeState = 1; //for testing different symbols
+	Boolean myTurn = false;
 
 	ArrayList<StackPane> stackPanes = new ArrayList<StackPane>();
 	GridPane gridpane = new GridPane();
@@ -35,8 +33,23 @@ public class Framework extends Application {
 		makeField();
 	}
 
+	private void makeMove(Button button){
+		int x = button.translateXProperty().intValue();
+		int y = button.translateYProperty().intValue();
+		sendMove(((y)*field.length)+x);
+		updateField(x, y, 1);
+	}
+
 	private void buttonAction(Button button){
-		updateField(button.translateXProperty().intValue(), button.translateYProperty().intValue(), 1);
+		makeMove(button);
+	}
+
+	public void move(){
+		myTurn = true;
+	}
+
+	private int sendMove(int move){
+		return move;
 	}
 
 	private void makeField(){
@@ -58,7 +71,7 @@ public class Framework extends Application {
 
 	}
 	public void updateField(int length, int width, int state) {
-		setSate(length, width, state);
+		setState(length, width, state);
 		int position = ((width)*field.length)+(length);
 		StackPane stackPane;
 		stackPane = stackPanes.get(position);
@@ -74,7 +87,7 @@ public class Framework extends Application {
 	public int getState(int length, int width) {
 		return field[length][width];
 	}
-	public void setSate(int length, int width, int value) {
+	public void setState(int length, int width, int value) {
 		if(length >= field.length) {
 			System.out.println("error: the given position does not exist on this board");
 		}else {

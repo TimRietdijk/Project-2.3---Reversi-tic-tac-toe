@@ -66,7 +66,7 @@ public class ServerConnection {
         Stage primaryStage = new Stage();
         Scene scene = new Scene(pane, 200, 120);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Test");
+        primaryStage.setTitle("Connection");
         primaryStage.setMinHeight(120);
         primaryStage.setMinWidth(200);
         primaryStage.show();
