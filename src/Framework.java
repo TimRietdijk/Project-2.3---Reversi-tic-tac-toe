@@ -25,7 +25,7 @@ public class Framework extends Application {
 	private int tileHeight = 90;
 	private int fieldLength;
 	private int fieldWidth;
-	private Map states;
+	private String[] states = new String[100];
 
 	private Boolean myTurn = false;
 
@@ -84,7 +84,7 @@ public class Framework extends Application {
 		Button button;
 		button = (Button) stackPane.getChildren().get(0);
 
-		Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\" + states.get(state) + ".gif"));
+		Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\" + states[state] + ".gif"));
 		ImageView iv = new ImageView(image);
 		button.setGraphic(iv);
 	}
@@ -129,7 +129,7 @@ public class Framework extends Application {
 		this.fieldWidth = fieldWidth;
 	}
 
-	public void setStates(Map states) {
+	public void setStates(String[] states) {
 		this.states = states;
 	}
 
@@ -142,12 +142,16 @@ public class Framework extends Application {
 		Scene scene = new Scene(vbox);
 		scene.getStylesheets().add("TicTacToe.css");
 		String[] work = readIniFile();
+        int i = 0;
+        for(String ss: work){
+            if(i > 2){
+
+            states[i-2] = ss;
+
+            } i++;
+        }
         fieldLength = Integer.valueOf(work[0]);
         fieldWidth = Integer.valueOf(work[1]);
-        for(int i = 3; i < (work.length); i++){
-            String s = work[i];
-            states.put("", "d");
-        }
 
 		setField(fieldLength,fieldWidth);
 		primaryStage.setScene(scene);
@@ -188,7 +192,7 @@ public class Framework extends Application {
 			String state0 = ini.get("state", "empty", String.class);
 			String state1 = ini.get("state", "player_one", String.class);
 			String state2 = ini.get("state", "player_two", String.class);
-			System.out.println(length + ", " + width + ", " + state0 + ", " + state1 + ", " + state2);
+
 			String[] s = {length, width, state0, state1, state2};
 			return s;
 		}

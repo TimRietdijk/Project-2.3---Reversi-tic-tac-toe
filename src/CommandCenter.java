@@ -3,6 +3,7 @@
  * en regelt alle mogelijke inkomende en uitgaande commando's
  */
 
+import javafx.stage.Stage;
 import org.ini4j.Wini;
 
 import java.io.File;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 
-public class CommandCenter {
+public class CommandCenter extends Framework{
 
     private String lastIp;
     private Integer lastPort;
@@ -36,6 +37,12 @@ public class CommandCenter {
         //doChallenge("Kaaas", "Tic-tac-toe");
         Scanner sc1 = new Scanner(s.getInputStream());
         ReadReceived(sc1);
+        Stage stage = new Stage();
+        try {
+            super.start(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /*
