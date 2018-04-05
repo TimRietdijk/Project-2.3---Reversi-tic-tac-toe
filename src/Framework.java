@@ -9,12 +9,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.ini4j.Wini;
 
-<<<<<<< Updated upstream
-=======
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat.Field;
->>>>>>> Stashed changes
 import java.util.ArrayList;
 
 
@@ -25,10 +22,6 @@ public class Framework extends Application {
 	int numberofstates = 3;
 	int tileWidth = 90;
 	int tileHeight = 90;
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 	int fieldLength;
 	int fieldWidth;
 	String[] states;
