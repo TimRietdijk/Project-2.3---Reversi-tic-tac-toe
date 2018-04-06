@@ -3,6 +3,10 @@
  * en regelt alle mogelijke inkomende en uitgaande commando's
  */
 
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.ini4j.Wini;
 
@@ -10,15 +14,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Map;
 import java.util.Scanner;
 
 
-public class CommandCenter extends Framework{
-
+public class CommandCenter {
+    private String name;
     private String lastIp;
     private Integer lastPort;
     static Socket s;
+    private Scanner sc1;
 
     public CommandCenter(Map<String, String> options) throws IOException {
 
@@ -35,14 +42,10 @@ public class CommandCenter extends Framework{
         doLogin(L);
         consoleCommandTyping();
         //doChallenge("Kaaas", "Tic-tac-toe");
-        Scanner sc1 = new Scanner(s.getInputStream());
-        ReadReceived(sc1);
+        sc1 = new Scanner(s.getInputStream());
+        ReadReceived();
         Stage stage = new Stage();
-        try {
-            super.start(stage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        name = options.get("name");
     }
 
     /*
@@ -63,18 +66,13 @@ public class CommandCenter extends Framework{
     }
 
     // Ontvangst commandos van server
-    private void ReadReceived(Scanner sc1) {
-        new Thread(new Runnable() {
-            public void run(){
+    public String ReadReceived() {
                 // receivedCommand houdt het ontvangen command van de server
                 String receivedCommand;
-                while(true) {
                     receivedCommand = sc1.nextLine();
                     commandHandling(receivedCommand);
                     System.out.println(receivedCommand);
-                }
-            }
-        }).start();
+                    return receivedCommand;
     }
 
     /*
@@ -87,7 +85,7 @@ public class CommandCenter extends Framework{
             public void run() {
                 String sendingText;
                 Scanner sc = new Scanner(System.in);
-                while(true) {
+                while (true) {
                     sendingText = sc.nextLine();
                     PrintStream p = null;
                     try {
@@ -98,7 +96,9 @@ public class CommandCenter extends Framework{
                     p.println(sendingText);
 
                 }
-            };
+            }
+
+            ;
         }).start();
     }
 
@@ -129,7 +129,7 @@ public class CommandCenter extends Framework{
     }
 
     // Commando om zet te doen
-    public void doMove(String move) throws IOException {
+    public void doMove(int move) throws IOException {
         sendCommand("move " + move);
     }
 
@@ -163,23 +163,27 @@ public class CommandCenter extends Framework{
      */
 
     // Functie om inkomende commando's af te handelen in een aparte thread
-    private void commandHandling(String command) {
+   public String commandHandling(String command) {
+        if (command.contains("GAME MOVE") && !command.contains(name)) {
+            StringBuilder build = new StringBuilder();
+            int length = command.length();
+            String result = "";
+            for (int i = 0; i < length; i++) {
+                Character character = command.charAt(i);
+                if (Character.isDigit(character)) {
+                    build.append(character);
+                }
+            }
+            String parse = build.toString();
+            int s = Integer.valueOf(parse);
+            return parse;
+
+        }
         if (command.contains("YOURTURN")) {
             // Het is jouw beurt
             System.out.println("YOURTURN detected");
             // Move maken binnen tien seconden
-
-            int remainingTime = 10;
-            long timeout = System.currentTimeMillis() + (remainingTime * 1000);
-            while (System.currentTimeMillis() < timeout) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("You have : " + (timeout - System.currentTimeMillis()) / 1000 + " seconds left");
-            }
-        } else if(command.contains("CHALLENGE")) {
+        } else if (command.contains("CHALLENGE")) {
             // Er is een challenge
             System.out.println("CHALLENGE detected");
             // Challenge accepteren/afwijzen dmv popup?
@@ -192,5 +196,6 @@ public class CommandCenter extends Framework{
                 // Gelijk gespeeld, doe een popup
             }
         }
+        return null;
     }
 }
