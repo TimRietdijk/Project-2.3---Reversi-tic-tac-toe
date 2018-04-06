@@ -67,11 +67,13 @@ public class Framework extends Application {
 				button.setTranslateY(i);
 				button.setOnAction((e) -> buttonAction(button));
 				button.setPrefSize(tileWidth, tileHeight);
-				button.setStyle("-fx-background-color: "+ fieldColor +";");
+				button.setStyle("-fx-background-color: "+ fieldColor + 
+								"; -fx-border-color: "+ fieldColor +";");
 				StackPane stackPane = new StackPane(button);
 				stackPane.setPrefSize(tileWidth, tileHeight);
 				stackPanes.add(stackPane);
-				stackPane.setStyle("-fx-border-color: grey");
+				stackPane.setStyle("-fx-background-color: "+ fieldColor + 
+						"; -fx-border-color: black;");
 				gridpane.add(stackPane, i, j);
 			}
 		}
