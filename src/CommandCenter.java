@@ -71,7 +71,6 @@ public class CommandCenter {
                 String receivedCommand;
                     receivedCommand = sc1.nextLine();
                     commandHandling(receivedCommand);
-                    System.out.println(receivedCommand);
                     return receivedCommand;
     }
 

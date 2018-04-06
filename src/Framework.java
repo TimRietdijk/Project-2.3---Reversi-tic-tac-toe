@@ -173,7 +173,6 @@ public class Framework extends Application {
 		vbox.getChildren().addAll(gridpane);
 		Scene scene = new Scene(vbox);
 		game = options.get("Game");
-		scene.getStylesheets().add("TicTacToe.css");
 		String[] work = readIniFile();
 		File inioutfile = new File("test.ini");
 		if (inioutfile.exists()) {
