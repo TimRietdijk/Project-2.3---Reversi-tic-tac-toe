@@ -183,10 +183,6 @@ public class CommandCenter extends Framework{
             // Er is een challenge
             System.out.println("CHALLENGE detected");
             // Challenge accepteren/afwijzen dmv popup?
-
-
-            //newPopUp();
-
         } else if (command.contains("GAME")) {
             if (command.contains("WIN")) {
                 // Gewonnen, doe een popup
@@ -195,15 +191,6 @@ public class CommandCenter extends Framework{
             } else if (command.contains("DRAW")) {
                 // Gelijk gespeeld, doe een popup
             }
-        }
-    }
-
-    private void newPopUp() {
-        PopUp popup = new PopUp();
-        try {
-            popup.start();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
