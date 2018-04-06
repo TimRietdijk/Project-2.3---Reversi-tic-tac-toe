@@ -21,6 +21,7 @@ import java.util.Scanner;
 
 public class Framework extends Application {
 	private Wini ini;
+	private String game;
 	protected int[][] field;
 	private int numberofstates = 3;
 	private int tileWidth = 90;
@@ -171,6 +172,7 @@ public class Framework extends Application {
 		VBox vbox = new VBox();
 		vbox.getChildren().addAll(gridpane);
 		Scene scene = new Scene(vbox);
+		game = options.get("Game");
 		scene.getStylesheets().add("TicTacToe.css");
 		String[] work = readIniFile();
 		File inioutfile = new File("test.ini");
@@ -239,7 +241,7 @@ public class Framework extends Application {
 
 	// Ini file uitlezen. Als file niet bestaat, nieuwe write met lege waarden.
 	private String[] readIniFile() throws IOException {
-		File inioutfile = new File("TicTacToe.ini");
+		File inioutfile = new File(game + ".ini");
 		if (inioutfile.exists()) {
 			ini = new Wini(new File(inioutfile.getAbsolutePath()));
 			String color = ini.get("board", "color", String.class);
