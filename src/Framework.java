@@ -159,7 +159,7 @@ public class Framework extends Application {
 		for(String ss: work){
 			if(i > 2){
 
-				states[i-3] = ss;
+            states[i-3] = ss;
 
 			} i++;
 		}
@@ -167,10 +167,9 @@ public class Framework extends Application {
 		fieldLength = Integer.valueOf(work[1]);
 		fieldWidth = Integer.valueOf(work[2]);
 
-		setField(fieldLength,fieldWidth);
-		primaryStage.setScene(scene);
-		primaryStage.show();
-
+        setField(fieldLength,fieldWidth);
+        primaryStage.setScene(scene);
+        primaryStage.show();
 	}
 
 	// Schrijven van poort en ip adres naar ini file. Als file niet bestaat, nieuwe file maken.
