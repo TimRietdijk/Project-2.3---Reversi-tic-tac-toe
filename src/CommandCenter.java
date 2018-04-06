@@ -63,7 +63,7 @@ public class CommandCenter extends Framework{
     }
 
     // Ontvangst commandos van server
-    private static void ReadReceived(Scanner sc1) {
+    private void ReadReceived(Scanner sc1) {
         new Thread(new Runnable() {
             public void run(){
                 // receivedCommand houdt het ontvangen command van de server
@@ -163,15 +163,30 @@ public class CommandCenter extends Framework{
      */
 
     // Functie om inkomende commando's af te handelen in een aparte thread
-    private static void commandHandling(String command) {
+    private void commandHandling(String command) {
         if (command.contains("YOURTURN")) {
             // Het is jouw beurt
             System.out.println("YOURTURN detected");
             // Move maken binnen tien seconden
+
+            int remainingTime = 10;
+            long timeout = System.currentTimeMillis() + (remainingTime * 1000);
+            while (System.currentTimeMillis() < timeout) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("You have : " + (timeout - System.currentTimeMillis()) / 1000 + " seconds left");
+            }
         } else if(command.contains("CHALLENGE")) {
             // Er is een challenge
             System.out.println("CHALLENGE detected");
             // Challenge accepteren/afwijzen dmv popup?
+
+
+            //newPopUp();
+
         } else if (command.contains("GAME")) {
             if (command.contains("WIN")) {
                 // Gewonnen, doe een popup
@@ -180,6 +195,15 @@ public class CommandCenter extends Framework{
             } else if (command.contains("DRAW")) {
                 // Gelijk gespeeld, doe een popup
             }
+        }
+    }
+
+    private void newPopUp() {
+        PopUp popup = new PopUp();
+        try {
+            popup.start();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
