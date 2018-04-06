@@ -103,13 +103,13 @@ public class Framework extends Application {
 		Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\" + states[state] + ".gif"));
 		ImageView iv = new ImageView(image);
 		button.setGraphic(iv);
-
+        if(state == 1){
 		try {
 			//System.out.println(position);
 			Jack.doMove(position);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}}
 
 	}
 
@@ -235,7 +235,7 @@ public class Framework extends Application {
 
 	// Ini file uitlezen. Als file niet bestaat, nieuwe write met lege waarden.
 	private String[] readIniFile() throws IOException {
-		File inioutfile = new File("Reversi.ini");
+		File inioutfile = new File("TicTacToe.ini");
 		if (inioutfile.exists()) {
 			ini = new Wini(new File(inioutfile.getAbsolutePath()));
 			String color = ini.get("board", "color", String.class);
@@ -253,15 +253,6 @@ public class Framework extends Application {
 	public void enemyMove(int position, int state){
 		Integer width = position / field.length;
 		Integer length = position%field.length;
-		setState(length, width, 2);
-		StackPane stackPane;
-		stackPane = stackPanes.get(position);
-
-		Button button;
-		button = (Button) stackPane.getChildren().get(0);
-
-		Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\" + states[state] + ".gif"));
-		ImageView iv = new ImageView(image);
-		button.setGraphic(iv);
+		updateField(length, width, state);
 	}
 }
