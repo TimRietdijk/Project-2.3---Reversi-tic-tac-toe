@@ -72,19 +72,23 @@ public class Framework extends Application {
 				button.setTranslateY(i);
 				button.setOnAction((e) -> buttonAction(button));
 				button.setPrefSize(tileWidth - 10, tileHeight - 10);
-				button.setStyle("-fx-background-color: "+ fieldColor +
-						"; -fx-border-color: "+ fieldColor +"; -fx-padding: 3px ;");
 				StackPane stackPane = new StackPane(button);
 				stackPane.setAlignment(Pos.CENTER);
 				stackPane.setPrefSize(tileWidth, tileHeight);
 				stackPanes.add(stackPane);
+				stackPane.setStyle("-fx-background-color: white; -fx-border-color: white;");
+				button.setStyle("-fx-background-color: white; -fx-border-color: white;");
 				if(i%2 == 1 && j%2 == 0){
 					stackPane.setStyle("-fx-background-color: "+ fieldColor +
 							"; -fx-border-color: white;");
+					button.setStyle("-fx-background-color: "+ fieldColor +
+							"; -fx-border-color: "+ fieldColor +";");
 				}
 				if(i%2 == 0 && j%2 == 1){
 					stackPane.setStyle("-fx-background-color: "+ fieldColor +
 							"; -fx-border-color: white;");
+					button.setStyle("-fx-background-color: "+ fieldColor +
+							"; -fx-border-color: "+ fieldColor +";");
 				}
 				gridpane.add(stackPane, i, j);
 			}
@@ -162,8 +166,8 @@ public class Framework extends Application {
 	public void start(Stage primaryStage){}
 
 	public void start(Stage primaryStage, Map<String, String> options) throws Exception {
-		createIniFile(3,3, "x", "O", "TicTacToe.ini");
-		createIniFile(8,8, "W", "B", "Reversi.ini");
+		createIniFile(3,3, "x", "O", "TicTacToe.ini", "grey");
+		createIniFile(8,8, "W", "B", "Reversi.ini", "#15770a");
 		VBox vbox = new VBox();
 		vbox.getChildren().addAll(gridpane);
 		Scene scene = new Scene(vbox);
@@ -218,13 +222,13 @@ public class Framework extends Application {
 	player_two=teken speler 2 (bv O)
 	path=bestandnaam (bv TicTacToe.ini)
 	 */
-	private void createIniFile(int length, int width, String player_one, String player_two, String path) throws IOException {
+	private void createIniFile(int length, int width, String player_one, String player_two, String path, String color) throws IOException {
 		File inioutfile = new File(path);
 		if (!inioutfile.exists()) {
 			inioutfile.createNewFile();
 		}
 		Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
-		ini.put("board", "color", "white");
+		ini.put("board", "color", color);
 		ini.put("board", "length", length);
 		ini.put("board", "width", width);
 		ini.put("state", "empty", " 0");
