@@ -89,14 +89,15 @@ public class Lobby extends Application{
             optionlist.put("Game", Game);
             optionlist.put("option1", option1);
             optionlist.put("option2", option2);
-
-            try {
                 fright.close();
-                CommandCenter s = new CommandCenter(optionlist);
+                Stage s = new Stage();
+                Framework so = new Framework();
+                try {
+                    so.start(s, optionlist);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
     }else{
             Pane root = new Pane();
 
