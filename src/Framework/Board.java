@@ -1,5 +1,5 @@
 package Framework;
-
+/**
 import Game.CommandCenter;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -14,9 +15,30 @@ import org.ini4j.Wini;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Board {
+
+    private Wini ini;
+    private String game;
+    protected int[][] field;
+    private int numberofstates = 3;
+    private int tileWidth = 90;
+    private int tileHeight = 90;
+    private int fieldLength;
+    private String lastIp;
+    private Integer lastPort;
+    private int fieldWidth;
+    private String fieldColor;
+    protected String[] states = new String[100];
+    private CommandCenter Jack;
+
+    private Boolean myTurn = false;
+
+    ArrayList<StackPane> stackPanes = new ArrayList<StackPane>();
+    GridPane gridpane = new GridPane();
+
 
 
     public void start(Stage primaryStage){}
@@ -73,7 +95,7 @@ public class Board {
         field = new int[length][width];
         makeField();
     }
-}
+
 
 
     private void makeField(){
@@ -145,3 +167,4 @@ public class Board {
                 }
             }
         }
+ **/

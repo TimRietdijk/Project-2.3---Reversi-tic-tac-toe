@@ -1,6 +1,6 @@
 package Lobby;
 
-import Framework.Framework;
+import Game.CommandCenter;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,14 +19,33 @@ import java.util.Map;
 import java.io.IOException;
 
 public class Lobby extends Application{
-    private String Game;
+    private String game;
     private TextField textField;
     private ComboBox comboBox2;
     private ComboBox comboBox1;
     private String[] optionList;
     private Stage fright;
+    private CommandCenter commandCenter;
     public void start(Stage start) {
-
+        try {
+            commandCenter = new CommandCenter();
+        } catch (IOException e) {
+            System.out.println("Starting up");
+        }
+        new Thread(new Runnable() {
+            public void run() {
+                // receivedCommand houdt het ontvangen command van de server
+                while (true) {
+                    String s = commandCenter.ReadReceived();
+                    System.out.println(s);
+                    System.out.println("dicks");
+                    String parse = commandCenter.commandHandling(s);
+                    if(parse != null){
+                        int pos = Integer.valueOf(parse);
+                    }
+                }
+            }
+        }).start();
         try {
 
             BorderPane root = new BorderPane();
@@ -79,26 +98,24 @@ public class Lobby extends Application{
         }
     }
     private void startgame() {
-        if(Game != null && comboBox1.getValue().toString() != null && comboBox2.getValue().toString() != null){
-        System.out.println("Starting: " + Game);
-        String name = textField.getCharacters().toString();
-        String option1 = comboBox1.getValue().toString();
-        String option2 = comboBox2.getValue().toString();
+        if(game != null && comboBox1.getValue().toString() != null && comboBox2.getValue().toString() != null){
+            System.out.println("Starting: " + game);
+            String name = textField.getCharacters().toString();
+            String option1 = comboBox1.getValue().toString();
+            String option2 = comboBox2.getValue().toString();
             Map<String, String> optionlist = new HashMap<String, String>();
             optionlist.put("name", name);
-            optionlist.put("Game", Game);
+            optionlist.put("Game", game);
             optionlist.put("option1", option1);
             optionlist.put("option2", option2);
-                fright.close();
-                Stage s = new Stage();
-                Framework so = new Framework();
-                try {
-                    so.start(s, optionlist);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            fright.close();
+            try {
+                commandCenter.doChallenge(option1, game);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-    }else{
+        }else{
             Pane root = new Pane();
 
             Label warning = new Label("Setting missing");
@@ -123,7 +140,7 @@ public class Lobby extends Application{
         Button rev = new Button(null, page);
         rev.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                Game = "Reversi";
+                game = "Reversi";
             }
         });
             ImageView page2 = new ImageView(
@@ -131,7 +148,7 @@ public class Lobby extends Application{
         Button tic = new Button(null, page2);
         tic.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                Game = "TicTacToe";
+                game = "TicTacToe";
             }
         });
             river.getChildren().addAll(rev, tic);
@@ -147,11 +164,22 @@ public class Lobby extends Application{
     Label label = new Label("Name:");
     textField = new TextField ();
     HBox hb = new HBox();
-    hb.getChildren().addAll(label, textField);
+        Button tic = new Button("submit");
+        tic.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                try {
+                    commandCenter.doLogin(textField.getCharacters().toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    hb.getChildren().addAll(label, textField, tic);
     hb.setSpacing(10);
     hb.setAlignment(Pos.CENTER);
     hb.setStyle("-fx-background-color: #519292;");
     hb.setPrefHeight(150);
+
     return hb;
     }
 

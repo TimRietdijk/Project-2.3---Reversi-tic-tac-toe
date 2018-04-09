@@ -45,12 +45,6 @@ public class Framework {
 
 
 
-	private void buttonAction(Button button){
-		makeMove(button);
-	}
-
-
-
 
 
 
