@@ -1,4 +1,8 @@
+package Framework;
+
+import Game.CommandCenter;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,9 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 
 public class Framework extends Application {
@@ -107,7 +109,7 @@ public class Framework extends Application {
 
 		Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\" + states[state] + ".gif"));
 		ImageView iv = new ImageView(image);
-		button.setGraphic(iv);
+        Platform.runLater(()-> button.setGraphic(iv));
         if(state == 1){
 		try {
 			//System.out.println(position);
@@ -188,7 +190,7 @@ public class Framework extends Application {
 				while (true) {
 					String s = Jack.ReadReceived();
 					System.out.println(s);
-					System.out.println("dick");
+					System.out.println("dicks");
 					String parse = Jack.commandHandling(s);
 					if(parse != null){
 						int pos = Integer.valueOf(parse);
@@ -256,8 +258,8 @@ public class Framework extends Application {
 		return null;
 	}
 	public void enemyMove(int position, int state){
-		Integer width = position / field.length;
-		Integer length = position%field.length;
+		int width = position / (field.length-1);
+		int length = position%field.length;
 		updateField(length, width, state);
 	}
 }

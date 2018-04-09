@@ -1,9 +1,11 @@
+package Lobby;
+
+import Framework.Framework;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -14,9 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Lobby extends Application{
     private String Game;

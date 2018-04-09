@@ -1,4 +1,4 @@
-import weekopdrTicTacToe.Points;
+
 
 import java.util.ArrayList;
 
@@ -57,7 +57,7 @@ public class AI {
         int scoreX = 17;
         int scoreO = 0;
 
-        ArrayList<Points> AvailableMoves = new ArrayList<>();
+        ArrayList<AI.Points> AvailableMoves = new ArrayList<>();
 
         public AITicTacToe() {
             possibleMoves();
@@ -70,14 +70,14 @@ public class AI {
                 for(int j = 0; j < field[i].length; j++){
                     if(field[i][j] == 0) {
                         System.out.println("Place " + i + " = empty");
-                        AvailableMoves.add(new Points(i, j));
+                        AvailableMoves.add(new AI.Points(i, j));
                     }
                 }
             }
         }
 
         public void calculateBestMove(){
-            for(Points p: AvailableMoves) {
+            for(AI.Points p: AvailableMoves) {
                 if(canWinn(p.getX(), p.getY())){
                     System.out.println("can winn");
                 } else {
@@ -98,11 +98,5 @@ public class AI {
         }
 
 
-    }
-}
-
-class main {
-    public static void main(String[] args) {
-        weekopdrTicTacToe.AITicTacToe a = new weekopdrTicTacToe.AITicTacToe();
     }
 }

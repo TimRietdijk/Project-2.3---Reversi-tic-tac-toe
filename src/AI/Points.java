@@ -1,3 +1,5 @@
+package AI;
+
 public class Points {
     private int x;
     private int y;

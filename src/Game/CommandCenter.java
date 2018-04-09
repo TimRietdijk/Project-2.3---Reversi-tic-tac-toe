@@ -1,4 +1,4 @@
-/**
+package Game; /**
  * Deze class zet de verbinding op met de server
  * en regelt alle mogelijke inkomende en uitgaande commando's
  */
@@ -47,7 +47,6 @@ public class CommandCenter {
         ReadReceived();
         Stage stage = new Stage();
         name = options.get("name");
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -81,6 +80,7 @@ public class CommandCenter {
         // sendingCommand houdt het command dat naar de server verstuurd wordt
         String sendingCommand = command; // Bijvoorbeeld login commando: "login <speler>"
         PrintStream p = new PrintStream(s.getOutputStream());
+        System.out.println(sendingCommand);
         p.println(sendingCommand);
     }
 
