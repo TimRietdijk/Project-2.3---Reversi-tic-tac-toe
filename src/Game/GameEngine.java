@@ -42,10 +42,6 @@ public class GameEngine {
     protected String[] states = new String[100];
     private CommandCenter Jack;
 
-    private Boolean myTurn = false;
-
-    ArrayList<StackPane> stackPanes = new ArrayList<StackPane>();
-    GridPane gridpane = new GridPane();
 
     public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter){
         String s = optionlist.get("Game");
@@ -63,34 +59,6 @@ public class GameEngine {
     }
 
 
-    public void setState(int length, int width, int value) {
-        if(length >= field.length) {
-            System.out.println("error: the given position does not exist on this board");
-        }else {
-            if(width >= field[1].length) {
-                System.out.println("error: the given position does not exist on this board");
-            }else {
-                if(value >= numberofstates)
-                {
-                    System.out.println("Error: given state is not supported");
-                }else {
-                    if(value == getState(length, width))
-                    {
-                        System.out.println("!: Dit vakje is al van jou, probeer een ander vakje");
-                    }else {
-                        field[length][width] = value;
-                    }
-                }
-            }
-        }
-    }
-    public int getState(int length, int width) {
-        return field[length][width];
-    }
-
-    public void setStates(String[] states) {
-        this.states = states;
-    }
     private int sendMove(int move){
         return move;
     }
