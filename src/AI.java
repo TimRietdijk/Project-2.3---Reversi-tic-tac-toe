@@ -1,3 +1,7 @@
+import weekopdrTicTacToe.Points;
+
+import java.util.ArrayList;
+
 public class AI {
     public class Board {
 
@@ -43,5 +47,62 @@ public class AI {
 
     }
 
-    public class TicTacToeAI
+    public class AITicTacToe {
+        int[][] field = new int[3][3];
+        int[][] fieldInt = {{1, 2, 4} ,
+                {8, 16, 32},
+                {64, 128, 256}};
+
+        int[] score = {7, 56, 746, 73, 146, 292, 273, 84};
+        int scoreX = 17;
+        int scoreO = 0;
+
+        ArrayList<Points> AvailableMoves = new ArrayList<>();
+
+        public AITicTacToe() {
+            possibleMoves();
+            calculateBestMove();
+
+        }
+
+        public void possibleMoves(){
+            for(int i = 0; i < field.length; i++){
+                for(int j = 0; j < field[i].length; j++){
+                    if(field[i][j] == 0) {
+                        System.out.println("Place " + i + " = empty");
+                        AvailableMoves.add(new Points(i, j));
+                    }
+                }
+            }
+        }
+
+        public void calculateBestMove(){
+            for(Points p: AvailableMoves) {
+                if(canWinn(p.getX(), p.getY())){
+                    System.out.println("can winn");
+                } else {
+                    System.out.println("cant");
+                }
+            }
+        }
+
+        public void doMove(){
+        }
+
+        public boolean canWinn(int x, int y){
+            for (int n : score) {
+                if (scoreX+fieldInt[x][y] == n) {
+                    return true;
+                }
+            } return false;
+        }
+
+
+    }
+}
+
+class main {
+    public static void main(String[] args) {
+        weekopdrTicTacToe.AITicTacToe a = new weekopdrTicTacToe.AITicTacToe();
+    }
 }
