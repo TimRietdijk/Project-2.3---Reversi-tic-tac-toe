@@ -3,6 +3,7 @@
  * en regelt alle mogelijke inkomende en uitgaande commando's
  */
 
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -46,6 +47,24 @@ public class CommandCenter {
         ReadReceived();
         Stage stage = new Stage();
         name = options.get("name");
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("playerlist ophalen...");
+                try {
+                    sendCommand("get playerlist");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("playerlist moet nu opgehaald zijn.");
+            }
+        }).start();
     }
 
     /*
@@ -205,8 +224,8 @@ public class CommandCenter {
             System.out.println("CHALLENGE detected");
             // Challenge accepteren/afwijzen dmv popup?
 
-            //newPopUp();
-            
+            newPopUp();
+
         } else if (command.contains("GAME")) {
             if (command.contains("WIN")) {
                 // Gewonnen, doe een popup

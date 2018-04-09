@@ -12,7 +12,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class PopUp {
-    public void start() throws IOException {GridPane pane = new GridPane();
+    public void start() throws IOException {
+        GridPane pane = new GridPane();
         // Informatie
         Label label1 = new Label();
         pane.add(label1, 0, 4);
