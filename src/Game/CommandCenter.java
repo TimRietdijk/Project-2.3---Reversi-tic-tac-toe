@@ -3,11 +3,7 @@ package Game; /**
  * en regelt alle mogelijke inkomende en uitgaande commando's
  */
 
-import javafx.application.Platform;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import Framework.PopUp;
 import javafx.stage.Stage;
 import org.ini4j.Wini;
 
@@ -15,8 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -30,7 +24,7 @@ public class CommandCenter {
 
     public CommandCenter(Map<String, String> options) throws IOException {
 
-        File inioutfile = new File("test.ini");
+        File inioutfile = new File("Lobby/test.ini");
         if (inioutfile.exists()) {
             Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
             lastIp = ini.get("connection", "server ip", String.class);
