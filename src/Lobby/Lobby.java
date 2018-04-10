@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,6 +30,8 @@ public class Lobby extends Application{
     private Stage fright;
     private CommandCenter commandCenter;
     private String[] playerList;
+    private Label loginStatus;
+    private String user = "";
     public void start(Stage start) {
         try {
             commandCenter = new CommandCenter();
@@ -54,6 +57,7 @@ public class Lobby extends Application{
 
             root.setBottom(addHBox());
             root.setLeft(addFlowPane());
+            root.setTop(loginStatus());
             root.setCenter(nameset());
 
 
@@ -69,6 +73,14 @@ public class Lobby extends Application{
                     while (fright.isShowing()) {
                         String s = commandCenter.ReadReceived();
                         // Dit stuk vereist nog te veel tijd doordat commands gecheckt worden met if statements
+                        if(s.contains("SVR GAME CHALLENGE {")) {
+                            PopUp challengePopUp = new PopUp();
+                            try {
+                                challengePopUp.start(s, commandCenter);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
                         System.out.println(s);
                     }
@@ -85,15 +97,14 @@ public class Lobby extends Application{
             hbox.setSpacing(10);
             hbox.setStyle("-fx-background-color: #708090;");
             Button btn = new Button();
-            btn.setText("'start game'");
-            btn.setPrefSize(100, 20);
+            btn.setText("challenge player");
+            btn.setPrefSize(110, 20);
 
 
 
             hbox.setAlignment(Pos.CENTER);
             hbox.getChildren().addAll(btn);
             btn.setOnAction(e -> startgame());
-
 
 
             BorderPane.setAlignment(hbox, Pos.CENTER);
@@ -114,12 +125,28 @@ public class Lobby extends Application{
             optionlist.put("option1", option1);
             optionlist.put("option2", option2);
             fright.close();
+            // Speler uitdagen voor challenge
             try {
                 commandCenter.doChallenge(option1, game);
                 new GameEngine(optionlist, commandCenter);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            // Nieuwe thread om te wachten op accept challenge van tegenspeler
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while(!commandCenter.ReadReceived().contains("SVR GAME MATCH {PLAYERTOMOVE:")) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    System.out.println("functie aanroepen om game engine te maken");
+
+                }
+            }).start();
 
         }else{
             Pane root = new Pane();
@@ -154,7 +181,7 @@ public class Lobby extends Application{
         Button tic = new Button(null, page2);
         tic.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                game = "TicTacToe";
+                game = "Tic-tac-toe";
             }
         });
             river.getChildren().addAll(rev, tic);
@@ -166,11 +193,20 @@ public class Lobby extends Application{
     river.setAlignment(Pos.CENTER_LEFT);
         return river;
     }
+    private HBox loginStatus(){
+        loginStatus = new Label("• You are still invisible to other players");
+        loginStatus.setTextFill(Color.RED);
+        HBox hb2 = new HBox();
+        hb2.getChildren().addAll(loginStatus);
+        hb2.setSpacing(10);
+        return hb2;
+    }
+
     private HBox nameset(){
-    Label label = new Label("Name:");
-    textField = new TextField ();
-    HBox hb = new HBox();
-        Button tic = new Button("submit");
+        Label label = new Label("Name:");
+        textField = new TextField ();
+        HBox hb = new HBox();
+        Button tic = new Button("login");
         tic.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 Platform.runLater(new Runnable() {
@@ -180,6 +216,15 @@ public class Lobby extends Application{
                             commandCenter.doLogin(textField.getCharacters().toString());
                         } catch (IOException e) {
                             e.printStackTrace();
+                        }
+
+                        if(user!="") {
+                            loginStatus.setText("• You're already logged in as: " + user);
+                            loginStatus.setTextFill(Color.RED);
+                        } else {
+                            user = textField.getText();
+                            loginStatus.setText("• You are now visible to other players as: " + user);
+                            loginStatus.setTextFill(Color.GREEN);
                         }
                     }
                 });
@@ -233,4 +278,61 @@ public class Lobby extends Application{
         }
     }
 
+    /*
+    private void startGameEngine() {
+        GameEngine gameEngine = new GameEngine(optionlist, commandCenter);
+    }*/
+
+}
+
+class PopUp {
+
+    private boolean accept = false;
+    public void start(String challenge, CommandCenter commandCenter) throws IOException {
+        String challengeNumber = challenge.substring(challenge.indexOf("CHALLENGENUMBER: \"") + 18, challenge.indexOf("\", GAMETYPE:"));
+        String challenger = challenge.substring(challenge.indexOf("CHALLENGER: \"") + 13, challenge.indexOf("\", CHALLENGENUMBER:"));
+        String gameType = challenge.substring(challenge.indexOf("GAMETYPE: \"") + 11, challenge.indexOf("\"}"));
+
+        GridPane pane = new GridPane();
+        // Informatie
+        Label label1 = new Label();
+        pane.add(label1, 0, 0);
+
+        label1.setText("You received a "+gameType+" challenge from "+challenger);
+
+        Button button1 = new Button();
+        button1.setText("Accept");
+        button1.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                //Hier wordt een challenge geaccepteerd
+                try {
+                    commandCenter.doChallengeAccept(challengeNumber);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                System.out.println("functie aanroepen om game engine te maken");
+            }
+
+        });
+        pane.add(button1, 0, 1);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                Stage primaryStage = new Stage();
+                Scene scene = new Scene(pane, 250, 70);
+                primaryStage.setScene(scene);
+                primaryStage.setTitle("Challenge "+challengeNumber);
+                primaryStage.setMinHeight(70);
+                primaryStage.setMinWidth(250);
+                primaryStage.show();
+
+            }
+        });
+    }
+    public boolean accepted() {
+        return accept;
+    }
 }
