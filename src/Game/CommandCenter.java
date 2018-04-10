@@ -1,13 +1,9 @@
-/**
+package Game; /**
  * Deze class zet de verbinding op met de server
  * en regelt alle mogelijke inkomende en uitgaande commando's
  */
 
-import javafx.application.Platform;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import Framework.PopUp;
 import javafx.stage.Stage;
 import org.ini4j.Wini;
 
@@ -15,9 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Map;
 import java.util.Scanner;
 
 
@@ -28,26 +21,27 @@ public class CommandCenter {
     static Socket s;
     private Scanner sc1;
 
-    public CommandCenter(Map<String, String> options) throws IOException {
+    public CommandCenter() throws IOException {
 
-        File inioutfile = new File("test.ini");
-        if (inioutfile.exists()) {
+        File inioutfile = new File("Game/test.ini");
+       if (inioutfile.exists()) {
             Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
             lastIp = ini.get("connection", "server ip", String.class);
             String parse = ini.get("connection", "server port", String.class);
             lastPort = Integer.valueOf(parse);
             System.out.println(lastIp + lastPort);
-        }
-        String L = options.get("name");
+        }else {
+           lastIp = "145.33.225.170";
+           lastPort = 7789;
+       }
+
         setupConnection(lastIp, lastPort);
-        doLogin(L);
+
         consoleCommandTyping();
         //doChallenge("Kaaas", "Tic-tac-toe");
         sc1 = new Scanner(s.getInputStream());
         ReadReceived();
         Stage stage = new Stage();
-        name = options.get("name");
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -81,6 +75,7 @@ public class CommandCenter {
         // sendingCommand houdt het command dat naar de server verstuurd wordt
         String sendingCommand = command; // Bijvoorbeeld login commando: "login <speler>"
         PrintStream p = new PrintStream(s.getOutputStream());
+        System.out.println(sendingCommand);
         p.println(sendingCommand);
     }
 

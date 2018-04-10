@@ -1,5 +1,6 @@
-import weekopdrTicTacToe.Points;
+package AI;
 
+/**
 import java.util.ArrayList;
 
 public class AI {
@@ -59,7 +60,7 @@ public class AI {
         //int scoreO = 0; // player 2
         int[] scorePlayers = {0, 0};
 
-        ArrayList<Points> AvailableMoves = new ArrayList<>();
+        ArrayList<AI.Points> AvailableMoves = new ArrayList<>();
 
         public AITicTacToe() {
             setMove(0,0, 1);
@@ -129,3 +130,5 @@ class main {
         AI a = new AI();
     }
 }
+
+**/

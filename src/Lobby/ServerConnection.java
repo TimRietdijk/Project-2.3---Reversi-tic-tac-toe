@@ -1,4 +1,5 @@
-import javafx.application.Application;
+package Lobby;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -74,7 +75,7 @@ public class ServerConnection {
 
     // Schrijven van poort en ip adres naar ini file. Als file niet bestaat, nieuwe file maken.
     private void writeIniFile(String ip, String port) throws IOException {
-        File inioutfile = new File("test.ini");
+        File inioutfile = new File("Game/test.ini");
         if (!inioutfile.exists()) {
             inioutfile.createNewFile();
         }
@@ -87,7 +88,7 @@ public class ServerConnection {
 
     // Ini file uitlezen. Als file niet bestaat, nieuwe write met lege waarden.
     private String[] readIniFile() throws IOException {
-        File inioutfile = new File("test.ini");
+        File inioutfile = new File("Game/test.ini");
         if (inioutfile.exists()) {
             Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
             String lastIp = ini.get("connection", "server ip", String.class);
