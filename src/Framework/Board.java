@@ -2,8 +2,6 @@ package Framework;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -14,8 +12,8 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class Board extends Application {
-    GridPane gridPane;
-    ArrayList<Image> images = new ArrayList<Image>();
+    private GridPane gridPane;
+    private ArrayList<Image> images = new ArrayList<Image>();
     int[][] field = new int[3][3];
 
     public Board(){
@@ -26,9 +24,8 @@ public class Board extends Application {
     }
 
     private void fieldClicked(Rectangle rect){
-        System.out.println(rect.getX() + " " + rect.getY());
-
-        setImage(rect, 1);
+        int x = (int) rect.getX();
+        int y = (int) rect.getY();
     }
 
     private void setImage(Rectangle rect, int player){
@@ -36,7 +33,7 @@ public class Board extends Application {
         rect.setFill(imagePattern);
     }
 
-    private void drawBoard(GraphicsContext gc){
+    private void drawBoard(){
         for(int x = 0; x < 3; x++){
             for(int y = 0; y < 3; y++) {
                 Rectangle rect = new Rectangle(x, y, 200, 200);
@@ -54,9 +51,7 @@ public class Board extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         gridPane = new GridPane();
-        Canvas canvas = new Canvas(600, 600);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        drawBoard(gc);
+        drawBoard();
         Scene scene = new Scene(gridPane);
         primaryStage.setScene(scene);
         primaryStage.show();
