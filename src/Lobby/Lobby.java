@@ -73,12 +73,10 @@ public class Lobby extends Application{
             btn.setText("'start game'");
             btn.setPrefSize(100, 20);
 
-            Button connectBtn = new Button();
-            connectBtn.setText("'connection'");
-            connectBtn.setPrefSize(100, 20);
+
 
             hbox.setAlignment(Pos.CENTER);
-            hbox.getChildren().addAll(btn, connectBtn);
+            hbox.getChildren().addAll(btn);
             btn.setOnAction(e -> startgame());
 
 
