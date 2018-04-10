@@ -16,8 +16,6 @@ public class GameEngine {
     private String game;
     protected int[][] field;
     private int numberofstates = 3;
-    private int tileWidth = 90;
-    private int tileHeight = 90;
     private int fieldLength;
     private String lastIp;
     private Integer lastPort;
@@ -54,8 +52,8 @@ public class GameEngine {
             }
         }).start();
     }
-    public void setField(int length, int width) {
-        field = new int[length][width];
+    public void setField(int x, int y) {
+        field = new int[x][y];
     }
 
     public void enemyMove(int position, int state){
@@ -65,13 +63,19 @@ public class GameEngine {
     }
 
 
-    private int sendMove(int move){
+    private int calculateMove(int move){
+        (((y)*field.length)+x);
         return move;
     }
     private void makeMove(Button button){
         int x = button.translateXProperty().intValue();
         int y = button.translateYProperty().intValue();
-        sendMove(((y)*field.length)+x);
+        calculateMove();
+    }
+
+
+    public int[][] getField() {
+        return field;
     }
 
     public void setState(int length, int width, int value) {
@@ -104,10 +108,30 @@ public class GameEngine {
     }
 
     public void showField() {
-        for(int i=0; i<field.length; i++) {
-            for(int j=0; j<field[i].length; j++) {
-                System.out.println("Values at arr["+i+"]["+j+"] is "+field[i][j]);
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                System.out.println("Values at arr[" + i + "][" + j + "] is " + field[i][j]);
             }
         }
+
     }
+    public void waitForMove() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(){}
+                int remainingTime = 10;
+                long timeout = System.currentTimeMillis() + (remainingTime * 1000);
+                while (System.currentTimeMillis() < timeout) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    //System.out.println("You have : " + (timeout - System.currentTimeMillis()) / 1000 + " seconds left");
+                }
+            }
+        }).start();
+    }
+
 }
