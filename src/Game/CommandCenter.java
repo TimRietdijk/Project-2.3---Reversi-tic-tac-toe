@@ -31,7 +31,7 @@ public class CommandCenter {
             lastPort = Integer.valueOf(parse);
             System.out.println(lastIp + lastPort);
         }else {
-           lastIp = "145.33.225.170";
+           lastIp = "145.37.41.83";
            lastPort = 7789;
        }
 
@@ -42,23 +42,6 @@ public class CommandCenter {
         sc1 = new Scanner(s.getInputStream());
         ReadReceived();
         Stage stage = new Stage();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("playerlist ophalen...");
-                try {
-                    sendCommand("get playerlist");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("playerlist moet nu opgehaald zijn.");
-            }
-        }).start();
     }
 
     /*
@@ -84,6 +67,7 @@ public class CommandCenter {
                 // receivedCommand houdt het ontvangen command van de server
                 String receivedCommand;
                     receivedCommand = sc1.nextLine();
+                    System.out.println("dit is de volgende lijn: "+receivedCommand);
                     commandHandling(receivedCommand);
                     return receivedCommand;
     }
@@ -191,11 +175,12 @@ public class CommandCenter {
             int s = Integer.valueOf(parse);
             return parse;
 
-        }
-        if (command.contains("YOURTURN")) {
+        } else if (command.contains("YOURTURN")) {
             // Het is jouw beurt
             System.out.println("YOURTURN detected");
             // Move maken binnen tien seconden
+
+
 
             new Thread(new Runnable() {
                 @Override
@@ -214,12 +199,15 @@ public class CommandCenter {
             }).start();
 
 
-        } else if (command.contains("CHALLENGE")) {
+        } else if (command.contains("SVR GAME CHALLENGE {")) {
             // Er is een challenge
             System.out.println("CHALLENGE detected");
             // Challenge accepteren/afwijzen dmv popup?
 
-            newPopUp();
+
+            //newPopUp();
+
+        } else if (command.contains("SVR PLAYERLIST [")) {
 
         } else if (command.contains("GAME")) {
             if (command.contains("WIN")) {
