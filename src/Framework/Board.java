@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class Board extends Application {
     GridPane gridPane;
     ArrayList<Image> images = new ArrayList<Image>();
-    int[][] field = new int[3][3];
+//    int[][] field = new int[3][3];
 
     public Board(){
         Image player1 = new Image(getClass().getResourceAsStream("x.png"));
@@ -36,7 +36,7 @@ public class Board extends Application {
         rect.setFill(imagePattern);
     }
 
-    private void drawBoard(GraphicsContext gc){
+    private void drawBoard(int[][] field){
         for(int x = 0; x < 3; x++){
             for(int y = 0; y < 3; y++) {
                 Rectangle rect = new Rectangle(x, y, 200, 200);
@@ -55,8 +55,7 @@ public class Board extends Application {
     public void start(Stage primaryStage) throws Exception {
         gridPane = new GridPane();
         Canvas canvas = new Canvas(600, 600);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        drawBoard(gc);
+        drawBoard();
         Scene scene = new Scene(gridPane);
         primaryStage.setScene(scene);
         primaryStage.show();
