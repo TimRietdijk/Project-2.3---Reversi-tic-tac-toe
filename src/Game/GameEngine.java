@@ -56,7 +56,7 @@ public class GameEngine {
 
     public void doMove() {
         int[] coordinates = framework.getMove();
-        calculatedMove = calculateMove(coordinates);
+        calculatedMove = calculateMoveToPosition(coordinates);
         setState(coordinates[0], coordinates[1], 1);
     }
 
@@ -71,7 +71,10 @@ public class GameEngine {
     }
 
 
-    private int calculateMove(int[] move) {
+    private int calculateMoveToPosition(int[] move) {
+        return (((move[1]) * field.length) + move[0]);
+    }
+    private int calculateMoveToCoordinates(int[] move) {
         return (((move[1]) * field.length) + move[0]);
     }
 
