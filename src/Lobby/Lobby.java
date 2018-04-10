@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,6 +30,8 @@ public class Lobby extends Application{
     private Stage fright;
     private CommandCenter commandCenter;
     private String[] playerList;
+    private Label loginStatus;
+    private String user = "";
     public void start(Stage start) {
         try {
             commandCenter = new CommandCenter();
@@ -58,6 +61,7 @@ public class Lobby extends Application{
 
             root.setBottom(addHBox());
             root.setLeft(addFlowPane());
+            root.setTop(loginStatus());
             root.setCenter(nameset());
 
 
@@ -98,7 +102,7 @@ public class Lobby extends Application{
             hbox.setStyle("-fx-background-color: #708090;");
             Button btn = new Button();
             btn.setText("challenge player");
-            btn.setPrefSize(100, 20);
+            btn.setPrefSize(110, 20);
 
 
 
@@ -125,11 +129,27 @@ public class Lobby extends Application{
             optionlist.put("option1", option1);
             optionlist.put("option2", option2);
             fright.close();
+            // Speler uitdagen voor challenge
             try {
                 commandCenter.doChallenge(option1, game);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            // Nieuwe thread om te wachten op accept challenge van tegenspeler
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while(!commandCenter.ReadReceived().contains("SVR GAME MATCH {PLAYERTOMOVE:")) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    System.out.println("functie aanroepen om game engine te maken");
+
+                }
+            }).start();
 
         }else{
             Pane root = new Pane();
@@ -176,11 +196,20 @@ public class Lobby extends Application{
     river.setAlignment(Pos.CENTER_LEFT);
         return river;
     }
+    private HBox loginStatus(){
+        loginStatus = new Label("• You are still invisible to other players");
+        loginStatus.setTextFill(Color.RED);
+        HBox hb2 = new HBox();
+        hb2.getChildren().addAll(loginStatus);
+        hb2.setSpacing(10);
+        return hb2;
+    }
+
     private HBox nameset(){
-    Label label = new Label("Name:");
-    textField = new TextField ();
-    HBox hb = new HBox();
-        Button tic = new Button("submit");
+        Label label = new Label("Name:");
+        textField = new TextField ();
+        HBox hb = new HBox();
+        Button tic = new Button("login");
         tic.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 Platform.runLater(new Runnable() {
@@ -190,6 +219,15 @@ public class Lobby extends Application{
                             commandCenter.doLogin(textField.getCharacters().toString());
                         } catch (IOException e) {
                             e.printStackTrace();
+                        }
+
+                        if(user!="") {
+                            loginStatus.setText("• You're already logged in as: " + user);
+                            loginStatus.setTextFill(Color.RED);
+                        } else {
+                            user = textField.getText();
+                            loginStatus.setText("• You are now visible to other players as: " + user);
+                            loginStatus.setTextFill(Color.GREEN);
                         }
                     }
                 });
@@ -244,6 +282,11 @@ public class Lobby extends Application{
         }
     }
 
+    /*
+    private void startGameEngine() {
+        GameEngine gameEngine = new GameEngine(optionlist, commandCenter);
+    }*/
+
 }
 
 class PopUp {
@@ -273,6 +316,7 @@ class PopUp {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
+                System.out.println("functie aanroepen om game engine te maken");
             }
 
         });
