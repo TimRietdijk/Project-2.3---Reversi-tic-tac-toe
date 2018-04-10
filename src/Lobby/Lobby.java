@@ -30,44 +30,46 @@ public class Lobby extends Application{
     private CommandCenter commandCenter;
     private String[] playerList;
     public void start(Stage start) {
-
+        try {
+            commandCenter = new CommandCenter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            commandCenter.doGetPlayerList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         try {
-
             BorderPane root = new BorderPane();
+             commandCenter.ReadReceived();
+             commandCenter.ReadReceived();
+             String read2 = commandCenter.ReadReceived();
+            if (read2.contains("SVR PLAYERLIST [")) {
+                updatePlayerList(read2);
+                root.setRight(options());
+            }
+
 
             root.setBottom(addHBox());
             root.setLeft(addFlowPane());
             root.setCenter(nameset());
-            root.setRight(options());
+
 
             final Scene s = new Scene(root, 1000, 600);
             fright = new Stage();
             fright.setTitle("Lobby");
             fright.setScene(s);
             fright.show();
-            try {
-                commandCenter = new CommandCenter();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                commandCenter.doGetPlayerList();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
             new Thread(new Runnable() {
                 public void run() {
                     // receivedCommand houdt het ontvangen command van de server
                     while (fright.isShowing()) {
                         String s = commandCenter.ReadReceived();
                         // Dit stuk vereist nog te veel tijd doordat commands gecheckt worden met if statements
-                        if (s.contains("SVR PLAYERLIST [")) {
-                            updatePlayerList(s);
-                        } else if (s.contains("SVR GAME CHALLENGE {")) {
-                            //popup geven met challenge accept/decline
-                            //commandCenter.newPopUp();
-                        }
+
                         System.out.println(s);
                     }
                 }

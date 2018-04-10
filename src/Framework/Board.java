@@ -69,6 +69,11 @@ public class Board extends Application {
     public void start(Stage primaryStage) throws Exception {}
     public void start(Stage primaryStage, int[][] field) throws Exception {
         gridPane = new GridPane();
+<<<<<<< HEAD
+=======
+
+       // drawBoard();
+>>>>>>> 2c314f8f0d282be9b3ec800eab8b206c7b75fcc5
         Scene scene = new Scene(gridPane);
         drawBoard(field);
         primaryStage.setScene(scene);
