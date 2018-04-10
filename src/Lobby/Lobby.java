@@ -28,6 +28,7 @@ public class Lobby extends Application{
     private String[] optionList;
     private Stage fright;
     private CommandCenter commandCenter;
+    private String[] playerList;
     public void start(Stage start) {
 
 
@@ -50,11 +51,23 @@ public class Lobby extends Application{
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            try {
+                commandCenter.doGetPlayerList();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             new Thread(new Runnable() {
                 public void run() {
                     // receivedCommand houdt het ontvangen command van de server
                     while (fright.isShowing()) {
                         String s = commandCenter.ReadReceived();
+                        // Dit stuk vereist nog te veel tijd doordat commands gecheckt worden met if statements
+                        if (s.contains("SVR PLAYERLIST [")) {
+                            updatePlayerList(s);
+                        } else if (s.contains("SVR GAME CHALLENGE {")) {
+                            //popup geven met challenge accept/decline
+                            //commandCenter.newPopUp();
+                        }
                         System.out.println(s);
                     }
                 }
@@ -101,7 +114,6 @@ public class Lobby extends Application{
             fright.close();
             try {
                 commandCenter.doChallenge(option1, game);
-                GameEngine gameEngine = new GameEngine(optionlist, commandCenter);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -183,14 +195,15 @@ public class Lobby extends Application{
     private VBox options(){
 
     VBox elevator = new VBox();
-    Label labell = new Label("mode");
+    Label labell = new Label("players");
     ObservableList<String> options1 =
             FXCollections.observableArrayList(
                     "Player vs Player",
                     "Player vs AI",
                     "AI vs AI"
             );
-        comboBox1 = new ComboBox(options1);
+    ObservableList<String> playerOptions1 = FXCollections.observableArrayList(playerList);
+        comboBox1 = new ComboBox(playerOptions1);
         Label label2 = new Label("difficulty");
         ObservableList<String> options2 =
                 FXCollections.observableArrayList(
@@ -207,4 +220,14 @@ public class Lobby extends Application{
         elevator.setAlignment(Pos.CENTER);
         elevator.setPrefWidth(200);
         return elevator;
-}}
+}
+
+    private void updatePlayerList(String playerListReceived) {
+        playerListReceived = playerListReceived.replaceAll("\"", "");
+        playerList = playerListReceived.replace("SVR PLAYERLIST [", "").replace("]", "").split(", ");
+        for (String player:playerList) {
+            System.out.println("player: "+player);
+        }
+    }
+
+}
