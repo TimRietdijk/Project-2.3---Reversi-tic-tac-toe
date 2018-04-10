@@ -1,5 +1,6 @@
 package Game;
 
+import Framework.Framework;
 import Reversi.Reversi;
 import TicTacToe.TicTacToe;
 import javafx.scene.control.Button;
@@ -16,22 +17,19 @@ public class GameEngine {
     private String game;
     protected int[][] field;
     private int numberofstates = 3;
-    private int fieldLength;
-    private String lastIp;
-    private Integer lastPort;
-    private int fieldWidth;
-    private String fieldColor;
     protected String[] states = new String[100];
     private CommandCenter jack;
-
+    private Framework framework;
+    private int[] move;
+    private int calculatedMove;
 
     public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter){
         String s = optionlist.get("Game");
         if (s.contains("Reversi")){
-            Reversi reversi = new Reversi();
+            framework = new Reversi();
             setField(8,8);
         }else if(s.contains("TicTacToe")){
-            TicTacToe ticTacToe = new TicTacToe();
+            framework = new TicTacToe();
             setField(3,3);
         }
         showField();
@@ -44,6 +42,9 @@ public class GameEngine {
                     System.out.println(s);
                     System.out.println("dicks");
                     String parse = jack.commandHandling(s);
+                    if(framework.getMoveMade()){
+                        calculatedMove = calculateMove(framework.getMove());
+                    }
                     if(parse != null){
                         int pos = Integer.valueOf(parse);
                         enemyMove(pos, 2);
@@ -52,6 +53,9 @@ public class GameEngine {
             }
         }).start();
     }
+
+
+
     public void setField(int x, int y) {
         field = new int[x][y];
     }
@@ -63,15 +67,10 @@ public class GameEngine {
     }
 
 
-    private int calculateMove(int move){
-        (((y)*field.length)+x);
-        return move;
+    private int calculateMove(int[] move){
+        return  (((move[1])*field.length)+move[0]);
     }
-    private void makeMove(Button button){
-        int x = button.translateXProperty().intValue();
-        int y = button.translateYProperty().intValue();
-        calculateMove();
-    }
+
 
 
     public int[][] getField() {

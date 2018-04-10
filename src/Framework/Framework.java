@@ -24,30 +24,26 @@ import java.util.Map;
 public class Framework {
 	private Wini ini;
 	private String game;
-	protected int[][] field;
-	private int numberofstates = 3;
-	private int tileWidth = 90;
-	private int tileHeight = 90;
-	private int fieldLength;
-	private String lastIp;
-	private Integer lastPort;
-	private int fieldWidth;
-	private String fieldColor;
-	protected String[] states = new String[100];
-	private CommandCenter Jack;
+	private Board board;
 
-	private Boolean myTurn = false;
+	protected Framework(){
+		board = new Board();
+	}
 
-	ArrayList<StackPane> stackPanes = new ArrayList<StackPane>();
-	GridPane gridpane = new GridPane();
+	public void updateboarddata(int[][] move) {
+		board.drawBoard(move);
+	}
 
 
+	public boolean getMoveMade(){
+		Boolean didMove = board.getMoveMade();
+		return didMove;
+	}
 
-
-
-
-
-
+	public int[] getMove(){
+		int[] move = board.getMove();
+		return move;
+	}
 
 
 

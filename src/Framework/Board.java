@@ -31,7 +31,9 @@ public class Board extends Application {
         return move;
     }
 
-
+    public boolean getMoveMade(){
+        return moveMade;
+    }
 
     public void setMove(int moveX, int moveY) {
         this.move[0] = moveX;
@@ -42,6 +44,7 @@ public class Board extends Application {
     private void fieldClicked(Rectangle rect){
         int x = (int) rect.getX();
         int y = (int) rect.getY();
+        setMove(x, y);
     }
 
 
@@ -50,7 +53,7 @@ public class Board extends Application {
         rect.setFill(imagePattern);
     }
 
-    private void drawBoard(int[][] field){
+    public void drawBoard(int[][] field){
 
         for(int x = 0; x < field.length; x++){
             for(int y = 0; y < field[1].length; y++) {                          // later nog even terug komen om te kijken of de field.length en de field[1].length op de juiste plaats staan
@@ -69,14 +72,10 @@ public class Board extends Application {
     public void start(Stage primaryStage) throws Exception {}
     public void start(Stage primaryStage, int[][] field) throws Exception {
         gridPane = new GridPane();
-<<<<<<< HEAD
-=======
-
-       // drawBoard();
->>>>>>> 2c314f8f0d282be9b3ec800eab8b206c7b75fcc5
         Scene scene = new Scene(gridPane);
         drawBoard(field);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 }
+
