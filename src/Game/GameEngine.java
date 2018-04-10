@@ -30,7 +30,9 @@ public class GameEngine {
             framework = new Reversi(field);
         } else if (s.contains("Tic-tac-toe")) {
             setField(3, 3);
-            framework = new TicTacToe(field);
+            framework = new Framework(field);
+        }else{
+            System.out.println("Het werkt niet");
         }
         showField();
         jack = commandCenter;

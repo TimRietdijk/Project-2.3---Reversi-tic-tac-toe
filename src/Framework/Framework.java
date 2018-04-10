@@ -26,7 +26,7 @@ public class Framework {
 	private String game;
 	private Board board;
 
-	protected Framework(int[][]field){
+	public Framework(int[][]field){
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
@@ -36,7 +36,8 @@ public class Framework {
 		try {
 			board.start(stage, field);
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("geen error maar werkt niet");
 		}
 			}
 		});
@@ -48,8 +49,8 @@ public class Framework {
 
 
 	public boolean getMoveMade(){
-		Boolean didMove = board.getMoveMade();
-		return didMove;
+		System.out.println(board.getMoveMade());
+		return board.getMoveMade();
 	}
 
 	public int[] getMove(){
