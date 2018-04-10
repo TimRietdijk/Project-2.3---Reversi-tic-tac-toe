@@ -3,7 +3,6 @@ package Game; /**
  * en regelt alle mogelijke inkomende en uitgaande commando's
  */
 
-import Framework.PopUp;
 import javafx.stage.Stage;
 import org.ini4j.Wini;
 
@@ -205,9 +204,6 @@ public class CommandCenter {
             System.out.println("CHALLENGE detected");
             // Challenge accepteren/afwijzen dmv popup?
 
-
-            //newPopUp();
-
         } else if (command.contains("SVR PLAYERLIST [")) {
 
         } else if (command.contains("GAME")) {
@@ -220,14 +216,5 @@ public class CommandCenter {
             }
         }
         return null;
-    }
-
-    private void newPopUp() {
-        PopUp popup = new PopUp();
-        try {
-            popup.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

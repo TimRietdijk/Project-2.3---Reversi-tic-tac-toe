@@ -73,6 +73,14 @@ public class Lobby extends Application{
                     while (fright.isShowing()) {
                         String s = commandCenter.ReadReceived();
                         // Dit stuk vereist nog te veel tijd doordat commands gecheckt worden met if statements
+                        if(s.contains("SVR GAME CHALLENGE {")) {
+                            PopUp challengePopUp = new PopUp();
+                            try {
+                                challengePopUp.start(s, commandCenter);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
                         System.out.println(s);
                     }
@@ -89,7 +97,7 @@ public class Lobby extends Application{
             hbox.setSpacing(10);
             hbox.setStyle("-fx-background-color: #708090;");
             Button btn = new Button();
-            btn.setText("'start game'");
+            btn.setText("challenge player");
             btn.setPrefSize(100, 20);
 
 
@@ -97,7 +105,6 @@ public class Lobby extends Application{
             hbox.setAlignment(Pos.CENTER);
             hbox.getChildren().addAll(btn);
             btn.setOnAction(e -> startgame());
-
 
 
             BorderPane.setAlignment(hbox, Pos.CENTER);
@@ -157,7 +164,7 @@ public class Lobby extends Application{
         Button tic = new Button(null, page2);
         tic.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                game = "TicTacToe";
+                game = "Tic-tac-toe";
             }
         });
             river.getChildren().addAll(rev, tic);
@@ -237,4 +244,55 @@ public class Lobby extends Application{
         }
     }
 
+}
+
+class PopUp {
+
+    private boolean accept = false;
+    public void start(String challenge, CommandCenter commandCenter) throws IOException {
+        String challengeNumber = challenge.substring(challenge.indexOf("CHALLENGENUMBER: \"") + 18, challenge.indexOf("\", GAMETYPE:"));
+        String challenger = challenge.substring(challenge.indexOf("CHALLENGER: \"") + 13, challenge.indexOf("\", CHALLENGENUMBER:"));
+        String gameType = challenge.substring(challenge.indexOf("GAMETYPE: \"") + 11, challenge.indexOf("\"}"));
+
+        GridPane pane = new GridPane();
+        // Informatie
+        Label label1 = new Label();
+        pane.add(label1, 0, 0);
+
+        label1.setText("You received a "+gameType+" challenge from "+challenger);
+
+        Button button1 = new Button();
+        button1.setText("Accept");
+        button1.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                //Hier wordt een challenge geaccepteerd
+                try {
+                    commandCenter.doChallengeAccept(challengeNumber);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+
+        });
+        pane.add(button1, 0, 1);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                Stage primaryStage = new Stage();
+                Scene scene = new Scene(pane, 250, 70);
+                primaryStage.setScene(scene);
+                primaryStage.setTitle("Challenge "+challengeNumber);
+                primaryStage.setMinHeight(70);
+                primaryStage.setMinWidth(250);
+                primaryStage.show();
+
+            }
+        });
+    }
+    public boolean accepted() {
+        return accept;
+    }
 }
