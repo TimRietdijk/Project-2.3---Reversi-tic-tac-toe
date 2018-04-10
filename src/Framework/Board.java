@@ -35,11 +35,7 @@ public class Board extends Application {
         rect.setFill(imagePattern);
     }
 
-<<<<<<< HEAD
     private void drawBoard(int[][] field){
-=======
-    private void drawBoard(){
->>>>>>> 9a0e7f1d9c6d3ad82f68fd898bc2811a26981ff0
         for(int x = 0; x < 3; x++){
             for(int y = 0; y < 3; y++) {
                 Rectangle rect = new Rectangle(x, y, 200, 200);
@@ -57,11 +53,8 @@ public class Board extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         gridPane = new GridPane();
-<<<<<<< HEAD
-        Canvas canvas = new Canvas(600, 600);
-=======
->>>>>>> 9a0e7f1d9c6d3ad82f68fd898bc2811a26981ff0
-        drawBoard();
+
+       // drawBoard();
         Scene scene = new Scene(gridPane);
         primaryStage.setScene(scene);
         primaryStage.show();

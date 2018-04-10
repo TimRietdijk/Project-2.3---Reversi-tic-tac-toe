@@ -43,10 +43,16 @@ public class Lobby extends Application{
 
         try {
             BorderPane root = new BorderPane();
-            String read = commandCenter.ReadReceived();
-            if (read.contains("SVR PLAYERLIST [")) {
-                updatePlayerList(read);
+             commandCenter.ReadReceived();
+             commandCenter.ReadReceived();
+            String read2 = commandCenter.ReadReceived();
+
+                System.out.println(read2);
+            if (read2.contains("SVR PLAYERLIST [")) {
+                System.out.println(read2);
+                updatePlayerList(read2);
                 root.setRight(options());
+                System.out.println("dit werkt");
             }
 
 
@@ -202,8 +208,9 @@ public class Lobby extends Application{
                     "Player vs AI",
                     "AI vs AI"
             );
+    System.out.println("dit is playerList:  "+ playerList);
     ObservableList<String> playerOptions1 = FXCollections.observableArrayList(playerList);
-        comboBox1 = new ComboBox(options1);
+        comboBox1 = new ComboBox(playerOptions1);
         Label label2 = new Label("difficulty");
         ObservableList<String> options2 =
                 FXCollections.observableArrayList(
