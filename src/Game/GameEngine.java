@@ -112,26 +112,5 @@ public class GameEngine {
                 System.out.println("Values at arr[" + i + "][" + j + "] is " + field[i][j]);
             }
         }
-
-
     }
-    public void waitForMove() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if(){}
-                int remainingTime = 10;
-                long timeout = System.currentTimeMillis() + (remainingTime * 1000);
-                while (System.currentTimeMillis() < timeout) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    //System.out.println("You have : " + (timeout - System.currentTimeMillis()) / 1000 + " seconds left");
-                }
-            }
-        }).start();
-    }
-
 }
