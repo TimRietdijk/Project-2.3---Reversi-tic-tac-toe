@@ -59,6 +59,9 @@ public class Framework {
 	player_one=teken speler 1 (bv x)
 	player_two=teken speler 2 (bv O)
 	path=bestandnaam (bv TicTacToe.ini)
+
+
+
 	 */
 	private void createIniFile(int length, int width, String player_one, String player_two, String path, String color) throws IOException {
 		File inioutfile = new File(path);

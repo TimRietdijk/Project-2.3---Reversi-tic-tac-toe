@@ -31,6 +31,8 @@ public class Board extends Application {
         return move;
     }
 
+
+    
     public void setMove(int moveX, int moveY) {
         this.move[0] = moveX;
         this.move[1] = moveY;
