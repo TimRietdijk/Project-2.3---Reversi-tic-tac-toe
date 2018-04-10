@@ -128,7 +128,6 @@ public class Lobby extends Application{
             // Speler uitdagen voor challenge
             try {
                 commandCenter.doChallenge(option1, game);
-                new GameEngine(optionlist, commandCenter);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -143,7 +142,7 @@ public class Lobby extends Application{
                             e.printStackTrace();
                         }
                     }
-                    System.out.println("functie aanroepen om game engine te maken");
+                    GameEngine gameEngine = new GameEngine(optionlist, commandCenter);
 
                 }
             }).start();
