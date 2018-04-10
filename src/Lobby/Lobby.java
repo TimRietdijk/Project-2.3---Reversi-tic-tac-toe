@@ -48,14 +48,10 @@ public class Lobby extends Application{
             BorderPane root = new BorderPane();
              commandCenter.ReadReceived();
              commandCenter.ReadReceived();
-            String read2 = commandCenter.ReadReceived();
-
-                System.out.println(read2);
+             String read2 = commandCenter.ReadReceived();
             if (read2.contains("SVR PLAYERLIST [")) {
-                System.out.println(read2);
                 updatePlayerList(read2);
                 root.setRight(options());
-                System.out.println("dit werkt");
             }
 
 
@@ -132,6 +128,7 @@ public class Lobby extends Application{
             // Speler uitdagen voor challenge
             try {
                 commandCenter.doChallenge(option1, game);
+                new GameEngine(optionlist, commandCenter);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -253,7 +250,6 @@ public class Lobby extends Application{
                     "Player vs AI",
                     "AI vs AI"
             );
-    System.out.println("dit is playerList:  "+ playerList);
     ObservableList<String> playerOptions1 = FXCollections.observableArrayList(playerList);
         comboBox1 = new ComboBox(playerOptions1);
         Label label2 = new Label("difficulty");

@@ -24,30 +24,33 @@ import java.util.Map;
 public class Framework {
 	private Wini ini;
 	private String game;
-	protected int[][] field;
-	private int numberofstates = 3;
-	private int tileWidth = 90;
-	private int tileHeight = 90;
-	private int fieldLength;
-	private String lastIp;
-	private Integer lastPort;
-	private int fieldWidth;
-	private String fieldColor;
-	protected String[] states = new String[100];
-	private CommandCenter Jack;
+	private Board board;
 
-	private Boolean myTurn = false;
+	protected Framework(int[][]field){
+		Stage stage = new Stage();
+		board = new Board();
+		try {
+			board.start(stage, field);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-	ArrayList<StackPane> stackPanes = new ArrayList<StackPane>();
-	GridPane gridpane = new GridPane();
+	}
 
-
+	public void updateboarddata(int[][] move) {
+		board.drawBoard(move);
+	}
 
 
+	public boolean getMoveMade(){
+		Boolean didMove = board.getMoveMade();
+		return didMove;
+	}
 
-
-
-
+	public int[] getMove(){
+		int[] move = board.getMove();
+		return move;
+	}
 
 
 
@@ -59,6 +62,9 @@ public class Framework {
 	player_one=teken speler 1 (bv x)
 	player_two=teken speler 2 (bv O)
 	path=bestandnaam (bv TicTacToe.ini)
+
+
+
 	 */
 	private void createIniFile(int length, int width, String player_one, String player_two, String path, String color) throws IOException {
 		File inioutfile = new File(path);

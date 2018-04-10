@@ -199,6 +199,8 @@ public class CommandCenter {
             }).start();
 
 
+
+
         } else if (command.contains("SVR GAME CHALLENGE {")) {
             // Er is een challenge
             System.out.println("CHALLENGE detected");
