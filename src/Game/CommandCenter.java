@@ -23,7 +23,7 @@ public class CommandCenter {
 
     public CommandCenter() throws IOException {
 
-        File inioutfile = new File("Game/test.ini");
+        File inioutfile = new File("test.ini");
        if (inioutfile.exists()) {
             Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
             lastIp = ini.get("connection", "server ip", String.class);
@@ -31,8 +31,9 @@ public class CommandCenter {
             lastPort = Integer.valueOf(parse);
             System.out.println(lastIp + lastPort);
         }else {
-           lastIp = "145.37.41.83";
+           lastIp = "145.33.255.170";
            lastPort = 7789;
+           System.out.println("het werkt niet");
        }
 
         setupConnection(lastIp, lastPort);

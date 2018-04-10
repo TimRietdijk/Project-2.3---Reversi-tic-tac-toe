@@ -51,6 +51,7 @@ public class Framework {
 
 
 
+
 	// Schrijven van poort en ip adres naar ini file. Als file niet bestaat, nieuwe file maken.
 	/*
 	length=lengte van bord

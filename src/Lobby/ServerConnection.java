@@ -1,5 +1,6 @@
 package Lobby;
 
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -14,8 +15,10 @@ import org.ini4j.Wini;
 import java.io.File;
 import java.io.IOException;
 
-public class ServerConnection {
-    public void start() throws IOException {
+public class ServerConnection extends Application {
+    private Stage primaryStage = new Stage();
+
+    public void start(Stage stage) throws IOException {
 
         GridPane pane = new GridPane();
 
@@ -62,9 +65,14 @@ public class ServerConnection {
                 }
                 label2.setText("Settings succesfully saved");
                 label2.setTextFill(Color.GREEN);
+                primaryStage.close();
+                Lobby lobby = new Lobby();
+                Stage primaryStage = new Stage();
+                lobby.start(primaryStage);
+
             }
         });
-        Stage primaryStage = new Stage();
+
         Scene scene = new Scene(pane, 200, 120);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Connection");
@@ -74,8 +82,8 @@ public class ServerConnection {
     }
 
     // Schrijven van poort en ip adres naar ini file. Als file niet bestaat, nieuwe file maken.
-    private void writeIniFile(String ip, String port) throws IOException {
-        File inioutfile = new File("Game/test.ini");
+    public void writeIniFile(String ip, String port) throws IOException {
+        File inioutfile = new File("test.ini");
         if (!inioutfile.exists()) {
             inioutfile.createNewFile();
         }
@@ -88,7 +96,7 @@ public class ServerConnection {
 
     // Ini file uitlezen. Als file niet bestaat, nieuwe write met lege waarden.
     private String[] readIniFile() throws IOException {
-        File inioutfile = new File("Game/test.ini");
+        File inioutfile = new File("test.ini");
         if (inioutfile.exists()) {
             Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
             String lastIp = ini.get("connection", "server ip", String.class);

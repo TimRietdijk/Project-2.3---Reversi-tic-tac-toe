@@ -1,7 +1,9 @@
 package Lobby;
 
 import Game.CommandCenter;
+import Game.GameEngine;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -28,39 +30,8 @@ public class Lobby extends Application{
     private CommandCenter commandCenter;
     private String[] playerList;
     public void start(Stage start) {
-        try {
-            commandCenter = new CommandCenter();
-        } catch (IOException e) {
-            System.out.println("Starting up");
-        }
-        // Playerlist opvragen
-        try {
-            commandCenter.doGetPlayerList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        new Thread(new Runnable() {
-            public void run() {
-                // receivedCommand houdt het ontvangen command van de server
-                while (true) {
-                    String s = commandCenter.ReadReceived();
 
-                    // Dit stuk vereist nog te veel tijd doordat commands gecheckt worden met if statements
-                    if (s.contains("SVR PLAYERLIST [")) {
-                        updatePlayerList(s);
-                    } else if (s.contains("SVR GAME CHALLENGE {")) {
-                        //popup geven met challenge accept/decline
-                        //commandCenter.newPopUp();
-                    }
-                    System.out.println(s);
-                    System.out.println("dicks");
-                    String parse = commandCenter.commandHandling(s);
-                    if(parse != null){
-                        int pos = Integer.valueOf(parse);
-                    }
-                }
-            }
-        }).start();
+
         try {
 
             BorderPane root = new BorderPane();
@@ -75,7 +46,32 @@ public class Lobby extends Application{
             fright.setTitle("Lobby");
             fright.setScene(s);
             fright.show();
-
+            try {
+                commandCenter = new CommandCenter();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                commandCenter.doGetPlayerList();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            new Thread(new Runnable() {
+                public void run() {
+                    // receivedCommand houdt het ontvangen command van de server
+                    while (fright.isShowing()) {
+                        String s = commandCenter.ReadReceived();
+                        // Dit stuk vereist nog te veel tijd doordat commands gecheckt worden met if statements
+                        if (s.contains("SVR PLAYERLIST [")) {
+                            updatePlayerList(s);
+                        } else if (s.contains("SVR GAME CHALLENGE {")) {
+                            //popup geven met challenge accept/decline
+                            //commandCenter.newPopUp();
+                        }
+                        System.out.println(s);
+                    }
+                }
+            }).start();
         } catch (IllegalStateException e) {
             System.out.println("welp");
         }
@@ -90,28 +86,20 @@ public class Lobby extends Application{
             btn.setText("'start game'");
             btn.setPrefSize(100, 20);
 
-            Button connectBtn = new Button();
-            connectBtn.setText("'connection'");
-            connectBtn.setPrefSize(100, 20);
+
 
             hbox.setAlignment(Pos.CENTER);
-            hbox.getChildren().addAll(btn, connectBtn);
+            hbox.getChildren().addAll(btn);
             btn.setOnAction(e -> startgame());
-            connectBtn.setOnAction(e -> Serverconnect());
+
 
 
             BorderPane.setAlignment(hbox, Pos.CENTER);
             hbox.setPrefHeight(100);
             return hbox;
         }
-    private void Serverconnect() {
-        ServerConnection connection = new ServerConnection();
-        try {
-            connection.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
+
     private void startgame() {
         if(game != null && comboBox1.getValue().toString() != null && comboBox2.getValue().toString() != null){
             System.out.println("Starting: " + game);
@@ -182,11 +170,17 @@ public class Lobby extends Application{
         Button tic = new Button("submit");
         tic.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                try {
-                    commandCenter.doLogin(textField.getCharacters().toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            commandCenter.doLogin(textField.getCharacters().toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
             }
         });
     hb.getChildren().addAll(label, textField, tic);
