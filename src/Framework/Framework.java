@@ -27,6 +27,10 @@ public class Framework {
 	private Board board;
 
 	protected Framework(int[][]field){
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+
 		Stage stage = new Stage();
 		board = new Board();
 		try {
@@ -34,7 +38,8 @@ public class Framework {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+			}
+		});
 	}
 
 	public void updateboarddata(int[][] move) {
