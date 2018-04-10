@@ -26,11 +26,11 @@ public class GameEngine {
     public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter) {
         String s = optionlist.get("Game");
         if (s.contains("Reversi")) {
-            framework = new Reversi();
             setField(8, 8);
+            framework = new Reversi(field);
         } else if (s.contains("TicTacToe")) {
-            framework = new TicTacToe();
             setField(3, 3);
+            framework = new TicTacToe(field);
         }
         showField();
         jack = commandCenter;

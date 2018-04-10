@@ -3,7 +3,7 @@ package TicTacToe;
 import Framework.Framework;
 
 public class TicTacToe extends Framework {
-    public TicTacToe(){
-        super();
+    public TicTacToe(int[][] field){
+        super(field);
     }
 }
