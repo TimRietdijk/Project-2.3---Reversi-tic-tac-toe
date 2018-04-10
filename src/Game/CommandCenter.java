@@ -33,6 +33,7 @@ public class CommandCenter {
         }else {
            lastIp = "145.33.255.170";
            lastPort = 7789;
+           System.out.println("het werkt niet");
        }
 
         setupConnection(lastIp, lastPort);

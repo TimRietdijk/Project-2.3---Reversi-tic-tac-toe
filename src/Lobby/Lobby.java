@@ -48,7 +48,7 @@ public class Lobby extends Application{
             try {
                 commandCenter = new CommandCenter();
             } catch (IOException e) {
-                System.out.println("Starting up");
+                e.printStackTrace();
             }
             new Thread(new Runnable() {
                 public void run() {
