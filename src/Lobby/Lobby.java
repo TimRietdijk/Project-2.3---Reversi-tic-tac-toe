@@ -146,6 +146,7 @@ public class Lobby extends Application{
                     }
                     new GameEngine(optionlist, commandCenter);
 
+
                 }
             }).start();
 
