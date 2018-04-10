@@ -47,7 +47,6 @@ public class GameEngine {
                     }
                     if (parse != null) {
                         int pos = Integer.valueOf(parse);
-                        enemyMove(pos, 2);
                     }
                 }
             }
@@ -64,11 +63,6 @@ public class GameEngine {
         field = new int[x][y];
     }
 
-    public void enemyMove(int position, int state) {
-        int width = position / (field.length - 1);
-        int length = position % field.length;
-
-    }
 
 
     private int calculateMove(int[] move) {
