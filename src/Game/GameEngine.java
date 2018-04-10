@@ -23,14 +23,14 @@ public class GameEngine {
     private int[] move;
     private int calculatedMove;
 
-    public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter){
+    public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter) {
         String s = optionlist.get("Game");
-        if (s.contains("Reversi")){
-            framework = new Reversi();
-            setField(8,8);
-        }else if(s.contains("TicTacToe")){
-            framework = new TicTacToe();
-            setField(3,3);
+        if (s.contains("Reversi")) {
+            setField(8, 8);
+            framework = new Reversi(field);
+        } else if (s.contains("TicTacToe")) {
+            setField(3, 3);
+            framework = new TicTacToe(field);
         }
         showField();
         jack = commandCenter;
@@ -42,10 +42,10 @@ public class GameEngine {
                     System.out.println(s);
                     System.out.println("dicks");
                     String parse = jack.commandHandling(s);
-                    if(framework.getMoveMade()){
-                        calculatedMove = calculateMove(framework.getMove());
+                    if (framework.getMoveMade()) {
+                        doMove();
                     }
-                    if(parse != null){
+                    if (parse != null) {
                         int pos = Integer.valueOf(parse);
                         enemyMove(pos, 2);
                     }
@@ -54,23 +54,26 @@ public class GameEngine {
         }).start();
     }
 
-
+    public void doMove() {
+        int[] coordinates = framework.getMove();
+        calculatedMove = calculateMove(coordinates);
+        setState(coordinates[0], coordinates[1], 1);
+    }
 
     public void setField(int x, int y) {
         field = new int[x][y];
     }
 
-    public void enemyMove(int position, int state){
-        int width = position / (field.length-1);
-        int length = position%field.length;
+    public void enemyMove(int position, int state) {
+        int width = position / (field.length - 1);
+        int length = position % field.length;
 
     }
 
 
-    private int calculateMove(int[] move){
-        return  (((move[1])*field.length)+move[0]);
+    private int calculateMove(int[] move) {
+        return (((move[1]) * field.length) + move[0]);
     }
-
 
 
     public int[][] getField() {
@@ -78,26 +81,29 @@ public class GameEngine {
     }
 
     public void setState(int length, int width, int value) {
-        if(length >= field.length) {
+        if (length >= field.length) {
             System.out.println("error: the given position does not exist on this board");
-        }else {
-            if(width >= field[1].length) {
+        } else {
+            if (width >= field[1].length) {
                 System.out.println("error: the given position does not exist on this board");
-            }else {
-                if(value >= numberofstates)
-                {
+            } else {
+                if (value >= numberofstates) {
                     System.out.println("Error: given state is not supported");
-                }else {
-                    if(value == getState(length, width))
-                    {
-                        System.out.println("!: Dit vakje is al van jou, probeer een ander vakje");
-                    }else {
-                        field[length][width] = value;
+                } else {
+                    if (value == 2) {
+                        System.out.println("vijandig");
+                    } else {
+                        if (value == getState(length, width)) {
+                            System.out.println("!: Dit vakje is al van jou, probeer een ander vakje");
+                        } else {
+                            field[length][width] = value;
+                        }
                     }
                 }
             }
         }
     }
+
     public int getState(int length, int width) {
         return field[length][width];
     }

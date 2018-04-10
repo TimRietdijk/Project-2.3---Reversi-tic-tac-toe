@@ -116,6 +116,7 @@ public class Lobby extends Application{
             fright.close();
             try {
                 commandCenter.doChallenge(option1, game);
+                new GameEngine(optionlist, commandCenter);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -26,8 +26,15 @@ public class Framework {
 	private String game;
 	private Board board;
 
-	protected Framework(){
+	protected Framework(int[][]field){
+		Stage stage = new Stage();
 		board = new Board();
+		try {
+			board.start(stage, field);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void updateboarddata(int[][] move) {
