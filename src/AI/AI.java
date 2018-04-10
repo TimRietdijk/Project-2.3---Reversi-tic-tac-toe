@@ -4,6 +4,7 @@ package AI;
 import java.util.ArrayList;
 
 public class AI {
+    AITicTacToe ai = new AITicTacToe();
     public class Board {
 
         private Tile myTile0;
@@ -51,48 +52,70 @@ public class AI {
     public class AITicTacToe {
         int[][] field = new int[3][3];
         int[][] fieldInt = {{1, 2, 4} ,
-                {8, 16, 32},
-                {64, 128, 256}};
+                            {8, 16, 32},
+                            {64, 128, 256}};
 
         int[] score = {7, 56, 746, 73, 146, 292, 273, 84};
-        int scoreX = 17;
-        int scoreO = 0;
+        //int scoreX = 0; // player 1 (AI)
+        //int scoreO = 0; // player 2
+        int[] scorePlayers = {0, 0};
 
         ArrayList<AI.Points> AvailableMoves = new ArrayList<>();
 
         public AITicTacToe() {
+            setMove(0,0, 1);
+            setMove(0, 1, 1);
+            setMove(2, 1, 1);
             possibleMoves();
             calculateBestMove();
 
         }
 
-        public void possibleMoves(){
+        private void setMove(int x, int y, int player){
+            field[x][y] = player;
+            scorePlayers[player] += fieldInt[x][y];
+        }
+
+        private void possibleMoves(){
             for(int i = 0; i < field.length; i++){
                 for(int j = 0; j < field[i].length; j++){
                     if(field[i][j] == 0) {
-                        System.out.println("Place " + i + " = empty");
-                        AvailableMoves.add(new AI.Points(i, j));
+                        //System.out.println("Place " + i + " = empty");
+                        AvailableMoves.add(new Points(i, j));
                     }
                 }
             }
         }
 
-        public void calculateBestMove(){
-            for(AI.Points p: AvailableMoves) {
-                if(canWinn(p.getX(), p.getY())){
-                    System.out.println("can winn");
+        private void calculateBestMove(){
+            for(Points p: AvailableMoves) {
+                if(canWin(p.getX(), p.getY(), 1)){
+                    System.out.println("can win");
                 } else {
                     System.out.println("cant");
                 }
             }
         }
 
-        public void doMove(){
-        }
+        private boolean canWin(int x, int y, int player){
+            int counter[][];
+            int tempScore = scorePlayers[player];
 
-        public boolean canWinn(int x, int y){
+            for(int[] i : field){
+                for(int j : i){
+                    if(j == player){
+                        counter[i][j] = ;
+                    }
+                }
+            }
+            System.out.println(player + " has " + counter.length);
             for (int n : score) {
-                if (scoreX+fieldInt[x][y] == n) {
+                if(counter > 2){
+                    for(int i = 0; i < counter; i++){
+                        tempScore
+                    }
+                }
+                if (scorePlayers[player]+fieldInt[x][y] == n) {
                     return true;
                 }
             } return false;
@@ -101,4 +124,11 @@ public class AI {
 
     }
 }
+
+class main {
+    public static void main(String[] args) {
+        AI a = new AI();
+    }
+}
+
 **/

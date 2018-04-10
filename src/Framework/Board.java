@@ -1,161 +1,64 @@
 package Framework;
-/**
-import Game.CommandCenter;
-import javafx.application.Platform;
-import javafx.geometry.Pos;
+
+import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import org.ini4j.Wini;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 
-public class Board {
+public class Board extends Application {
+    GridPane gridPane;
+    ArrayList<Image> images = new ArrayList<Image>();
+    int[][] field = new int[3][3];
 
-    private Wini ini;
-    private String game;
-    protected int[][] field;
-    private int numberofstates = 3;
-    private int tileWidth = 90;
-    private int tileHeight = 90;
-    private int fieldLength;
-    private String lastIp;
-    private Integer lastPort;
-    private int fieldWidth;
-    private String fieldColor;
-    protected String[] states = new String[100];
-    private CommandCenter Jack;
+    public Board(){
+        Image player1 = new Image(getClass().getResourceAsStream("x.png"));
+        Image player2 = new Image(getClass().getResourceAsStream("o.png"));
+        images.add(player1);
+        images.add(player2);
+    }
 
-    private Boolean myTurn = false;
+    private void fieldClicked(Rectangle rect){
+        System.out.println(rect.getX() + " " + rect.getY());
 
-    ArrayList<StackPane> stackPanes = new ArrayList<StackPane>();
-    GridPane gridpane = new GridPane();
+        setImage(rect, 1);
+    }
 
+    private void setImage(Rectangle rect, int player){
+        ImagePattern imagePattern = new ImagePattern(images.get(player-1));
+        rect.setFill(imagePattern);
+    }
 
-
-    public void start(Stage primaryStage){}
-
-    public void start(Stage primaryStage, Map<String, String> options) throws Exception {
-        createIniFile(3,3, "x", "O", "TicTacToe.ini", "grey");
-        createIniFile(8,8, "W", "B", "Reversi.ini", "#15770a");
-        VBox vbox = new VBox();
-        vbox.getChildren().addAll(gridpane);
-        Scene scene = new Scene(vbox);
-        game = options.get("Game");
-        String[] work = readIniFile();
-        File inioutfile = new File("Lobby/test.ini");
-        if (inioutfile.exists()) {
-            Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
-            lastIp = ini.get("connection", "server ip", String.class);
-            String parse = ini.get("connection", "server port", String.class);
-            lastPort = Integer.valueOf(parse);
-        }
-        Jack = new CommandCenter(options);
-        new Thread(new Runnable() {
-            public void run() {
-                // receivedCommand houdt het ontvangen command van de server
-                while (true) {
-                    String s = Jack.ReadReceived();
-                    System.out.println(s);
-                    System.out.println("dicks");
-                    String parse = Jack.commandHandling(s);
-                    if(parse != null){
-                        int pos = Integer.valueOf(parse);
-                        enemyMove(pos, 2);
-                    }
+    private void drawBoard(GraphicsContext gc){
+        for(int x = 0; x < 3; x++){
+            for(int y = 0; y < 3; y++) {
+                Rectangle rect = new Rectangle(x, y, 200, 200);
+                rect.setOnMouseClicked((e) -> fieldClicked(rect));
+                rect.setFill(Color.WHITE);
+                rect.setStroke(Color.BLACK);
+                if(field[x][y] != 0){
+                    setImage(rect, field[x][y]);
                 }
+                gridPane.add(rect, x, y);
             }
-        }).start();
-
-        int i = 0;
-        for(String ss: work){
-            if(i > 2){
-
-                states[i-3] = ss;
-
-            } i++;
         }
-        fieldColor = work[0];
-        fieldLength = Integer.valueOf(work[1]);
-        fieldWidth = Integer.valueOf(work[2]);
+    }
 
-        setField(fieldLength,fieldWidth);
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        gridPane = new GridPane();
+        Canvas canvas = new Canvas(600, 600);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        drawBoard(gc);
+        Scene scene = new Scene(gridPane);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-
-
-
-    private void makeField(){
-
-        for(int i=0; i<field[1].length; i++) {
-            for(int j=0; j<field.length; j++) {
-                Button button = new Button();
-                button.setTranslateX(j);
-                button.setTranslateY(i);
-                button.setOnAction((e) -> buttonAction(button));
-                button.setPrefSize(tileWidth - 10, tileHeight - 10);
-                StackPane stackPane = new StackPane(button);
-                stackPane.setAlignment(Pos.CENTER);
-                stackPane.setPrefSize(tileWidth, tileHeight);
-                stackPanes.add(stackPane);
-                stackPane.setStyle("-fx-background-color: white; -fx-border-color: white;");
-                button.setStyle("-fx-background-color: white; -fx-border-color: white;");
-                if(i%2 == 1 && j%2 == 0){
-                    stackPane.setStyle("-fx-background-color: "+ fieldColor +
-                            "; -fx-border-color: white;");
-                    button.setStyle("-fx-background-color: "+ fieldColor +
-                            "; -fx-border-color: "+ fieldColor +";");
-                }
-                if(i%2 == 0 && j%2 == 1){
-                    stackPane.setStyle("-fx-background-color: "+ fieldColor +
-                            "; -fx-border-color: white;");
-                    button.setStyle("-fx-background-color: "+ fieldColor +
-                            "; -fx-border-color: "+ fieldColor +";");
-                }
-                gridpane.add(stackPane, i, j);
-            }
-        }
-
-    }
-
-    public void setFieldLength(int fieldLength) {
-        this.fieldLength = fieldLength;
-    }
-
-    public void setFieldWidth(int fieldWidth) {
-        this.fieldWidth = fieldWidth;
-    }
-
-    public void updateField(int length, int width, int state) {
-        setState(length, width, state);
-        int position = ((width)*field.length)+(length);
-        StackPane stackPane;
-        stackPane = stackPanes.get(position);
-
-        Button button;
-        button = (Button) stackPane.getChildren().get(0);
-
-        Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\" + states[state] + ".gif"));
-        ImageView iv = new ImageView(image);
-        Platform.runLater(()-> button.setGraphic(iv));
-        if(state == 1){
-            try {
-                //System.out.println(position);
-                Jack.doMove(position);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }}
-
-
-
- **/
+}
