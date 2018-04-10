@@ -5,24 +5,34 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class Board extends Application {
     GridPane gridPane;
-    Image image = new Image(getClass().getResourceAsStream("o.png"));
+    ArrayList<Image> images = new ArrayList<Image>();
+    int[][] field = new int[3][3];
 
+    public Board(){
+        Image player1 = new Image(getClass().getResourceAsStream("x.png"));
+        Image player2 = new Image(getClass().getResourceAsStream("o.png"));
+        images.add(player1);
+        images.add(player2);
+    }
 
     private void fieldClicked(Rectangle rect){
         System.out.println(rect.getX() + " " + rect.getY());
-        ImageView iv = new ImageView(image);
 
-        iv.setPreserveRatio(true);
-        ImagePattern imagePattern = new ImagePattern(image);
+        setImage(rect, 1);
+    }
+
+    private void setImage(Rectangle rect, int player){
+        ImagePattern imagePattern = new ImagePattern(images.get(player-1));
         rect.setFill(imagePattern);
     }
 
@@ -33,6 +43,9 @@ public class Board extends Application {
                 rect.setOnMouseClicked((e) -> fieldClicked(rect));
                 rect.setFill(Color.WHITE);
                 rect.setStroke(Color.BLACK);
+                if(field[x][y] != 0){
+                    setImage(rect, field[x][y]);
+                }
                 gridPane.add(rect, x, y);
             }
         }
