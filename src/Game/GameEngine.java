@@ -28,7 +28,7 @@ public class GameEngine {
         if (s.contains("Reversi")) {
             setField(8, 8);
             framework = new Reversi(field);
-        } else if (s.contains("TicTacToe")) {
+        } else if (s.contains("Tic-tac-toe")) {
             setField(3, 3);
             framework = new TicTacToe(field);
         }
