@@ -91,10 +91,7 @@ public class Board {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    public void setField(int length, int width){
-        field = new int[length][width];
-        makeField();
-    }
+
 
 
 
@@ -160,11 +157,5 @@ public class Board {
             }}
 
 
-        public void showField() {
-            for(int i=0; i<field.length; i++) {
-                for(int j=0; j<field[i].length; j++) {
-                    System.out.println("Values at arr["+i+"]["+j+"] is "+field[i][j]);
-                }
-            }
-        }
+
  **/

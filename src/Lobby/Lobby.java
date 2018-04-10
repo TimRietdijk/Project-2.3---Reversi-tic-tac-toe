@@ -1,7 +1,9 @@
 package Lobby;
 
 import Game.CommandCenter;
+import Game.GameEngine;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -27,25 +29,8 @@ public class Lobby extends Application{
     private Stage fright;
     private CommandCenter commandCenter;
     public void start(Stage start) {
-        try {
-            commandCenter = new CommandCenter();
-        } catch (IOException e) {
-            System.out.println("Starting up");
-        }
-        new Thread(new Runnable() {
-            public void run() {
-                // receivedCommand houdt het ontvangen command van de server
-                while (true) {
-                    String s = commandCenter.ReadReceived();
-                    System.out.println(s);
-                    System.out.println("dicks");
-                    String parse = commandCenter.commandHandling(s);
-                    if(parse != null){
-                        int pos = Integer.valueOf(parse);
-                    }
-                }
-            }
-        }).start();
+
+
         try {
 
             BorderPane root = new BorderPane();
@@ -60,7 +45,20 @@ public class Lobby extends Application{
             fright.setTitle("Lobby");
             fright.setScene(s);
             fright.show();
-
+            try {
+                commandCenter = new CommandCenter();
+            } catch (IOException e) {
+                System.out.println("Starting up");
+            }
+            new Thread(new Runnable() {
+                public void run() {
+                    // receivedCommand houdt het ontvangen command van de server
+                    while (fright.isShowing()) {
+                        String s = commandCenter.ReadReceived();
+                        System.out.println(s);
+                    }
+                }
+            }).start();
         } catch (IllegalStateException e) {
             System.out.println("welp");
         }
@@ -82,21 +80,15 @@ public class Lobby extends Application{
             hbox.setAlignment(Pos.CENTER);
             hbox.getChildren().addAll(btn, connectBtn);
             btn.setOnAction(e -> startgame());
-            connectBtn.setOnAction(e -> Serverconnect());
+
 
 
             BorderPane.setAlignment(hbox, Pos.CENTER);
             hbox.setPrefHeight(100);
             return hbox;
         }
-    private void Serverconnect() {
-        ServerConnection connection = new ServerConnection();
-        try {
-            connection.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
+
     private void startgame() {
         if(game != null && comboBox1.getValue().toString() != null && comboBox2.getValue().toString() != null){
             System.out.println("Starting: " + game);
@@ -111,6 +103,7 @@ public class Lobby extends Application{
             fright.close();
             try {
                 commandCenter.doChallenge(option1, game);
+                GameEngine gameEngine = new GameEngine(optionlist, commandCenter);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -167,11 +160,17 @@ public class Lobby extends Application{
         Button tic = new Button("submit");
         tic.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                try {
-                    commandCenter.doLogin(textField.getCharacters().toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            commandCenter.doLogin(textField.getCharacters().toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
             }
         });
     hb.getChildren().addAll(label, textField, tic);
