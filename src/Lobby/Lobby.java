@@ -32,6 +32,7 @@ public class Lobby extends Application{
     private String[] playerList;
     private Label loginStatus;
     private String user = "";
+    private Map<String, String> optionlist;
     public void start(Stage start) {
         try {
             commandCenter = new CommandCenter();
@@ -76,7 +77,7 @@ public class Lobby extends Application{
                         if(s.contains("SVR GAME CHALLENGE {")) {
                             PopUp challengePopUp = new PopUp();
                             try {
-                                challengePopUp.start(s, commandCenter);
+                                challengePopUp.start(s, optionlist, commandCenter);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -90,6 +91,7 @@ public class Lobby extends Application{
             System.out.println("welp");
         }
     }
+
 
         private HBox addHBox () {
             HBox hbox = new HBox();
@@ -142,7 +144,7 @@ public class Lobby extends Application{
                             e.printStackTrace();
                         }
                     }
-                    GameEngine gameEngine = new GameEngine(optionlist, commandCenter);
+                    new GameEngine(optionlist, commandCenter);
 
                 }
             }).start();
@@ -287,7 +289,7 @@ public class Lobby extends Application{
 class PopUp {
 
     private boolean accept = false;
-    public void start(String challenge, CommandCenter commandCenter) throws IOException {
+    public void start(String challenge, Map<String, String> optionlist, CommandCenter commandCenter) throws IOException {
         String challengeNumber = challenge.substring(challenge.indexOf("CHALLENGENUMBER: \"") + 18, challenge.indexOf("\", GAMETYPE:"));
         String challenger = challenge.substring(challenge.indexOf("CHALLENGER: \"") + 13, challenge.indexOf("\", CHALLENGENUMBER:"));
         String gameType = challenge.substring(challenge.indexOf("GAMETYPE: \"") + 11, challenge.indexOf("\"}"));
@@ -311,7 +313,7 @@ class PopUp {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-                System.out.println("functie aanroepen om game engine te maken");
+                new GameEngine(optionlist, commandCenter);
             }
 
         });
