@@ -28,7 +28,7 @@ public class GameEngine {
         if (s.contains("Reversi")) {
             setField(8, 8);
             framework = new Reversi(field);
-        } else if (s.contains("TicTacToe")) {
+        } else if (s.contains("Tic-tac-toe")) {
             setField(3, 3);
             framework = new TicTacToe(field);
         }
@@ -47,7 +47,6 @@ public class GameEngine {
                     }
                     if (parse != null) {
                         int pos = Integer.valueOf(parse);
-                        enemyMove(pos, 2);
                     }
                 }
             }
@@ -64,11 +63,6 @@ public class GameEngine {
         field = new int[x][y];
     }
 
-    public void enemyMove(int position, int state) {
-        int width = position / (field.length - 1);
-        int length = position % field.length;
-
-    }
 
 
     private int calculateMoveToPosition(int[] move) {
