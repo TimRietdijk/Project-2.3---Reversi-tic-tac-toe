@@ -8,20 +8,22 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Board extends Application {
     GridPane gridPane;
-    Image image = new Image(getClass().getResourceAsStream("weekopdrTicTacToe\\xN.png"));
+    Image image = new Image(getClass().getResourceAsStream("o.png"));
+
 
     private void fieldClicked(Rectangle rect){
         System.out.println(rect.getX() + " " + rect.getY());
-        //Circle circle = new Circle(70, WHITE);
-        //gridPane.add(circle, (int) rect.getX(), (int) rect.getY());
-        //gridPane.getChildren().remove(circle);
         ImageView iv = new ImageView(image);
-        gridPane.add(iv, (int) rect.getX(), (int) rect.getY());
+
+        iv.setPreserveRatio(true);
+        ImagePattern imagePattern = new ImagePattern(image);
+        rect.setFill(imagePattern);
     }
 
     private void drawBoard(GraphicsContext gc){
