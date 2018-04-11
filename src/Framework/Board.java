@@ -16,7 +16,7 @@ public class Board extends Application {
 
     GridPane gridPane;
     ArrayList<Image> images = new ArrayList<Image>();
-    int[] move;
+    int[] move = new int[3];
     boolean moveMade = false;
 
     public Board(){
@@ -42,6 +42,7 @@ public class Board extends Application {
     }
 
     private void fieldClicked(Rectangle rect){
+        setImage(rect, 1);
         int x = (int) rect.getX();
         int y = (int) rect.getY();
         setMove(x, y);
@@ -69,7 +70,11 @@ public class Board extends Application {
         }
     }
     @Override
-    public void start(Stage primaryStage) throws Exception {}
+    public void start(Stage primaryStage) throws Exception {
+        int[][] field  = new int[3][3];
+        start(primaryStage, field);
+    }
+
     public void start(Stage primaryStage, int[][] field) throws Exception {
         gridPane = new GridPane();
         Scene scene = new Scene(gridPane);
