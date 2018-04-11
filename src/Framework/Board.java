@@ -17,7 +17,7 @@ public class Board extends Application {
     GridPane gridPane;
     ArrayList<Image> images = new ArrayList<Image>();
     int[] move;
-    private boolean moveMade = false;
+    boolean moveMade = false;
 
     public Board(){
         Image player1 = new Image(getClass().getResourceAsStream("x.png"));
@@ -73,11 +73,9 @@ public class Board extends Application {
     public void start(Stage primaryStage, int[][] field) throws Exception {
         gridPane = new GridPane();
         Scene scene = new Scene(gridPane);
-        moveMade = false;
         drawBoard(field);
         primaryStage.setScene(scene);
         primaryStage.show();
-        System.out.println(moveMade);
     }
 }
 
