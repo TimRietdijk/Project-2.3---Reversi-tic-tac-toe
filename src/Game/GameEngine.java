@@ -47,6 +47,10 @@ public class GameEngine {
                     }
                     if (parse != null) {
                         int pos = Integer.valueOf(parse);
+                        int[] work = calculateMoveToCoordinates(pos);
+                        if(field[work[0]][work[1]] == 0){
+                            //do traitors move
+                        }
                     }
                 }
             }
@@ -68,8 +72,10 @@ public class GameEngine {
     private int calculateMoveToPosition(int[] move) {
         return (((move[1]) * field.length) + move[0]);
     }
-    private int calculateMoveToCoordinates(int[] move) {
-        return (((move[1]) * field.length) + move[0]);
+    private int[] calculateMoveToCoordinates(int move) {
+        int x = (move/(field.length));
+        int y = move%(field.length);
+        return new int[] {x, y};
     }
 
 

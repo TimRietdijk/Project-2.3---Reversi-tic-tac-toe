@@ -161,10 +161,9 @@ public class CommandCenter {
 
     // Functie om inkomende commando's af te handelen in een aparte thread
    public String commandHandling(String command) {
-        if (command.contains("GAME MOVE") && !command.contains(name)) {
+        if (command.contains("GAME MOVE")) {
             StringBuilder build = new StringBuilder();
             int length = command.length();
-            String result = "";
             for (int i = 0; i < length; i++) {
                 Character character = command.charAt(i);
                 if (Character.isDigit(character)) {
