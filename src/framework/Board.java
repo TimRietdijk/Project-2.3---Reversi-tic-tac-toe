@@ -1,8 +1,6 @@
-package Framework;
+package framework;
 
-import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -12,12 +10,12 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class Board extends Application {
+public class Board {
 
     GridPane gridPane;
     ArrayList<Image> images = new ArrayList<Image>();
     int[] move = new int[3];
-    boolean moveMade = false;
+    boolean moveMade;
 
     public Board(){
         Image player1 = new Image(getClass().getResourceAsStream("x.png"));
@@ -39,6 +37,7 @@ public class Board extends Application {
         this.move[0] = moveX;
         this.move[1] = moveY;
         moveMade = true;
+        System.out.println(moveMade);
     }
 
     private void fieldClicked(Rectangle rect){
@@ -69,13 +68,10 @@ public class Board extends Application {
             }
         }
     }
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        int[][] field  = new int[3][3];
-        start(primaryStage, field);
-    }
+
 
     public void start(Stage primaryStage, int[][] field) throws Exception {
+        moveMade = false;
         gridPane = new GridPane();
         Scene scene = new Scene(gridPane);
         drawBoard(field);

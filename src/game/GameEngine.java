@@ -1,11 +1,14 @@
-package Game;
+package game;
 
-import Framework.Framework;
+import framework.Board;
+import framework.Framework;
 import Reversi.Reversi;
 import TicTacToe.TicTacToe;
-import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import org.ini4j.Wini;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 
@@ -13,6 +16,7 @@ import java.util.Map;
 
 public class GameEngine {
 
+    private  boolean gamestart;
     private Wini ini;
     private String game;
     protected int[][] field;
@@ -22,29 +26,49 @@ public class GameEngine {
     private Framework framework;
     private int[] move;
     private int calculatedMove;
+    private Board board;
+    private java.lang.reflect.Method method;
+    public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage) {
+        String s = optionlist.get("game");
 
-    public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter) {
-        String s = optionlist.get("Game");
         if (s.contains("Reversi")) {
             setField(8, 8);
-            framework = new Reversi(field);
+            board = new Board();
+            try {
+                board.start(stage, field);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            framework = new Reversi(field, board);
         } else if (s.contains("Tic-tac-toe")) {
             setField(3, 3);
-            framework = new TicTacToe(field);
+            board = new Board();
+            try {
+                board.start(stage, field);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            framework = new TicTacToe(board);
+            }else{
+            System.out.println("Hopscotch");
         }
-        showField();
+
+        gamestart = start;
+        //showField();
         jack = commandCenter;
         new Thread(new Runnable() {
             public void run() {
                 // receivedCommand houdt het ontvangen command van de server0
-                while (true) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                while (gamestart) {
                     String s = jack.ReadReceived();
                     System.out.println(s);
-                    System.out.println("dicks");
                     String parse = jack.commandHandling(s);
-                    if (framework.getMoveMade()) {
-                        doMove();
-                    }
+
                     if (parse != null) {
                         int pos = Integer.valueOf(parse);
                         int[] work = calculateMoveToCoordinates(pos);
@@ -55,12 +79,43 @@ public class GameEngine {
                 }
             }
         }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(gamestart) {
+
+                    try {
+                        method = board.getClass().getMethod("getMoveMade");
+                        try {
+                            boolean mup = (boolean) method.invoke(board);
+                            if (mup) {
+                                try {
+                                    doMove();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }).start();
     }
 
-    public void doMove() {
-        int[] coordinates = framework.getMove();
+    public void doMove() throws IOException {
+        System.out.println("hij doet dit");
+        int[] coordinates = board.getMove();
         calculatedMove = calculateMoveToPosition(coordinates);
         setState(coordinates[0], coordinates[1], 1);
+            jack.doMove(calculatedMove);
+
     }
 
     public void setField(int x, int y) {

@@ -1,4 +1,4 @@
-package Game; /**
+package game; /**
  * Deze class zet de verbinding op met de server
  * en regelt alle mogelijke inkomende en uitgaande commando's
  */

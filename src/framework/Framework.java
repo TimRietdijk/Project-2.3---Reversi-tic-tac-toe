@@ -1,24 +1,10 @@
-package Framework;
+package framework;
 
-import Game.CommandCenter;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.ini4j.Wini;
-
+import framework.Board;
 import java.io.File;
 import java.io.IOException;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 
 public class Framework {
@@ -26,9 +12,10 @@ public class Framework {
 	private String game;
 	private Board board;
 
-	protected Framework(int[][]field){
-		Application.launch(Board.class);
-	}
+	protected Framework(Board board){
+                this.board = board;
+            }
+
 
 	public void updateboarddata(int[][] move) {
 		board.drawBoard(move);
@@ -36,8 +23,7 @@ public class Framework {
 
 
 	public boolean getMoveMade(){
-		Boolean didMove = board.getMoveMade();
-		return didMove;
+            return board.getMoveMade();
 	}
 
 	public int[] getMove(){
