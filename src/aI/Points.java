@@ -1,4 +1,4 @@
-package AI;
+package aI;
 
 public class Points {
     private int x;

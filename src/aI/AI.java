@@ -1,9 +1,9 @@
-package AI;
+package aI;
 
 /**
 import java.util.ArrayList;
 
-public class AI {
+public class aI {
     AITicTacToe ai = new AITicTacToe();
     public class Board {
 
@@ -56,11 +56,11 @@ public class AI {
                             {64, 128, 256}};
 
         int[] score = {7, 56, 746, 73, 146, 292, 273, 84};
-        //int scoreX = 0; // player 1 (AI)
+        //int scoreX = 0; // player 1 (aI)
         //int scoreO = 0; // player 2
         int[] scorePlayers = {0, 0};
 
-        ArrayList<AI.Points> AvailableMoves = new ArrayList<>();
+        ArrayList<aI.Points> AvailableMoves = new ArrayList<>();
 
         public AITicTacToe() {
             setMove(0,0, 1);
@@ -127,7 +127,7 @@ public class AI {
 
 class main {
     public static void main(String[] args) {
-        AI a = new AI();
+        aI a = new aI();
     }
 }
 

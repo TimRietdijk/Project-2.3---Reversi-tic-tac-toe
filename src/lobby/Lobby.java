@@ -182,7 +182,7 @@ public class Lobby {
         Button rev = new Button(null, page);
         rev.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                game = "Reversi";
+                game = "reversi";
             }
         });
             ImageView page2 = new ImageView(
@@ -256,8 +256,8 @@ public class Lobby {
     ObservableList<String> options1 =
             FXCollections.observableArrayList(
                     "Player vs Player",
-                    "Player vs AI",
-                    "AI vs AI"
+                    "Player vs aI",
+                    "aI vs aI"
             );
     ObservableList<String> playerOptions1 = FXCollections.observableArrayList(playerList);
         comboBox1 = new ComboBox(playerOptions1);

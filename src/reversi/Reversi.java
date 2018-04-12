@@ -1,8 +1,7 @@
-package Reversi;
+package reversi;
 
 import framework.Board;
 import framework.Framework;
-import javafx.stage.Stage;
 
 public class Reversi extends Framework{
     public Reversi(int[][] field, Board board){

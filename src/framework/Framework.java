@@ -26,7 +26,7 @@ public class Framework {
 	width=breedte van bord
 	player_one=teken speler 1 (bv x)
 	player_two=teken speler 2 (bv O)
-	path=bestandnaam (bv TicTacToe.ini)
+	path=bestandnaam (bv ticTacToe.ini)
 
 
 

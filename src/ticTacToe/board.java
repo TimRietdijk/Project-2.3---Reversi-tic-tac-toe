@@ -1,4 +1,4 @@
-package TicTacToe;
+package ticTacToe;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -39,7 +39,7 @@ public class board extends Application {
         for (int i = 1; i <= 3; i++) {
             for (int j = 1; j <= 3; j++) {
                 StackPane stackPane = new StackPane();
-                Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-Reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\x.gif");
+                Image im = new Image("file:\\D:\\eclipse projects\\project 2.3\\Project-2.3-reversi-tic-tac-toe\\src\\weekopdrTicTacToe\\x.gif");
                 ImageView imageView = new ImageView(im);
                 stackPane.setPrefSize(50.0, 50.0);
                 stackPanes.add(stackPane);

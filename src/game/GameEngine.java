@@ -2,8 +2,8 @@ package game;
 
 import framework.Board;
 import framework.Framework;
-import Reversi.Reversi;
-import TicTacToe.TicTacToe;
+import reversi.Reversi;
+import ticTacToe.TicTacToe;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.ini4j.Wini;
@@ -32,7 +32,7 @@ public class GameEngine {
     public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage) {
         String s = optionlist.get("game");
 
-        if (s.contains("Reversi")) {
+        if (s.contains("reversi")) {
             setField(8, 8);
             board = new Board();
             String name = optionlist.get("name");

@@ -1,9 +1,9 @@
 /**
- * AI voor TicTacToe
+ * aI voor ticTacToe
  * Geïnspireerd door: https://github.com/avianey/minimax4j/blob/master/minimax4j-sample/src/main/java/fr/avianey/minimax4j/sample/tictactoe
  */
 
-package AI;
+package aI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,12 +91,12 @@ public class AITicTacToe {
                     } else if (move.getX() == 2 && move.getY() == 0) { //daarna de hoeken
                         return move;
                     } else { //het midden en alle hoeken zijn bezet en minimax kan niet toegepast worden dus doe maar random
-                        System.out.println("AI: IK KIES NU RANDOM");
+                        System.out.println("aI: IK KIES NU RANDOM");
                         return randomMove(currentField);
                     }
                 }
             } else {
-                System.out.println("AI: SPEL IS OVER, ONZE AI VERLOOR :(");
+                System.out.println("aI: SPEL IS OVER, ONZE aI VERLOOR :(");
                 break;
             }
 
