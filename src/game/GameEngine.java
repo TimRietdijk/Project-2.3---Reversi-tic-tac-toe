@@ -4,6 +4,7 @@ import framework.Board;
 import framework.Framework;
 import Reversi.Reversi;
 import TicTacToe.TicTacToe;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.ini4j.Wini;
 
@@ -34,6 +35,8 @@ public class GameEngine {
         if (s.contains("Reversi")) {
             setField(8, 8);
             board = new Board();
+            String name = optionlist.get("name");
+            stage.setTitle(name);
             try {
                 board.start(stage, field);
             } catch (Exception e) {
@@ -73,7 +76,13 @@ public class GameEngine {
                         int pos = Integer.valueOf(parse);
                         int[] work = calculateMoveToCoordinates(pos);
                         if(field[work[0]][work[1]] == 0){
-                            //do traitors move
+                            setState(work[0], work[1], 2);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                }
+                            });
                         }
                     }
                 }

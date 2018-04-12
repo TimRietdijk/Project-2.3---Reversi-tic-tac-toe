@@ -17,20 +17,6 @@ public class Framework {
             }
 
 
-	public void updateboarddata(int[][] move) {
-		board.drawBoard(move);
-	}
-
-
-	public boolean getMoveMade(){
-            return board.getMoveMade();
-	}
-
-	public int[] getMove(){
-		int[] move = board.getMove();
-		return move;
-	}
-
 
 
 
