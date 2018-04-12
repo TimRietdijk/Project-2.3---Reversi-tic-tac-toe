@@ -1,8 +1,7 @@
-package Lobby;
+package lobby;
 
-import Game.CommandCenter;
-import Game.GameEngine;
-import javafx.application.Application;
+import game.CommandCenter;
+import game.GameEngine;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -70,7 +69,7 @@ public class Lobby {
 
              s = new Scene(root, 1000, 600);
 
-            this.fright.setTitle("Lobby");
+            this.fright.setTitle("lobby");
             this.fright.setScene(s);
             this.fright.show();
 
@@ -99,7 +98,12 @@ public class Lobby {
                         if(read.contains("SVR GAME MATCH {PLAYERTOMOVE:")){
                             gamestart = true;
                             System.out.println("toodles");
-                            newGame();
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    newGame();
+                                }
+                            });
                         }
                     }
 
@@ -142,7 +146,7 @@ public class Lobby {
             String option1 = comboBox1.getValue().toString();
             String option2 = comboBox2.getValue().toString();
             optionlist.put("name", name);
-            optionlist.put("Game", game);
+            optionlist.put("game", game);
             optionlist.put("option1", option1);
             optionlist.put("option2", option2);
             // Speler uitdagen voor challenge
@@ -161,7 +165,7 @@ public class Lobby {
             root.getChildren().addAll(warning);
             final Scene s = new Scene(root, 100, 20);
 
-            fright.setTitle("Lobby");
+            fright.setTitle("lobby");
             fright.setScene(s);
             fright.show();
         }
@@ -324,7 +328,7 @@ class PopUp {
                 }
                 isIt = true;;
 
-                list.put("Game", gameType);
+                list.put("game", gameType);
                 list.put("option1", "dumdum");
                 list.put("option2", "gumgum");
                 primaryStage.close();

@@ -1,10 +1,11 @@
 package TicTacToe;
 
-import Framework.Framework;
+import framework.Board;
+import framework.Framework;
 import javafx.stage.Stage;
 
 public class TicTacToe extends Framework {
-    public TicTacToe(int[][] field, Stage stage){
-        super(field, stage);
+    public TicTacToe(Board board){
+        super(board);
     }
 }
