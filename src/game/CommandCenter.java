@@ -21,7 +21,6 @@ public class CommandCenter {
     private Scanner sc1;
 
     public CommandCenter() throws IOException {
-
         File inioutfile = new File("test.ini");
        if (inioutfile.exists()) {
             Wini ini = new Wini(new File(inioutfile.getAbsolutePath()));
@@ -68,7 +67,6 @@ public class CommandCenter {
                 String receivedCommand;
                     receivedCommand = sc1.nextLine();
                     System.out.println("dit is de volgende lijn: "+receivedCommand);
-                    commandHandling(receivedCommand);
                     return receivedCommand;
     }
 
@@ -160,8 +158,9 @@ public class CommandCenter {
      */
 
     // Functie om inkomende commando's af te handelen in een aparte thread
-   public String commandHandling(String command) {
-        if (command.contains("GAME MOVE")) {
+   public String commandHandling(String command, String name) {
+       System.out.println(name);
+        if (command.contains("GAME MOVE" )&& !command.contains(name)) {
             StringBuilder build = new StringBuilder();
             int length = command.length();
             for (int i = 0; i < length; i++) {

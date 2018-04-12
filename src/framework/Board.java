@@ -41,7 +41,6 @@ public class Board {
     }
 
     private void fieldClicked(Rectangle rect){
-        setImage(rect, 1);
         int x = (int) rect.getX();
         int y = (int) rect.getY();
         setMove(x, y);
@@ -59,7 +58,6 @@ public class Board {
             for(int x = 0; x < field[1].length; x++) {                          // later nog even terug komen om te kijken of de field.length en de field[1].length op de juiste plaats staan
                 Rectangle rect = new Rectangle(x, y, 200, 200);
                 rect.setOnMouseClicked((e) -> fieldClicked(rect));
-
                 rect.setFill(Color.WHITE);
                 rect.setStroke(Color.BLACK);
                 if(field[x][y] != 0){

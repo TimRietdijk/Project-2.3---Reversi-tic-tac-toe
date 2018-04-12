@@ -182,7 +182,7 @@ public class Lobby {
         Button rev = new Button(null, page);
         rev.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                game = "reversi";
+                game = "Reversi";
             }
         });
             ImageView page2 = new ImageView(

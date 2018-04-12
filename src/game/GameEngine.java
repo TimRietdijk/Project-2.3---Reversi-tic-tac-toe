@@ -19,7 +19,7 @@ public class GameEngine {
 
     private  boolean gamestart;
     private Wini ini;
-    private String game;
+    private String name;
     protected int[][] field;
     private int numberofstates = 3;
     protected String[] states = new String[100];
@@ -31,8 +31,8 @@ public class GameEngine {
     private java.lang.reflect.Method method;
     public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage) {
         String s = optionlist.get("game");
-
-        if (s.contains("reversi")) {
+        name = optionlist.get("name");
+        if (s.contains("Reversi")) {
             setField(8, 8);
             board = new Board();
             String name = optionlist.get("name");
@@ -71,12 +71,12 @@ public class GameEngine {
                 while (gamestart) {
                     String s = jack.ReadReceived();
                     System.out.println(s);
-                    String parse = jack.commandHandling(s);
+                    String parse = jack.commandHandling(s, name);
 
                     if (parse != null) {
                         int pos = Integer.valueOf(parse);
                         int[] work = calculateMoveToCoordinates(pos);
-                        if(field[work[0]][work[1]] == 0){
+                        //if(field[work[0]][work[1]] == 0){
                             setState(work[0], work[1], 2);
                             Platform.runLater(new Runnable() {
                                 @Override
@@ -85,7 +85,7 @@ public class GameEngine {
                                     showField();
                                 }
                             });
-                        }
+                        //}
                     }
                 }
             }
@@ -124,8 +124,11 @@ public class GameEngine {
         System.out.println("hij doet dit");
         int[] coordinates = board.getMove();
         calculatedMove = calculateMoveToPosition(coordinates);
-        setState(coordinates[0], coordinates[1], 1);
-            jack.doMove(calculatedMove);
+        boolean exec = setState(coordinates[0], coordinates[1], 1);
+            if(exec){
+                jack.doMove(calculatedMove);
+                Platform.runLater(() -> board.drawBoard(field));
+            }
 
     }
 
@@ -149,24 +152,30 @@ public class GameEngine {
         return field;
     }
 
-    public void setState(int x, int y, int value) {
+    public boolean setState(int x, int y, int value) {
         if (x >= field.length) {
             System.out.println("error: the given position does not exist on this board");
+            return false;
         } else {
             if (y >= field[1].length) {
                 System.out.println("error: the given position does not exist on this board");
+                return false;
             } else {
                 if (value >= numberofstates) {
                     System.out.println("Error: given state is not supported");
+                    return false;
                 } else {
-                    if (value == 2) {
+                    if (getState(x, y) == 2) {
                         System.out.println("vijandig");
-                        field[x][y] = value;
+                        field[x][y] = 2;
+                        return false;
                     } else {
                         if (value == getState(x, y)) {
                             System.out.println("!: Dit vakje is al van jou, probeer een ander vakje");
+                            return false;
                         } else {
                             field[x][y] = value;
+                            return true;
                         }
                     }
                 }
@@ -174,13 +183,11 @@ public class GameEngine {
         }
     }
 
-    public int getState(int length, int width) {
-        return field[length][width];
+    public int getState(int x, int y) {
+        return field[x][y];
     }
 
-    public void setStates(String[] states) {
-        this.states = states;
-    }
+
 
     public void showField() {
         for (int i = 0; i < field.length; i++) {
