@@ -1,13 +1,16 @@
 package reversi;
 
+import framework.Board;
+import framework.Framework;
+
 import java.util.ArrayList;
 
-public class Reversi{     //extends framework!!
+public class Reversi extends Framework{     //extends framework!!
 
     ArrayList<Points> piecesToTurn = new ArrayList<>();
 
-    public Reversi(int[][] field){
-        //super(field);
+    public Reversi( int[][] field, Board board){
+        super(board);
     }
 
     public int[][] doMove(int[][] field, int lastMove){ // moet aangeroepen worden van buitenaf
