@@ -38,7 +38,7 @@ public class GameEngine {
             String name = optionlist.get("name");
             stage.setTitle(name);
             try {
-                board.start(stage, field);
+                board.start(stage, field, name);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -47,7 +47,8 @@ public class GameEngine {
             setField(3, 3);
             board = new Board();
             try {
-                board.start(stage, field);
+                String name = optionlist.get("name");
+                board.start(stage, field, name);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -80,7 +81,8 @@ public class GameEngine {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-
+                                    board.drawBoard(field);
+                                    showField();
                                 }
                             });
                         }
@@ -137,8 +139,8 @@ public class GameEngine {
         return (((move[1]) * field.length) + move[0]);
     }
     private int[] calculateMoveToCoordinates(int move) {
-        int x = (move/(field.length));
-        int y = move%(field.length);
+        int y = (move/(field.length));
+        int x = move%(field.length);
         return new int[] {x, y};
     }
 
@@ -159,6 +161,7 @@ public class GameEngine {
                 } else {
                     if (value == 2) {
                         System.out.println("vijandig");
+                        field[length][width] = value;
                     } else {
                         if (value == getState(length, width)) {
                             System.out.println("!: Dit vakje is al van jou, probeer een ander vakje");

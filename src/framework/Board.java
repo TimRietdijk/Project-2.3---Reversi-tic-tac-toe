@@ -55,10 +55,11 @@ public class Board {
 
     public void drawBoard(int[][] field){
 
-        for(int x = 0; x < field.length; x++){
-            for(int y = 0; y < field[1].length; y++) {                          // later nog even terug komen om te kijken of de field.length en de field[1].length op de juiste plaats staan
+        for(int y = 0; y < field.length; y++){
+            for(int x = 0; x < field[1].length; x++) {                          // later nog even terug komen om te kijken of de field.length en de field[1].length op de juiste plaats staan
                 Rectangle rect = new Rectangle(x, y, 200, 200);
                 rect.setOnMouseClicked((e) -> fieldClicked(rect));
+
                 rect.setFill(Color.WHITE);
                 rect.setStroke(Color.BLACK);
                 if(field[x][y] != 0){
@@ -70,11 +71,12 @@ public class Board {
     }
 
 
-    public void start(Stage primaryStage, int[][] field) throws Exception {
+    public void start(Stage primaryStage, int[][] field, String name) throws Exception {
         moveMade = false;
         gridPane = new GridPane();
         Scene scene = new Scene(gridPane);
         drawBoard(field);
+        primaryStage.setTitle(name);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
