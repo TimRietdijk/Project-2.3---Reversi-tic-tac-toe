@@ -149,11 +149,11 @@ public class GameEngine {
         return field;
     }
 
-    public void setState(int length, int width, int value) {
-        if (length >= field.length) {
+    public void setState(int x, int y, int value) {
+        if (x >= field.length) {
             System.out.println("error: the given position does not exist on this board");
         } else {
-            if (width >= field[1].length) {
+            if (y >= field[1].length) {
                 System.out.println("error: the given position does not exist on this board");
             } else {
                 if (value >= numberofstates) {
@@ -161,12 +161,12 @@ public class GameEngine {
                 } else {
                     if (value == 2) {
                         System.out.println("vijandig");
-                        field[length][width] = value;
+                        field[x][y] = value;
                     } else {
-                        if (value == getState(length, width)) {
+                        if (value == getState(x, y)) {
                             System.out.println("!: Dit vakje is al van jou, probeer een ander vakje");
                         } else {
-                            field[length][width] = value;
+                            field[x][y] = value;
                         }
                     }
                 }
