@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class Board extends Application {
+public class Board {
 
     GridPane gridPane;
     ArrayList<Image> images = new ArrayList<Image>();
@@ -69,11 +69,7 @@ public class Board extends Application {
             }
         }
     }
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        int[][] field  = new int[3][3];
-        start(primaryStage, field);
-    }
+
 
     public void start(Stage primaryStage, int[][] field) throws Exception {
         gridPane = new GridPane();

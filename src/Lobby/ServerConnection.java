@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class ServerConnection extends Application {
     private Stage primaryStage = new Stage();
-
+    private Scene scene;
     public void start(Stage stage) throws IOException {
 
         GridPane pane = new GridPane();
@@ -58,6 +58,7 @@ public class ServerConnection extends Application {
                 String ip = textField1.getText();
                 String port = textField2.getText();
                 //Schrijven van ip adres en poort naar ini bestand
+                System.out.println("lobs");
                 try {
                     writeIniFile(ip, port);
                 } catch (IOException e1) {
@@ -65,15 +66,14 @@ public class ServerConnection extends Application {
                 }
                 label2.setText("Settings succesfully saved");
                 label2.setTextFill(Color.GREEN);
-                primaryStage.close();
                 Lobby lobby = new Lobby();
-                Stage primaryStage = new Stage();
-                lobby.start(primaryStage);
+                lobby.start(primaryStage, false);
+                System.out.println("lobs");
 
             }
         });
 
-        Scene scene = new Scene(pane, 200, 120);
+        scene = new Scene(pane, 200, 120);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Connection");
         primaryStage.setMinHeight(120);

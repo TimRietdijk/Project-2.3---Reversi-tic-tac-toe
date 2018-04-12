@@ -4,6 +4,7 @@ import Framework.Framework;
 import Reversi.Reversi;
 import TicTacToe.TicTacToe;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import org.ini4j.Wini;
 
 import java.util.Map;
@@ -23,20 +24,25 @@ public class GameEngine {
     private int[] move;
     private int calculatedMove;
 
-    public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter) {
+    public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage) {
         String s = optionlist.get("Game");
         if (s.contains("Reversi")) {
             setField(8, 8);
-            framework = new Reversi(field);
+            framework = new Reversi(field, stage);
         } else if (s.contains("Tic-tac-toe")) {
             setField(3, 3);
-            framework = new TicTacToe(field);
+            framework = new TicTacToe(field, stage);
         }
         showField();
         jack = commandCenter;
         new Thread(new Runnable() {
             public void run() {
                 // receivedCommand houdt het ontvangen command van de server0
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 while (true) {
                     String s = jack.ReadReceived();
                     System.out.println(s);

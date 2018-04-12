@@ -26,8 +26,19 @@ public class Framework {
 	private String game;
 	private Board board;
 
-	protected Framework(int[][]field){
-		Application.launch(Board.class);
+	protected Framework(int[][]field, Stage stage){
+		Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+	    board = new Board();
+		try {
+			board.start(stage, field);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+            }
+});
 	}
 
 	public void updateboarddata(int[][] move) {

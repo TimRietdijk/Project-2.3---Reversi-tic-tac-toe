@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.IOException;
 
-public class Lobby extends Application{
+public class Lobby {
     private String game;
     private TextField textField;
     private ComboBox comboBox2;
@@ -33,7 +33,13 @@ public class Lobby extends Application{
     private Label loginStatus;
     private String user = "";
     private Map<String, String> optionlist;
-    public void start(Stage start) {
+    private Scene s;
+    private boolean gamestart;
+    private String read;
+    public void start(Stage fright, boolean start) {
+        gamestart = start;
+        optionlist = new HashMap<String, String>();
+        this.fright = fright;
         try {
             commandCenter = new CommandCenter();
         } catch (IOException e) {
@@ -62,29 +68,41 @@ public class Lobby extends Application{
             root.setCenter(nameset());
 
 
-            final Scene s = new Scene(root, 1000, 600);
-            fright = new Stage();
-            fright.setTitle("Lobby");
-            fright.setScene(s);
-            fright.show();
+             s = new Scene(root, 1000, 600);
+
+            this.fright.setTitle("Lobby");
+            this.fright.setScene(s);
+            this.fright.show();
 
             new Thread(new Runnable() {
                 public void run() {
                     // receivedCommand houdt het ontvangen command van de server
-                    while (fright.isShowing()) {
-                        String s = commandCenter.ReadReceived();
+                    while (!gamestart) {
+                        read = commandCenter.ReadReceived();
                         // Dit stuk vereist nog te veel tijd doordat commands gecheckt worden met if statements
-                        if(s.contains("SVR GAME CHALLENGE {")) {
+                        if(read.contains("SVR GAME CHALLENGE {")) {
                             PopUp challengePopUp = new PopUp();
                             try {
-                                challengePopUp.start(s, optionlist, commandCenter);
+                                String name = textField.getCharacters().toString();
+                                optionlist.put("name", name);
+                                challengePopUp.start(read, optionlist, commandCenter, fright);
+                                while(!challengePopUp.gamestarted());
+                                ;
+                                gamestart = true;
+
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
 
-                        System.out.println(s);
+                        System.out.println(read);
+                        if(read.contains("SVR GAME MATCH {PLAYERTOMOVE:")){
+                            gamestart = true;
+                            System.out.println("toodles");
+                            newGame();
+                        }
                     }
+
                 }
             }).start();
         } catch (IllegalStateException e) {
@@ -92,7 +110,9 @@ public class Lobby extends Application{
         }
     }
 
-
+        private void newGame(){
+            new GameEngine(optionlist, commandCenter, gamestart, fright);
+        }
         private HBox addHBox () {
             HBox hbox = new HBox();
             hbox.setPadding(new Insets(15, 12, 15, 12));
@@ -121,12 +141,10 @@ public class Lobby extends Application{
             String name = textField.getCharacters().toString();
             String option1 = comboBox1.getValue().toString();
             String option2 = comboBox2.getValue().toString();
-            Map<String, String> optionlist = new HashMap<String, String>();
             optionlist.put("name", name);
             optionlist.put("Game", game);
             optionlist.put("option1", option1);
             optionlist.put("option2", option2);
-            fright.close();
             // Speler uitdagen voor challenge
             try {
                 commandCenter.doChallenge(option1, game);
@@ -134,21 +152,6 @@ public class Lobby extends Application{
                 e.printStackTrace();
             }
             // Nieuwe thread om te wachten op accept challenge van tegenspeler
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while(!commandCenter.ReadReceived().contains("SVR GAME MATCH {PLAYERTOMOVE:")) {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    new GameEngine(optionlist, commandCenter);
-
-
-                }
-            }).start();
 
         }else{
             Pane root = new Pane();
@@ -157,7 +160,7 @@ public class Lobby extends Application{
             warning.setAlignment(Pos.CENTER);
             root.getChildren().addAll(warning);
             final Scene s = new Scene(root, 100, 20);
-            Stage fright = new Stage();
+
             fright.setTitle("Lobby");
             fright.setScene(s);
             fright.show();
@@ -280,21 +283,26 @@ public class Lobby extends Application{
         }
     }
 
-    /*
-    private void startGameEngine() {
-        GameEngine gameEngine = new GameEngine(optionlist, commandCenter);
-    }*/
 
+
+    public Stage getStagge(){
+        return fright;
+    }
 }
 
 class PopUp {
-
+    private boolean isIt = false;
+    private Stage primaryStage;
     private boolean accept = false;
-    public void start(String challenge, Map<String, String> optionlist, CommandCenter commandCenter) throws IOException {
+    private String gameType;
+    private Map<String, String> list;
+    private Stage stageFright;
+    public void start(String challenge, Map<String, String> optionlist, CommandCenter commandCenter, Stage stage) throws IOException {
         String challengeNumber = challenge.substring(challenge.indexOf("CHALLENGENUMBER: \"") + 18, challenge.indexOf("\", GAMETYPE:"));
         String challenger = challenge.substring(challenge.indexOf("CHALLENGER: \"") + 13, challenge.indexOf("\", CHALLENGENUMBER:"));
-        String gameType = challenge.substring(challenge.indexOf("GAMETYPE: \"") + 11, challenge.indexOf("\"}"));
-
+        gameType = challenge.substring(challenge.indexOf("GAMETYPE: \"") + 11, challenge.indexOf("\"}"));
+        list = optionlist;
+        stageFright = stage;
         GridPane pane = new GridPane();
         // Informatie
         Label label1 = new Label();
@@ -314,7 +322,13 @@ class PopUp {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-                new GameEngine(optionlist, commandCenter);
+                isIt = true;;
+
+                list.put("Game", gameType);
+                list.put("option1", "dumdum");
+                list.put("option2", "gumgum");
+                primaryStage.close();
+                new GameEngine(list, commandCenter, isIt, stageFright);
             }
 
         });
@@ -323,7 +337,7 @@ class PopUp {
             @Override
             public void run() {
 
-                Stage primaryStage = new Stage();
+                primaryStage = new Stage();
                 Scene scene = new Scene(pane, 250, 70);
                 primaryStage.setScene(scene);
                 primaryStage.setTitle("Challenge "+challengeNumber);
@@ -333,6 +347,9 @@ class PopUp {
 
             }
         });
+    }
+    public boolean gamestarted() {
+        return isIt;
     }
     public boolean accepted() {
         return accept;
