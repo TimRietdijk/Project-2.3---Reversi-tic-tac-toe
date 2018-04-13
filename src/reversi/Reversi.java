@@ -1,36 +1,32 @@
 package reversi;
 
-//import Framework.Framework;
+import framework.Board;
+import framework.Framework;
 
-import reversi.Points;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 
-public class Reversi{     //extends framework!!
+public class Reversi extends Framework{     //extends framework!!
+
     ArrayList<Points> piecesToTurn = new ArrayList<>();
     ArrayList<Points> enemyPieces = new ArrayList<>();
     ArrayList<Points> emptySpacesNeighbouringEnemy = new ArrayList<>();
     ArrayList<Points> possibleMoves = new ArrayList<>();
 
-    public Reversi(int[][] field){
-        //super(field);
-}
-    public int getPlayerState(int[][] field, int[] coordinates){
-        int value = field[coordinates[0]][coordinates[1]];
-        return value;
+    public Reversi(int[][] field, Board board){
+        super(board);
+        field[3][3] = 2;
+        field[4][4] = 2;
+        field[4][3] = 1;
+        field[3][4] = 1;
     }
 
-
-    public void addPiecesToTurn(int x, int y){
-        piecesToTurn.add(new Points(x,y));
+    public int[][] doMove(int[][] field, int lastMove){ // moet aangeroepen worden van buitenaf
+        int[][] temp = calculating(field, lastMove);
+        return temp;
     }
-    public void addEnemyPieces(int x, int y) {enemyPieces.add(new Points(x,y));}
-    public void addPossibleEmptyPieces(int x, int y) {emptySpacesNeighbouringEnemy.add(new Points(x,y));}
-    public void addPossibleMoves(int x, int y) {possibleMoves.add(new Points(x,y)); }
 
-    public void calculating(int[][] field, int move){
+    public ArrayList<Points> getPiecesTurnedByMove(int[][] field, int move){
+        piecesToTurn = new ArrayList<>();
         int[] coordinates = calculateMoveToCoordinates(field, move);
         int player = getPlayerState(field, coordinates);
         north(field, player, coordinates);
@@ -41,7 +37,35 @@ public class Reversi{     //extends framework!!
         southEast(field,player,coordinates);
         northWest(field,player,coordinates);
         southWest(field,player,coordinates);
-        createUpdatedField(field);
+        return piecesToTurn;
+    }
+
+    private int getPlayerState(int[][] field, int[] coordinates){
+        int value = field[coordinates[0]][coordinates[1]];
+        return value;
+    }
+
+    private void addPiecesToTurn(int x, int y){
+        piecesToTurn.add(new Points(x,y));
+    }
+    public void addEnemyPieces(int x, int y) {enemyPieces.add(new Points(x,y));}
+    public void addPossibleEmptyPieces(int x, int y) {emptySpacesNeighbouringEnemy.add(new Points(x,y));}
+    public void addPossibleMoves(int x, int y) {possibleMoves.add(new Points(x,y)); }
+
+
+    private int[][] calculating(int[][] field, int move){
+        piecesToTurn = new ArrayList<>();
+        int[] coordinates = calculateMoveToCoordinates(field, move);
+        int player = getPlayerState(field, coordinates);
+        north(field, player, coordinates);
+        south(field, player, coordinates);
+        east(field, player, coordinates);
+        west(field, player, coordinates);
+        northEast(field,player,coordinates);
+        southEast(field,player,coordinates);
+        northWest(field,player,coordinates);
+        southWest(field,player,coordinates);
+        return createUpdatedField(field, player);
     }
 
     public void calculatingPossible(int[][] field, int move, int player){
@@ -143,10 +167,12 @@ public class Reversi{     //extends framework!!
         //return enemyPieces;
     }
 
-    public void createUpdatedField(int[][] field){
-        for (int i = 0; i < piecesToTurn.size(); i++) {
-            System.out.println(piecesToTurn.get(i).getX()+" : "+piecesToTurn.get(i).getY());
+    private int[][] createUpdatedField(int[][] field, int player){
+        int[][] tempField = field;
+        for(Points p : piecesToTurn) {
+            tempField[p.getX()][p.getY()] = player;
         }
+        return tempField;
     }
 
     public void northpossible(int[][] field, int player, int[] coordinates) {
@@ -385,7 +411,7 @@ public class Reversi{     //extends framework!!
             }
         }
     }
-    public void northEast(int[][] field, int player, int[] coordinates) {
+    private void northEast(int[][] field, int player, int[] coordinates) {
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
@@ -409,8 +435,8 @@ public class Reversi{     //extends framework!!
                         }
         }catch (ArrayIndexOutOfBoundsException e){}
 
-        }
-    public void east(int[][] field, int player, int[] coordinates){
+    }
+    private void east(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
@@ -433,7 +459,7 @@ public class Reversi{     //extends framework!!
             }
         }
     }
-    public void southEast(int[][] field, int player, int[] coordinates){
+    private void southEast(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
@@ -459,7 +485,7 @@ public class Reversi{     //extends framework!!
         } catch (ArrayIndexOutOfBoundsException e){}
 
     }
-    public void south(int[][] field, int player, int[] coordinates){
+    private void south(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
@@ -482,7 +508,7 @@ public class Reversi{     //extends framework!!
             }
         }
     }
-    public void southWest(int[][] field, int player, int[] coordinates){
+    private void southWest(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
@@ -510,7 +536,7 @@ public class Reversi{     //extends framework!!
         }
 
     }
-    public void west(int[][] field, int player, int[] coordinates){
+    private void west(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
@@ -533,7 +559,7 @@ public class Reversi{     //extends framework!!
             }
         }
     }
-    public void northWest(int[][] field, int player, int[] coordinates){
+    private void northWest(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
@@ -557,7 +583,6 @@ public class Reversi{     //extends framework!!
             }
         }
         catch (ArrayIndexOutOfBoundsException e){
-
         }
 
 
@@ -576,50 +601,41 @@ public class Reversi{     //extends framework!!
     }
 
 }
-class Main{
+/*class Main{
 
     public static void main(String args[]) {
         int[][] board = new int[8][8];
-//        board[5][2] = 1;
-//        board[5][3] = 2;
-//        board[5][0] = 1;
-//        board[5][1] = 2;
-//        board[6][2] = 2;
-//        board[7][2] = 1;
-//        board[5][3] = 2;
-//        board[5][4] = 2;
-//        board[5][5] = 2;
-//        board[5][6] = 2;
-//        board[5][7] = 1;
-//        board[4][2] = 2;
-//        board[3][2] = 2;
-//        board[2][2] = 2;
-//        board[1][2] = 2;
-//        board[0][2] = 1;
-//        board[6][1] = 2;
-//        board[7][0] = 1;
-//        board[6][3] = 2;
-//        board[7][4] = 1;
-//        board[4][3] = 2;
-//        board[3][4] = 2;
-//        board[2][5] = 2;
-//        board[1][6] = 2;
-//        board[0][7] = 1;
-//        board[4][1] = 2;
-          board[4][4] = 1;
-          board[3][4] = 2;
-          board[3][5] = 2;
-          board[2][4] = 1;
-          //board[4][6] = 2;
-          //board[4][3] = 2;
-//          board[4][4] = 2;
-//          board[4][4] = 2;
+        board[5][2] = 1;
+        board[5][3] = 2;
+        board[5][0] = 1;
+        board[5][1] = 2;
+        board[6][2] = 2;
+        board[7][2] = 1;
+        board[5][3] = 2;
+        board[5][4] = 2;
+        board[5][5] = 2;
+        board[5][6] = 2;
+        board[5][7] = 1;
+        board[4][2] = 2;
+        board[3][2] = 2;
+        board[2][2] = 2;
+        board[1][2] = 2;
+        board[0][2] = 1;
+        board[6][1] = 2;
+        board[7][0] = 1;
+        board[6][3] = 2;
+        board[7][4] = 1;
+        board[4][3] = 2;
+        board[3][4] = 2;
+        board[2][5] = 2;
+        board[1][6] = 2;
+        board[0][7] = 1;
+        board[4][1] = 2;
+        board[3][0] = 1;
 
 
-
-
-        Reversi reversi = new Reversi(board);
+        reversi reversi = new reversi(board);
         reversi.doMove(board);
     }
-}
+}*/
 
