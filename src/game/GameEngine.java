@@ -79,7 +79,7 @@ public class GameEngine {
                         int pos = Integer.valueOf(parse);
                         int[] work = calculateMoveToCoordinates(pos);
                         //if(field[work[0]][work[1]] == 0){
-                            boolean valid = setState(work[0], work[1], 2);
+                            boolean valid = checkState(work[0], work[1], 2);
                             if (valid){
                                 field[work[0]][work[1]] = 2;
                             }
@@ -130,7 +130,7 @@ public class GameEngine {
             System.out.println("hij doet dit");
             int[] coordinates = board.getMove();
             calculatedMove = calculateMoveToPosition(coordinates);
-            boolean exec = setState(coordinates[0], coordinates[1], 1);
+            boolean exec = checkState(coordinates[0], coordinates[1], 1);
             if (exec) {
                 if(game.equals("Reversi")){ ;
                     field = reversi.doMove(getField(), calculatedMove);
@@ -165,7 +165,7 @@ public class GameEngine {
         return field;
     }
 
-    public boolean setState(int x, int y, int value) {
+    public boolean checkState(int x, int y, int value) {
         if (x >= field.length) {
             System.out.println("error: the given position does not exist on this board");
             return false;
