@@ -48,6 +48,7 @@ public class Reversi extends Framework{     //extends framework!!
     private void addPiecesToTurn(int x, int y){
         piecesToTurn.add(new Points(x,y));
     }
+
     public void addEnemyPieces(int x, int y) {enemyPieces.add(new Points(x,y));}
     public void addPossibleEmptyPieces(int x, int y) {emptySpacesNeighbouringEnemy.add(new Points(x,y));}
     public void addPossibleMoves(int x, int y) {possibleMoves.add(new Points(x,y)); }
@@ -199,6 +200,7 @@ public class Reversi extends Framework{     //extends framework!!
             }
         }
     }
+
     public void northEastpossible(int[][] field, int player, int[] coordinates) {
         int counter = 0;
         int currentX = coordinates[0];
@@ -223,8 +225,8 @@ public class Reversi extends Framework{     //extends framework!!
                             }
                         }
         }catch (ArrayIndexOutOfBoundsException e){}
-
     }
+
     public void eastpossible(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
@@ -249,6 +251,7 @@ public class Reversi extends Framework{     //extends framework!!
             }
         }
     }
+
     public void southEastpossible(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
@@ -274,8 +277,8 @@ public class Reversi extends Framework{     //extends framework!!
                 }
             }
         } catch (ArrayIndexOutOfBoundsException e){}
-
     }
+
     public void southpossible(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
@@ -301,6 +304,7 @@ public class Reversi extends Framework{     //extends framework!!
             }
         }
     }
+
     public void southWestpossible(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
@@ -326,11 +330,9 @@ public class Reversi extends Framework{     //extends framework!!
                     }
                 }
             }
-        }catch (ArrayIndexOutOfBoundsException e){
-
-        }
-
+        }catch (ArrayIndexOutOfBoundsException e){}
     }
+
     public void westpossible(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
@@ -356,6 +358,7 @@ public class Reversi extends Framework{     //extends framework!!
             }
         }
     }
+
     public void northWestpossible(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
@@ -381,11 +384,7 @@ public class Reversi extends Framework{     //extends framework!!
                 }
             }
         }
-        catch (ArrayIndexOutOfBoundsException e){
-
-        }
-
-
+        catch (ArrayIndexOutOfBoundsException e){}
     }
 
     public void north(int[][] field, int player, int[] coordinates) {
@@ -411,6 +410,7 @@ public class Reversi extends Framework{     //extends framework!!
             }
         }
     }
+
     private void northEast(int[][] field, int player, int[] coordinates) {
         int counter = 0;
         int currentX = coordinates[0];
@@ -434,8 +434,8 @@ public class Reversi extends Framework{     //extends framework!!
                             }
                         }
         }catch (ArrayIndexOutOfBoundsException e){}
-
     }
+
     private void east(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
@@ -459,6 +459,7 @@ public class Reversi extends Framework{     //extends framework!!
             }
         }
     }
+
     private void southEast(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
@@ -483,8 +484,8 @@ public class Reversi extends Framework{     //extends framework!!
                 }
             }
         } catch (ArrayIndexOutOfBoundsException e){}
-
     }
+
     private void south(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
@@ -508,6 +509,7 @@ public class Reversi extends Framework{     //extends framework!!
             }
         }
     }
+
     private void southWest(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
@@ -531,11 +533,9 @@ public class Reversi extends Framework{     //extends framework!!
                     }
                 }
             }
-        }catch (ArrayIndexOutOfBoundsException e){
-
-        }
-
+        }catch (ArrayIndexOutOfBoundsException e){}
     }
+
     private void west(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
@@ -559,6 +559,7 @@ public class Reversi extends Framework{     //extends framework!!
             }
         }
     }
+
     private void northWest(int[][] field, int player, int[] coordinates){
         int counter = 0;
         int currentX = coordinates[0];
@@ -582,24 +583,18 @@ public class Reversi extends Framework{     //extends framework!!
                 }
             }
         }
-        catch (ArrayIndexOutOfBoundsException e){
-        }
-
-
+        catch (ArrayIndexOutOfBoundsException e){}
     }
-
 
     private int[] calculateMoveToCoordinates(int[][] field, int move) {
         int x = (move / (field.length));
         int y = move%(field.length);
         return new int[]{x, y};
-
     }
     public void doMove(int[][] board){
         calculating(board, 20);
         calculatingPossibleMoves(board, 1,2);
     }
-
 }
 /*class Main{
 
