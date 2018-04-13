@@ -79,7 +79,10 @@ public class GameEngine {
                         int pos = Integer.valueOf(parse);
                         int[] work = calculateMoveToCoordinates(pos);
                         //if(field[work[0]][work[1]] == 0){
-                            setState(work[0], work[1], 2);
+                            boolean valid = setState(work[0], work[1], 2);
+                            if (valid){
+                                field[work[0]][work[1]] = 2;
+                            }
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -123,21 +126,21 @@ public class GameEngine {
     }
 
     public void doMove() throws IOException {
-        if(game.equals("Reversi")){
-            System.out.println("hij doet dit");
-            int[] coordinates = board.getMove();
-            calculatedMove = calculateMoveToPosition(coordinates);
-            field = reversi.doMove(getField(), calculatedMove);
-            jack.doMove(calculatedMove);
-            Platform.runLater(() -> board.drawBoard(field));
-        }else {
+
             System.out.println("hij doet dit");
             int[] coordinates = board.getMove();
             calculatedMove = calculateMoveToPosition(coordinates);
             boolean exec = setState(coordinates[0], coordinates[1], 1);
             if (exec) {
+                if(game.equals("Reversi")){ ;
+                    field = reversi.doMove(getField(), calculatedMove);
+                    jack.doMove(calculatedMove);
+                    Platform.runLater(() -> board.drawBoard(field));
+                }else {
+                    field[coordinates[0]][coordinates[1]] = 1;
                 jack.doMove(calculatedMove);
                 Platform.runLater(() -> board.drawBoard(field));
+
             }
         }
     }
@@ -184,7 +187,6 @@ public class GameEngine {
                             System.out.println("!: Dit vakje is al van jou, probeer een ander vakje");
                             return false;
                         } else {
-                            field[x][y] = value;
                             return true;
                         }
                     }
