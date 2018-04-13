@@ -47,7 +47,7 @@ public class GameEngine {
             String name = optionlist.get("name");
             stage.setTitle(name);
             try {
-                board.start(stage, field, name);
+                board.start(stage, field, name, game);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -57,12 +57,12 @@ public class GameEngine {
             board = new Board();
             try {
                 String name = optionlist.get("name");
-                board.start(stage, field, name);
+                board.start(stage, field, name, game);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             framework = new TicTacToe(board);
-            }else{
+        }else{
             System.out.println("Hopscotch");
         }
 
@@ -92,17 +92,17 @@ public class GameEngine {
                         int pos = Integer.valueOf(parse);
                         int[] work = calculateMoveToCoordinates(pos);
                         //if(field[work[0]][work[1]] == 0){
-                            boolean valid = checkState(work[0], work[1], 2);
-                            if (valid){
-                                field[work[0]][work[1]] = 2;
+                        boolean valid = checkState(work[0], work[1], 2);
+                        if (valid){
+                            field[work[0]][work[1]] = 2;
+                        }
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                board.drawBoard(field, game);
+                                showField();
                             }
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    board.drawBoard(field);
-                                    showField();
-                                }
-                            });
+                        });
                         //}
                     }
                 }
@@ -140,19 +140,19 @@ public class GameEngine {
 
     public void doMove() throws IOException {
 
-            System.out.println("hij doet dit");
-            int[] coordinates = board.getMove();
-            calculatedMove = calculateMoveToPosition(coordinates);
-            boolean exec = checkState(coordinates[0], coordinates[1], 1);
-            if (exec) {
-                if(game.equals("Reversi")){ ;
-                    field = reversi.doMove(getField(), calculatedMove);
-                    jack.doMove(calculatedMove);
-                    Platform.runLater(() -> board.drawBoard(field));
-                }else {
-                    field[coordinates[0]][coordinates[1]] = 1;
+        System.out.println("hij doet dit");
+        int[] coordinates = board.getMove();
+        calculatedMove = calculateMoveToPosition(coordinates);
+        boolean exec = checkState(coordinates[0], coordinates[1], 1);
+        if (exec) {
+            if(game.equals("Reversi")){ ;
+                field = reversi.doMove(getField(), calculatedMove);
                 jack.doMove(calculatedMove);
-                Platform.runLater(() -> board.drawBoard(field));
+                Platform.runLater(() -> board.drawBoard(field, game));
+            }else {
+                field[coordinates[0]][coordinates[1]] = 1;
+                jack.doMove(calculatedMove);
+                Platform.runLater(() -> board.drawBoard(field, game));
 
             }
         }
@@ -247,7 +247,7 @@ class PinUp{
                     }
                 });
             }
-            });
+        });
         pane.add(button1, 0, 1);
         Platform.runLater(new Runnable() {
             @Override
