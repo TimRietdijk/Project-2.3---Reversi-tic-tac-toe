@@ -2,6 +2,13 @@ package game;
 
 import framework.Board;
 import framework.Framework;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import lobby.Lobby;
 import reversi.Reversi;
 import ticTacToe.TicTacToe;
 import javafx.application.Platform;
@@ -74,6 +81,12 @@ public class GameEngine {
                     String s = jack.ReadReceived();
                     System.out.println(s);
                     String parse = jack.commandHandling(s, name);
+                    if(s.contains("WIN") ){
+                        PinUp pinUp = new PinUp(stage, "won");
+                    }else if(s.contains("LOSS")){
+                        PinUp pinUp = new PinUp(stage, "lossed");
+                    }
+
 
                     if (parse != null) {
                         int pos = Integer.valueOf(parse);
@@ -207,5 +220,48 @@ public class GameEngine {
                 System.out.println("Values at arr[" + i + "][" + j + "] is " + field[i][j]);
             }
         }
+    }
+}
+
+class PinUp{
+
+    public PinUp(Stage primaryStage, String outcome){
+        GridPane pane = new GridPane();
+        // Informatie
+        Label label1 = new Label();
+        pane.add(label1, 0, 0);
+
+        label1.setText("you " + outcome);
+
+        Button button1 = new Button();
+        button1.setText("Accept");
+        button1.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Lobby lobby = new Lobby();
+                        lobby.start(primaryStage, false);
+                    }
+                });
+            }
+            });
+        pane.add(button1, 0, 1);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                Scene scene = new Scene(pane, 250, 70);
+                primaryStage.setScene(scene);
+                primaryStage.setTitle("you" + outcome);
+                primaryStage.setMinHeight(70);
+                primaryStage.setMinWidth(250);
+                primaryStage.show();
+            }
+
+        });
+
     }
 }
