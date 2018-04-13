@@ -2,6 +2,13 @@ package game;
 
 import framework.Board;
 import framework.Framework;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import lobby.Lobby;
 import reversi.Reversi;
 import ticTacToe.TicTacToe;
 import javafx.application.Platform;
@@ -40,7 +47,7 @@ public class GameEngine {
             String name = optionlist.get("name");
             stage.setTitle(name);
             try {
-                board.start(stage, field, name);
+                board.start(stage, field, name, game);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -50,12 +57,12 @@ public class GameEngine {
             board = new Board();
             try {
                 String name = optionlist.get("name");
-                board.start(stage, field, name);
+                board.start(stage, field, name, game);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             framework = new TicTacToe(board);
-            }else{
+        }else{
             System.out.println("Hopscotch");
         }
 
@@ -74,22 +81,28 @@ public class GameEngine {
                     String s = jack.ReadReceived();
                     System.out.println(s);
                     String parse = jack.commandHandling(s, name);
+                    if(s.contains("WIN") ){
+                        PinUp pinUp = new PinUp(stage, "won");
+                    }else if(s.contains("LOSS")){
+                        PinUp pinUp = new PinUp(stage, "lossed");
+                    }
+
 
                     if (parse != null) {
                         int pos = Integer.valueOf(parse);
                         int[] work = calculateMoveToCoordinates(pos);
                         //if(field[work[0]][work[1]] == 0){
-                            boolean valid = checkState(work[0], work[1], 2);
-                            if (valid){
-                                field[work[0]][work[1]] = 2;
+                        boolean valid = checkState(work[0], work[1], 2);
+                        if (valid){
+                            field[work[0]][work[1]] = 2;
+                        }
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                board.drawBoard(field, game);
+                                showField();
                             }
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    board.drawBoard(field);
-                                    showField();
-                                }
-                            });
+                        });
                         //}
                     }
                 }
@@ -127,19 +140,19 @@ public class GameEngine {
 
     public void doMove() throws IOException {
 
-            System.out.println("hij doet dit");
-            int[] coordinates = board.getMove();
-            calculatedMove = calculateMoveToPosition(coordinates);
-            boolean exec = checkState(coordinates[0], coordinates[1], 1);
-            if (exec) {
-                if(game.equals("Reversi")){ ;
-                    field = reversi.doMove(getField(), calculatedMove);
-                    jack.doMove(calculatedMove);
-                    Platform.runLater(() -> board.drawBoard(field));
-                }else {
-                    field[coordinates[0]][coordinates[1]] = 1;
+        System.out.println("hij doet dit");
+        int[] coordinates = board.getMove();
+        calculatedMove = calculateMoveToPosition(coordinates);
+        boolean exec = checkState(coordinates[0], coordinates[1], 1);
+        if (exec) {
+            if(game.equals("Reversi")){ ;
+                field = reversi.doMove(getField(), calculatedMove);
                 jack.doMove(calculatedMove);
-                Platform.runLater(() -> board.drawBoard(field));
+                Platform.runLater(() -> board.drawBoard(field, game));
+            }else {
+                field[coordinates[0]][coordinates[1]] = 1;
+                jack.doMove(calculatedMove);
+                Platform.runLater(() -> board.drawBoard(field, game));
 
             }
         }
@@ -207,5 +220,48 @@ public class GameEngine {
                 System.out.println("Values at arr[" + i + "][" + j + "] is " + field[i][j]);
             }
         }
+    }
+}
+
+class PinUp{
+
+    public PinUp(Stage primaryStage, String outcome){
+        GridPane pane = new GridPane();
+        // Informatie
+        Label label1 = new Label();
+        pane.add(label1, 0, 0);
+
+        label1.setText("you " + outcome);
+
+        Button button1 = new Button();
+        button1.setText("Accept");
+        button1.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Lobby lobby = new Lobby();
+                        lobby.start(primaryStage, false);
+                    }
+                });
+            }
+        });
+        pane.add(button1, 0, 1);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                Scene scene = new Scene(pane, 250, 70);
+                primaryStage.setScene(scene);
+                primaryStage.setTitle("you" + outcome);
+                primaryStage.setMinHeight(70);
+                primaryStage.setMinWidth(250);
+                primaryStage.show();
+            }
+
+        });
+
     }
 }
