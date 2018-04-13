@@ -1,4 +1,4 @@
-package Reversi;
+package reversi;
 
 //import Framework.Framework;
 
@@ -11,8 +11,8 @@ import java.util.Collections;
 public class Reversi{     //extends framework!!
     ArrayList<Points> piecesToTurn = new ArrayList<>();
     ArrayList<Points> enemyPieces = new ArrayList<>();
-    ArrayList<Points> EmptyspacesNeighbouringEnemy = new ArrayList<>();
-    ArrayList<Points> Possiblemoves = new ArrayList<>();
+    ArrayList<Points> emptySpacesNeighbouringEnemy = new ArrayList<>();
+    ArrayList<Points> possibleMoves = new ArrayList<>();
 
     public Reversi(int[][] field){
         //super(field);
@@ -27,8 +27,8 @@ public class Reversi{     //extends framework!!
         piecesToTurn.add(new Points(x,y));
     }
     public void addEnemyPieces(int x, int y) {enemyPieces.add(new Points(x,y));}
-    public void addPossibleEmptyPieces(int x, int y) {EmptyspacesNeighbouringEnemy.add(new Points(x,y));}
-    public void addPossibleMoves(int x, int y) {Possiblemoves.add(new Points(x,y)); }
+    public void addPossibleEmptyPieces(int x, int y) {emptySpacesNeighbouringEnemy.add(new Points(x,y));}
+    public void addPossibleMoves(int x, int y) {possibleMoves.add(new Points(x,y)); }
 
     public void calculating(int[][] field, int move){
         int[] coordinates = calculateMoveToCoordinates(field, move);
@@ -60,22 +60,22 @@ public class Reversi{     //extends framework!!
     public void calculatingPossibleMoves(int[][]field, int player, int enemy){
         getEnemyPieces(field, enemy);
         findEmptyNeighbouringEnemy(field, enemy);
-        for (int i = 0; i < EmptyspacesNeighbouringEnemy.size(); i++) {
+        for (int i = 0; i < emptySpacesNeighbouringEnemy.size(); i++) {
             //System.out.println("Dit is een mogelijke move, Mischien..."+EmptyspacesNeighbouringEnemy.get(i).getX()+" : "+EmptyspacesNeighbouringEnemy.get(i).getY());
         }
-        for (int i = 0; i < EmptyspacesNeighbouringEnemy.size(); i++) {
+        for (int i = 0; i < emptySpacesNeighbouringEnemy.size(); i++) {
             int move = calculateMoveToPosition(field, i);
             //System.out.println("dit is move: "+ move);
             calculatingPossible(field, move, player);
 
         }
-        for (int i = 0; i < Possiblemoves.size(); i++) {
-            System.out.println(Possiblemoves.get(i).getX()+" : "+Possiblemoves.get(i).getY());
+        for (int i = 0; i < possibleMoves.size(); i++) {
+            System.out.println(possibleMoves.get(i).getX()+" : "+possibleMoves.get(i).getY());
         }
     }
 
     private int calculateMoveToPosition(int[][] field, int i) {
-        return (((EmptyspacesNeighbouringEnemy.get(i).getX()) * field.length) + EmptyspacesNeighbouringEnemy.get(i).getY());
+        return (((emptySpacesNeighbouringEnemy.get(i).getX()) * field.length) + emptySpacesNeighbouringEnemy.get(i).getY());
     }
 
     public ArrayList findEmptyNeighbouringEnemy(int[][] field, int enemy){
@@ -129,7 +129,7 @@ public class Reversi{     //extends framework!!
             }
             catch (ArrayIndexOutOfBoundsException e){};
         }
-        return EmptyspacesNeighbouringEnemy;
+        return emptySpacesNeighbouringEnemy;
     }
 
     public void getEnemyPieces(int[][] field, int enemy){
