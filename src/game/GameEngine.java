@@ -18,6 +18,7 @@ import java.util.Map;
 public class GameEngine {
 
     private  boolean gamestart;
+    private String game;
     private Wini ini;
     private String name;
     protected int[][] field;
@@ -25,14 +26,15 @@ public class GameEngine {
     protected String[] states = new String[100];
     private CommandCenter jack;
     private Framework framework;
+    private Reversi reversi;
     private int[] move;
     private int calculatedMove;
     private Board board;
     private java.lang.reflect.Method method;
     public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage) {
-        String s = optionlist.get("game");
+        game = optionlist.get("game");
         name = optionlist.get("name");
-        if (s.contains("Reversi")) {
+        if (game.contains("Reversi")) {
             setField(8, 8);
             board = new Board();
             String name = optionlist.get("name");
@@ -42,8 +44,8 @@ public class GameEngine {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            framework = new Reversi(field, board);
-        } else if (s.contains("Tic-tac-toe")) {
+            reversi = new Reversi(field, board);
+        } else if (game.contains("Tic-tac-toe")) {
             setField(3, 3);
             board = new Board();
             try {
@@ -121,15 +123,23 @@ public class GameEngine {
     }
 
     public void doMove() throws IOException {
-        System.out.println("hij doet dit");
-        int[] coordinates = board.getMove();
-        calculatedMove = calculateMoveToPosition(coordinates);
-        boolean exec = setState(coordinates[0], coordinates[1], 1);
-            if(exec){
+        if(game.equals("Reversi")){
+            System.out.println("hij doet dit");
+            int[] coordinates = board.getMove();
+            calculatedMove = calculateMoveToPosition(coordinates);
+            field = reversi.doMove(getField(), calculatedMove);
+            jack.doMove(calculatedMove);
+            Platform.runLater(() -> board.drawBoard(field));
+        }else {
+            System.out.println("hij doet dit");
+            int[] coordinates = board.getMove();
+            calculatedMove = calculateMoveToPosition(coordinates);
+            boolean exec = setState(coordinates[0], coordinates[1], 1);
+            if (exec) {
                 jack.doMove(calculatedMove);
                 Platform.runLater(() -> board.drawBoard(field));
             }
-
+        }
     }
 
     public void setField(int x, int y) {
