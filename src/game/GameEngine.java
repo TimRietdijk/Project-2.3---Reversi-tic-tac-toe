@@ -2,11 +2,18 @@ package game;
 
 import framework.Board;
 import framework.Framework;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import lobby.Lobby;
 import reversi.Reversi;
-import ticTacToe.TicTacToe;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.ini4j.Wini;
+import ticTacToe.TicTacToe;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -18,41 +25,44 @@ import java.util.Map;
 public class GameEngine {
 
     private  boolean gamestart;
-    private Wini ini;
     private String game;
+    private Wini ini;
+    private String name;
     protected int[][] field;
     private int numberofstates = 3;
     protected String[] states = new String[100];
     private CommandCenter jack;
     private Framework framework;
+    private Reversi reversi;
     private int[] move;
     private int calculatedMove;
     private Board board;
     private java.lang.reflect.Method method;
     public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage) {
-        String s = optionlist.get("game");
-
-        if (s.contains("reversi")) {
+        game = optionlist.get("game");
+        name = optionlist.get("name");
+        if (game.contains("Reversi")) {
             setField(8, 8);
             board = new Board();
             String name = optionlist.get("name");
             stage.setTitle(name);
             try {
-                board.start(stage, field);
+                board.start(stage, field, name, game);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            framework = new Reversi(field, board);
-        } else if (s.contains("Tic-tac-toe")) {
+            reversi = new Reversi(field, board);
+        } else if (game.contains("Tic-tac-toe")) {
             setField(3, 3);
             board = new Board();
             try {
-                board.start(stage, field);
+                String name = optionlist.get("name");
+                board.start(stage, field, name, game);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             framework = new TicTacToe(board);
-            }else{
+        }else{
             System.out.println("Hopscotch");
         }
 
@@ -70,20 +80,30 @@ public class GameEngine {
                 while (gamestart) {
                     String s = jack.ReadReceived();
                     System.out.println(s);
-                    String parse = jack.commandHandling(s);
+                    String parse = jack.commandHandling(s, name);
+                    if(s.contains("WIN") ){
+                        PinUp pinUp = new PinUp(stage, "won");
+                    }else if(s.contains("LOSS")){
+                        PinUp pinUp = new PinUp(stage, "lossed");
+                    }
+
 
                     if (parse != null) {
                         int pos = Integer.valueOf(parse);
                         int[] work = calculateMoveToCoordinates(pos);
-                        if(field[work[0]][work[1]] == 0){
-                            setState(work[0], work[1], 2);
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                }
-                            });
+                        //if(field[work[0]][work[1]] == 0){
+                        boolean valid = checkState(work[0], work[1], 2);
+                        if (valid){
+                            field[work[0]][work[1]] = 2;
                         }
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                board.drawBoard(field, game);
+                                showField();
+                            }
+                        });
+                        //}
                     }
                 }
             }
@@ -119,12 +139,23 @@ public class GameEngine {
     }
 
     public void doMove() throws IOException {
+
         System.out.println("hij doet dit");
         int[] coordinates = board.getMove();
         calculatedMove = calculateMoveToPosition(coordinates);
-        setState(coordinates[0], coordinates[1], 1);
-            jack.doMove(calculatedMove);
+        boolean exec = checkState(coordinates[0], coordinates[1], 1);
+        if (exec) {
+            if(game.equals("Reversi")){ ;
+                field = reversi.doMove(getField(), calculatedMove);
+                jack.doMove(calculatedMove);
+                Platform.runLater(() -> board.drawBoard(field, game));
+            }else {
+                field[coordinates[0]][coordinates[1]] = 1;
+                jack.doMove(calculatedMove);
+                Platform.runLater(() -> board.drawBoard(field, game));
 
+            }
+        }
     }
 
     public void setField(int x, int y) {
@@ -137,8 +168,8 @@ public class GameEngine {
         return (((move[1]) * field.length) + move[0]);
     }
     private int[] calculateMoveToCoordinates(int move) {
-        int x = (move/(field.length));
-        int y = move%(field.length);
+        int y = (move/(field.length));
+        int x = move%(field.length);
         return new int[] {x, y};
     }
 
@@ -147,23 +178,29 @@ public class GameEngine {
         return field;
     }
 
-    public void setState(int length, int width, int value) {
-        if (length >= field.length) {
+    public boolean checkState(int x, int y, int value) {
+        if (x >= field.length) {
             System.out.println("error: the given position does not exist on this board");
+            return false;
         } else {
-            if (width >= field[1].length) {
+            if (y >= field[1].length) {
                 System.out.println("error: the given position does not exist on this board");
+                return false;
             } else {
                 if (value >= numberofstates) {
                     System.out.println("Error: given state is not supported");
+                    return false;
                 } else {
-                    if (value == 2) {
+                    if (getState(x, y) == 2) {
                         System.out.println("vijandig");
+                        field[x][y] = 2;
+                        return false;
                     } else {
-                        if (value == getState(length, width)) {
+                        if (value == getState(x, y)) {
                             System.out.println("!: Dit vakje is al van jou, probeer een ander vakje");
+                            return false;
                         } else {
-                            field[length][width] = value;
+                            return true;
                         }
                     }
                 }
@@ -171,13 +208,11 @@ public class GameEngine {
         }
     }
 
-    public int getState(int length, int width) {
-        return field[length][width];
+    public int getState(int x, int y) {
+        return field[x][y];
     }
 
-    public void setStates(String[] states) {
-        this.states = states;
-    }
+
 
     public void showField() {
         for (int i = 0; i < field.length; i++) {
@@ -185,5 +220,48 @@ public class GameEngine {
                 System.out.println("Values at arr[" + i + "][" + j + "] is " + field[i][j]);
             }
         }
+    }
+}
+
+class PinUp{
+
+    public PinUp(Stage primaryStage, String outcome){
+        GridPane pane = new GridPane();
+        // Informatie
+        Label label1 = new Label();
+        pane.add(label1, 0, 0);
+
+        label1.setText("you " + outcome);
+
+        Button button1 = new Button();
+        button1.setText("Accept");
+        button1.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Lobby lobby = new Lobby();
+                        lobby.start(primaryStage, false);
+                    }
+                });
+            }
+        });
+        pane.add(button1, 0, 1);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                Scene scene = new Scene(pane, 250, 70);
+                primaryStage.setScene(scene);
+                primaryStage.setTitle("you" + outcome);
+                primaryStage.setMinHeight(70);
+                primaryStage.setMinWidth(250);
+                primaryStage.show();
+            }
+
+        });
+
     }
 }
