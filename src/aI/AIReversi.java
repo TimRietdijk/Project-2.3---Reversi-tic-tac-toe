@@ -45,9 +45,6 @@ public class AIReversi {
         reversi = new Reversi(field, board);
         this.field = field;
         availableMoves = reversi.calculatingPossibleMoves(field, 1, 2);
-        for(Points p : availableMoves){
-            System.out.println(p.getX() + " : " + p.getY());
-        }
         defineBadMoves(); // defines bad moves
         //bestMove = (availableMoves.get(0)); // the best move has a starting value
         //removeBadMoves(); // removes bad move as possebility
@@ -143,9 +140,27 @@ public class AIReversi {
         return (((move[1]) * field.length) + move[0]);
     }
 
-    private synchronized ArrayList<Points> getPeacesToTurn(int position){
-        System.out.println("I get : " + position);
+    private synchronized ArrayList<Points> getPeacesToTurn(int[][] field, int position){
         return reversi.getPiecesTurnedByMove(field, position);
+    }
+
+    private synchronized int[][] getNewField(int field, int position ){
+        return new int[][]{};
+    }
+
+    private synchronized ArrayList<Points> getPossibleEnemyMoves(int[][] field, int x, int y){
+        ArrayList<Points> t = reversi.calculatingPossibleMoves(field, 2, 1);
+        int counter = 0;
+        for(int[] f : field){
+            for(int fi :f){
+                System.out.println("field: " + counter + " " + fi);
+                counter++;
+            }
+        }
+        for(Points p : t){
+            System.out.println("Krijg binnen via: " + x + " : " + y + "     " + p.getX() + " : " + p.getY());
+        }
+       return reversi.calculatingPossibleMoves(field, 2, 1);
     }
 
     public class AICalculation implements Runnable {
@@ -160,9 +175,9 @@ public class AIReversi {
             this.x = move.getX();
             this.y = move.getY();
             this.move = move;
-            this.tempField = field;
-            field[move.getX()][move.getY()] = 1;
-            output = new Output(move.getX(), move.getY());
+            tempField = field;
+            tempField[x][y] = 1;
+            output = new Output(x, y);
         }
 
         @Override
@@ -177,14 +192,18 @@ public class AIReversi {
 
             int[] moveint = {move.getX(), move.getY()};
             int position = calculateMoveToPosition(moveint);
-            piecesTurned = getPeacesToTurn(position);
+            piecesTurned = getPeacesToTurn(tempField, position);
             output.setPeacesTurnedArray(piecesTurned);
             output.setPeacesTurned(piecesTurned.size());
             System.out.println("Move: " + move.getX() + " : " + move.getY() + " == " + position + " hier worden " + piecesTurned.size() + " mee omgedraaid");
         }
 
         private void ownAvailableMoves(){
-
+            ArrayList<Points> enemyAvailableMoves = getPossibleEnemyMoves(tempField, x, y);
+            /*for(Points p : enemyAvailableMoves){
+                System.out.println("For move " + x + " : " + y + " Move: " + p.getX() + " : " + p.getY());
+            }*/
+            System.out.println("Enemies move: " + enemyAvailableMoves.size());
         }
     }
 
