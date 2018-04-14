@@ -10,10 +10,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import lobby.Lobby;
 import reversi.Reversi;
-import ticTacToe.TicTacToe;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.ini4j.Wini;
+import ticTacToe.TicTacToe;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
