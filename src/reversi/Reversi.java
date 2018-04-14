@@ -197,7 +197,7 @@ public class Reversi extends Framework{     //extends framework!!
                     counter++;
                 } else if (field[currentX][currentY-i] == player) {
                     if (counter > 0) {
-                        for (int j = 1; j <= counter; j++) {
+                        for (int j = 1; j <= counter-1; j++) {
                             System.out.println("Possible move north: "+currentX+","+currentY);
                             addPossibleMoves(currentX, currentY);
                         }
@@ -248,7 +248,7 @@ public class Reversi extends Framework{     //extends framework!!
                     counter++;
                 } else if (field[currentX+i][currentY] == player) {
                     if (counter > 0) {
-                        for (int j = 1; j <= counter; j++) {
+                        for (int j = 1; j <= counter-1; j++) {
                             System.out.println("Possible move east: "+currentX+","+currentY);
                             addPossibleMoves(currentX, currentY);
                         }
@@ -300,7 +300,7 @@ public class Reversi extends Framework{     //extends framework!!
                     counter++;
                 } else if (field[currentX][currentY+i] == player) {
                     if (counter > 0) {
-                        for (int j = 1; j <= counter; j++) {
+                        for (int j = 1; j <= counter-1; j++) {
 
                             System.out.println("Possible move south: "+currentX+","+currentY);
                             addPossibleMoves(currentX, currentY);
@@ -354,7 +354,7 @@ public class Reversi extends Framework{     //extends framework!!
                     counter++;
                 } else if (field[currentX-i][currentY] == player) {
                     if (counter > 0) {
-                        for (int j = 1; j <= counter; j++) {
+                        for (int j = 1; j <= counter-1; j++) {
 
                             System.out.println("Possible move west: "+currentX+","+currentY);
                             addPossibleMoves(currentX, currentY);
