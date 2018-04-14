@@ -26,9 +26,12 @@ public class Reversi extends Framework{     //extends framework!!
     }
 
     public ArrayList<Points> getPiecesTurnedByMove(int[][] field, int move){
+        System.out.println("Reversi, I get: " + move);
         piecesToTurn = new ArrayList<>();
         int[] coordinates = calculateMoveToCoordinates(field, move);
+        System.out.println("Reversi, I get: " + coordinates[0] + " : " + coordinates[1]);
         int player = getPlayerState(field, coordinates);
+        System.out.println("Reversi, I get: " + coordinates[0] + " : " + coordinates[1] + " Player is " + player);
         north(field, player, coordinates);
         south(field, player, coordinates);
         east(field, player, coordinates);
@@ -37,6 +40,7 @@ public class Reversi extends Framework{     //extends framework!!
         southEast(field,player,coordinates);
         northWest(field,player,coordinates);
         southWest(field,player,coordinates);
+        System.out.println("Create:" + piecesToTurn.size());
         return piecesToTurn;
     }
 
@@ -46,6 +50,7 @@ public class Reversi extends Framework{     //extends framework!!
     }
 
     private void addPiecesToTurn(int x, int y){
+        System.out.println(x + " : " + y  + "komen erin");
         piecesToTurn.add(new Points(x,y));
     }
 
@@ -82,7 +87,11 @@ public class Reversi extends Framework{     //extends framework!!
         southWestpossible(field,player,coordinates);
     }
 
-    public void calculatingPossibleMoves(int[][]field, int player, int enemy){
+    public ArrayList<Points> calculatingPossibleMoves(int[][]field, int player, int enemy){
+        enemyPieces = new ArrayList<>(); // begin emply
+        emptySpacesNeighbouringEnemy = new ArrayList<>(); // begin emply
+        possibleMoves = new ArrayList<>(); // begin emply
+
         getEnemyPieces(field, enemy);
         findEmptyNeighbouringEnemy(field, enemy);
         for (int i = 0; i < emptySpacesNeighbouringEnemy.size(); i++) {
@@ -97,6 +106,7 @@ public class Reversi extends Framework{     //extends framework!!
         for (int i = 0; i < possibleMoves.size(); i++) {
             System.out.println(possibleMoves.get(i).getX()+" : "+possibleMoves.get(i).getY());
         }
+        return possibleMoves;
     }
 
     private int calculateMoveToPosition(int[][] field, int i) {
