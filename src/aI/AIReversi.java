@@ -45,6 +45,7 @@ public class AIReversi {
         reversi = new Reversi(field, board);
         this.field = field;
         availableMoves = reversi.calculatingPossibleMoves(field, 1, 2);
+        System.out.println("Available moves: " + availableMoves.size());
         defineBadMoves(); // defines bad moves
         //bestMove = (availableMoves.get(0)); // the best move has a starting value
         //removeBadMoves(); // removes bad move as possebility
@@ -153,7 +154,7 @@ public class AIReversi {
         int counter = 0;
         for(int[] f : field){
             for(int fi :f){
-                System.out.println("field: " + counter + " " + fi);
+                //System.out.println("field: " + counter + " " + fi);
                 counter++;
             }
         }
@@ -214,7 +215,9 @@ class Main{
         int[][] field = new int[8][8];
         Board board = new Board();
         field[3][3] = 2;
-        field[4][3] = 2;
+        field[4][4] = 2;
+        field[3][4] = 1;
+        field[4][3] = 1;
         field[5][3] = 2;
         field[6][3] = 2;
         field[7][3] = 1;
