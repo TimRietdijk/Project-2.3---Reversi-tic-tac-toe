@@ -14,10 +14,10 @@ public class Reversi extends Framework{     //extends framework!!
 
     public Reversi(int[][] field, Board board){
         super(board);
-        field[3][3] = 2;
-        field[4][4] = 2;
-        field[4][3] = 1;
-        field[3][4] = 1;
+//        field[3][3] = 2;
+//        field[4][4] = 2;
+//        field[4][3] = 1;
+//        field[3][4] = 1;
     }
 
     public int[][] doMove(int[][] field, int lastMove){ // moet aangeroepen worden van buitenaf
@@ -197,7 +197,7 @@ public class Reversi extends Framework{     //extends framework!!
                     counter++;
                 } else if (field[currentX][currentY-i] == player) {
                     if (counter > 0) {
-                        for (int j = 1; j <= counter-1; j++) {
+                        for (int j = 1; j <= counter; j++) {
                             System.out.println("Possible move north: "+currentX+","+currentY);
                             addPossibleMoves(currentX, currentY);
                         }
@@ -242,21 +242,18 @@ public class Reversi extends Framework{     //extends framework!!
         int currentX = coordinates[0];
         int currentY = coordinates[1];
         if (currentX != field.length-1) {
-            outerloop:
             for (int i = 1; i < field.length; i++) {
                 if (field[currentX+i][currentY] != player && field[currentX+i][currentY] != 0) {
                     counter++;
                 } else if (field[currentX+i][currentY] == player) {
                     if (counter > 0) {
-                        for (int j = 1; j <= counter-1; j++) {
-                            System.out.println("Possible move east: "+currentX+","+currentY);
                             addPossibleMoves(currentX, currentY);
-                        }
+
                     }
-                    break outerloop;
+                    break;
                 }
                 else if(field[i][currentY] == 0){
-                    break outerloop;
+                    break;
                 }
             }
         }
@@ -294,22 +291,17 @@ public class Reversi extends Framework{     //extends framework!!
         int currentX = coordinates[0];
         int currentY = coordinates[1];
         if (currentY != field[1].length-1) {
-            outerloop:
             for (int i = 1; i < field[1].length; i++) {
                 if (field[currentX][currentY+i] != player && field[currentX][currentY+i] != 0) {
                     counter++;
                 } else if (field[currentX][currentY+i] == player) {
                     if (counter > 0) {
-                        for (int j = 1; j <= counter-1; j++) {
-
-                            System.out.println("Possible move south: "+currentX+","+currentY);
                             addPossibleMoves(currentX, currentY);
                         }
-                    }
-                    break outerloop;
+                    break;
                 }
                 else if(field[i][currentY] == 0){
-                    break outerloop;
+                    break;
                 }
             }
         }
@@ -344,26 +336,22 @@ public class Reversi extends Framework{     //extends framework!!
     }
 
     public void westpossible(int[][] field, int player, int[] coordinates){
+        //System.out.println("west wordt aangeroepen");
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
-        if (currentX != 0) {
-            outerloop:
-            for (int i = 1; i <= currentX; i++) {
+        if (currentY != 0) {
+            for (int i = 1; i <= currentY; i++) {
                 if (field[currentX-i][currentY] != player && field[currentX-i][currentY] != 0) {
                     counter++;
                 } else if (field[currentX-i][currentY] == player) {
                     if (counter > 0) {
-                        for (int j = 1; j <= counter-1; j++) {
-
-                            System.out.println("Possible move west: "+currentX+","+currentY);
                             addPossibleMoves(currentX, currentY);
                         }
-                    }
-                    break outerloop;
+                    break;
                 }
                 else if(field[i][currentY] == 0){
-                    break outerloop;
+                    break;
                 }
             }
         }

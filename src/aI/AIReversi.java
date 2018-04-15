@@ -215,9 +215,8 @@ class Main{
         Board board = new Board();
         field[3][3] = 2;
         field[4][3] = 2;
-        field[5][3] = 2;
+        field[5][3] = 1;
         field[6][3] = 2;
-        field[7][3] = 1;
         AIReversi ai = new AIReversi(field, board);
         /*ai.addAvailableMoves(2,3);
         ai.addAvailableMoves(3,3);
