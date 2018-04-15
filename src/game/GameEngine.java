@@ -23,6 +23,7 @@ import java.util.Map;
 
 
 public class GameEngine {
+    private boolean fuckHanzeKanNietFatsoenlijkServersBouwen;
     private boolean wieBenIk;
     private  boolean gamestart;
     private String game;
@@ -38,7 +39,8 @@ public class GameEngine {
     private int calculatedMove;
     private Board board;
     private java.lang.reflect.Method method;
-    public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage) {
+    public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage, boolean ok, String string) {
+        this.fuckHanzeKanNietFatsoenlijkServersBouwen = ok;
         game = optionlist.get("game");
         name = optionlist.get("name");
         if (game.contains("Reversi")) {
@@ -82,8 +84,8 @@ public class GameEngine {
                     String s = jack.ReadReceived();
                     System.out.println(s);
                     String parse = jack.commandHandling(s, name);
-                    if(s.contains("GAME MATCH") && wieBenIk){
-                        if(s.contains(name)){
+                    if(s.contains("GAME MATCH") && wieBenIk || fuckHanzeKanNietFatsoenlijkServersBouwen){
+                        if(s.contains(name) || string.contains(name)){
                             field[3][3] = 2;
                             field[4][4] = 2;
                             field[4][3] = 1;
@@ -96,6 +98,7 @@ public class GameEngine {
                             field[3][4] = 2;
                             System.out.println("Hier ook");
                         }
+                        fuckHanzeKanNietFatsoenlijkServersBouwen = false;
                         wieBenIk = false;
                         Platform.runLater(() -> board.drawBoard(field, game));
                     }

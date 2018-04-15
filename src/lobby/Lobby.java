@@ -95,13 +95,19 @@ public class Lobby {
                         }
 
                         System.out.println(read);
+                        String string;
                         if(read.contains("SVR GAME MATCH {PLAYERTOMOVE:")){
+                            if ((read.contains(optionlist.get("name")))){
+                                 string = optionlist.get("name");
+                            }else{
+                                 string = "";
+                            }
                             gamestart = true;
                             System.out.println("toodles");
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    newGame();
+                                    newGame(string);
                                 }
                             });
                         }
@@ -114,8 +120,8 @@ public class Lobby {
         }
     }
 
-        private void newGame(){
-            new GameEngine(optionlist, commandCenter, gamestart, fright);
+        private void newGame(String string){
+            new GameEngine(optionlist, commandCenter, gamestart, fright, true, string);
         }
         private HBox addHBox () {
             HBox hbox = new HBox();
@@ -332,7 +338,7 @@ class PopUp {
                 list.put("option1", "dumdum");
                 list.put("option2", "gumgum");
                 primaryStage.close();
-                new GameEngine(list, commandCenter, isIt, stageFright);
+                new GameEngine(list, commandCenter, isIt, stageFright, false, "");
             }
 
         });
