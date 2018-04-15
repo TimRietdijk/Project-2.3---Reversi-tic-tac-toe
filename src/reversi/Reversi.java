@@ -201,8 +201,8 @@ public class Reversi extends Framework{     //extends framework!!
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
-        System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
         if (currentY != 0) {
+            outerloop:
             for (int i = 1; i <= currentY; i++) {
                 if (field[currentX][currentY-i] != player && field[currentX][currentY-i] != 0) {
                     counter++;
@@ -212,7 +212,7 @@ public class Reversi extends Framework{     //extends framework!!
                         addPossibleMoves(currentX,currentY);
                         break;
                     }
-                    break ;
+                    break;
                 }
                 else if(field[i][currentY] == 0){
                     break;
@@ -595,19 +595,41 @@ public class Reversi extends Framework{     //extends framework!!
         calculatingPossibleMoves(board, 1,2);
     }
 }
-class Main{
-    public static void main(String args[]) {
-        Board b = new Board();
-        int[][] field = new int[8][8];
-        field[3][3] = 2; //begin move
-        field[4][4] = 2; //begin move
-        field[4][3] = 1; //begin move
-        field[3][4] = 1; //begin move
+/*class Main{
 
-        field[5][3] = 2;
-        field[6][3] = 2;
-        field[7][3] = 1;
-        Reversi reversi = new Reversi(field, b);
-        System.out.println(reversi.calculatingPossibleMoves(field, 1, 2));
+    public static void main(String args[]) {
+        int[][] board = new int[8][8];
+        board[5][2] = 1;
+        board[5][3] = 2;
+        board[5][0] = 1;
+        board[5][1] = 2;
+        board[6][2] = 2;
+        board[7][2] = 1;
+        board[5][3] = 2;
+        board[5][4] = 2;
+        board[5][5] = 2;
+        board[5][6] = 2;
+        board[5][7] = 1;
+        board[4][2] = 2;
+        board[3][2] = 2;
+        board[2][2] = 2;
+        board[1][2] = 2;
+        board[0][2] = 1;
+        board[6][1] = 2;
+        board[7][0] = 1;
+        board[6][3] = 2;
+        board[7][4] = 1;
+        board[4][3] = 2;
+        board[3][4] = 2;
+        board[2][5] = 2;
+        board[1][6] = 2;
+        board[0][7] = 1;
+        board[4][1] = 2;
+        board[3][0] = 1;
+
+
+        reversi reversi = new reversi(board);
+        reversi.doMove(board);
     }
-}
+}*/
+
