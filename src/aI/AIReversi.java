@@ -100,7 +100,7 @@ public class AIReversi {
             for(Points p : tempBadMoves) {
                 availableMoves.remove(p);
                 System.out.println(availableMoves.size());
-                }
+            }
         } else{
             Points ph = tempBadMoves.get(tempBadMoves.size()-1);
             setBestMove(ph.getX(), ph.getY());
@@ -129,6 +129,7 @@ public class AIReversi {
         if (availableMoves > 0){
             ExecutorService e = Executors.newFixedThreadPool(availableMoves);
             for (int i = 0; i < availableMoves; i++) {
+                System.out.println("lopje2");
                 //System.out.println("aaaa" + this.availableMoves.get(i).getX() + " : " + this.availableMoves.get(i).getY());
                 e.submit(new AICalculation(this.availableMoves.get(i)));
             }
@@ -160,7 +161,7 @@ public class AIReversi {
         for(Points p : t){
             System.out.println("Krijg binnen via: " + x + " : " + y + "     " + p.getX() + " : " + p.getY());
         }
-       return reversi.calculatingPossibleMoves(field, 2, 1);
+        return reversi.calculatingPossibleMoves(field, 2, 1);
     }
 
     public class AICalculation implements Runnable {
@@ -211,6 +212,7 @@ public class AIReversi {
 
 class Main{
     public static void main(String[] args){
+        System.out.println("lopje");
         int[][] field = new int[8][8];
         Board board = new Board();
         field[3][3] = 2;
@@ -218,19 +220,6 @@ class Main{
         field[5][3] = 1;
         field[6][3] = 2;
         AIReversi ai = new AIReversi(field, board);
-        /*ai.addAvailableMoves(2,3);
-        ai.addAvailableMoves(3,3);
-        ai.addAvailableMoves(4,6);
-        ai.addAvailableMoves(5,3);
-        ai.addAvailableMoves(6,3);*/
-       /* ai.addAvailableMoves(0,7);
-        ai.addAvailableMoves(1,1);
-        ai.addAvailableMoves(7,6);
-        ai.addAvailableMoves(3,3);
-        ai.addAvailableMoves(1,3);
-        ai.addAvailableMoves(2,3);
-        ai.addAvailableMoves(3,4);
-        ai.addAvailableMoves(3,5);*/
         ai.calculateBestMove();
     }
 }
