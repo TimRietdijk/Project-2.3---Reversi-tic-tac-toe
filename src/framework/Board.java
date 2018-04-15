@@ -24,8 +24,8 @@ public class Board {
         Image player2 = new Image(getClass().getResourceAsStream("o.png"));
         imagesTicTacToe.add(player1);
         imagesTicTacToe.add(player2);
-        player1 = new Image(getClass().getResourceAsStream("B.png"));
-        player2 = new Image(getClass().getResourceAsStream("W.png"));
+        player1 = new Image(getClass().getResourceAsStream("x.png"));
+        player2 = new Image(getClass().getResourceAsStream("o.png"));
         imagesReversie.add(player1);
         imagesReversie.add(player2);
     }

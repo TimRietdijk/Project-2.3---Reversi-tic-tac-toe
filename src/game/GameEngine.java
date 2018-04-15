@@ -23,7 +23,8 @@ import java.util.Map;
 
 
 public class GameEngine {
-
+    private boolean fuckHanzeKanNietFatsoenlijkServersBouwen;
+    private boolean wieBenIk;
     private  boolean gamestart;
     private String game;
     private Wini ini;
@@ -38,11 +39,13 @@ public class GameEngine {
     private int calculatedMove;
     private Board board;
     private java.lang.reflect.Method method;
-    public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage) {
+    public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage, boolean ok, String string) {
+        this.fuckHanzeKanNietFatsoenlijkServersBouwen = ok;
         game = optionlist.get("game");
         name = optionlist.get("name");
         if (game.contains("Reversi")) {
             setField(8, 8);
+            wieBenIk = true;
             board = new Board();
             String name = optionlist.get("name");
             stage.setTitle(name);
@@ -81,10 +84,28 @@ public class GameEngine {
                     String s = jack.ReadReceived();
                     System.out.println(s);
                     String parse = jack.commandHandling(s, name);
+                    if(s.contains("GAME MATCH") && wieBenIk || fuckHanzeKanNietFatsoenlijkServersBouwen){
+                        if(s.contains(name) || string.contains(name)){
+                            field[3][3] = 2;
+                            field[4][4] = 2;
+                            field[4][3] = 1;
+                            field[3][4] = 1;
+                            System.out.println("hij komt hier");
+                        }else{
+                            field[3][3] = 1;
+                            field[4][4] = 1;
+                            field[4][3] = 2;
+                            field[3][4] = 2;
+                            System.out.println("Hier ook");
+                        }
+                        fuckHanzeKanNietFatsoenlijkServersBouwen = false;
+                        wieBenIk = false;
+                        Platform.runLater(() -> board.drawBoard(field, game));
+                    }
                     if(s.contains("WIN") ){
-                        PinUp pinUp = new PinUp(stage, "won");
+                        PinUp pinUp = new PinUp(stage, "win");
                     }else if(s.contains("LOSS")){
-                        PinUp pinUp = new PinUp(stage, "lossed");
+                        PinUp pinUp = new PinUp(stage, "lose");
                     }
 
 
@@ -145,7 +166,7 @@ public class GameEngine {
         calculatedMove = calculateMoveToPosition(coordinates);
         boolean exec = checkState(coordinates[0], coordinates[1], 1);
         if (exec) {
-            if(game.equals("Reversi")){ ;
+            if(game.equals("Reversi") ){ ;
                 field = reversi.doMove(getField(), calculatedMove);
                 jack.doMove(calculatedMove);
                 Platform.runLater(() -> board.drawBoard(field, game));

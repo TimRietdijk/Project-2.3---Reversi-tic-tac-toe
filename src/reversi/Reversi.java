@@ -16,10 +16,7 @@ public class Reversi extends Framework{     //extends framework!!
 
     public Reversi(int[][] field, Board board){
         super(board);
-//        field[3][3] = 2;
-//        field[4][4] = 2;
-//        field[4][3] = 1;
-//        field[3][4] = 1;
+
     }
 
     public int[][] doMove(int[][] field, int lastMove){ // moet aangeroepen worden van buitenaf
