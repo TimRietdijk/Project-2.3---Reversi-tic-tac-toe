@@ -4,8 +4,6 @@ import framework.Board;
 import framework.Framework;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ListIterator;
 
 public class Reversi extends Framework{     //extends framework!!
 
@@ -55,8 +53,16 @@ public class Reversi extends Framework{     //extends framework!!
 
     public void addEnemyPieces(int x, int y) {enemyPieces.add(new Points(x,y));}
     public void addPossibleEmptyPieces(int x, int y) {emptySpacesNeighbouringEnemy.add(new Points(x,y));}
-    public void addPossibleMoves(int x, int y) {possibleMoves.add(new Points(x,y)); }
-    public void removePossibleEmptyPieces(ArrayList<Points> x) {emptySpacesNeighbouringEnemy.remove(x);}
+    public void addPossibleMoves(int x, int y) {
+        boolean isIn = false;
+        for(Points p : possibleMoves) {
+            if(p.getX() == x && p.getY() == y) {
+                isIn = true;
+            }
+        } if(!isIn){
+            possibleMoves.add(new Points(x, y));
+        }
+    }
 
 
     private int[][] calculating(int[][] field, int move){
@@ -195,32 +201,21 @@ public class Reversi extends Framework{     //extends framework!!
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
+        System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
         if (currentY != 0) {
-            outerloop:
             for (int i = 1; i <= currentY; i++) {
                 if (field[currentX][currentY-i] != player && field[currentX][currentY-i] != 0) {
                     counter++;
                 } else if (field[currentX][currentY-i] == player) {
                     if (counter > 0) {
-                        for (int j = 1; j <= counter; j++) {
-                            Iterator<Points> it = emptySpacesNeighbouringEnemy.iterator();
-                            while (it.hasNext()) {
-                                //System.out.println("hoi");
-                                if (it.next().getX() == currentX) {
-                                    if(it.next().getY() == currentY) {
-                                        it.remove();
-                                        //System.out.println("hoi1");
-                                        System.out.println("Possible move north: " + currentX + "," + currentY);
-                                        addPossibleMoves(currentX, currentY);
-                                    }
-                                }
-                            }
-                        }
+                        System.out.println("Possible move north: " + currentX + "," + currentY);
+                        addPossibleMoves(currentX,currentY);
+                        break;
                     }
-                    break outerloop;
+                    break ;
                 }
                 else if(field[i][currentY] == 0){
-                    break outerloop;
+                    break;
                 }
             }
         }
@@ -231,31 +226,21 @@ public class Reversi extends Framework{     //extends framework!!
         int currentX = coordinates[0];
         int currentY = coordinates[1];
         try {
-            if (currentY != field.length-1 && currentX != 0)
+            if (currentX > 0 && currentY < field.length) {
                 for (int i = 1; i <= field.length; i++) {
                     if (field[currentX + i][currentY - i] != player && field[currentX + i][currentY - i] != 0) {
                         counter++;
                     } else if (field[currentX + i][currentY - i] == player) {
                         if (counter > 0) {
-//                            Iterator<Points> it = emptySpacesNeighbouringEnemy.iterator();
-//                            while (it.hasNext()) {
-//                                //System.out.println("hoi");
-//                                if (it.next().getX() == currentX) {
-//                                    if(it.next().getY() == currentY) {
-//                                        it.remove();
-                                        //System.out.println("hoi1");
-                                        System.out.println("Possible move northeast: " + currentX + "," + currentY);
-                                        addPossibleMoves(currentX, currentY);
-//                                    }
-//                                }
-//                            }
+                            addPossibleMoves(currentX, currentY);
+                            break;
                         }
                         break;
-                    }
-                    else if(field[currentX+i][currentY-i] == 0){
+                    } else if (field[currentX + i][currentY - i] == 0) {
                         break;
                     }
                 }
+            }
         }catch (ArrayIndexOutOfBoundsException e){}
     }
 
@@ -263,29 +248,20 @@ public class Reversi extends Framework{     //extends framework!!
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
-        if (currentX != field.length-1) {
-            for (int i = 1; i < field.length; i++) {
+        System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
+        if (currentX < field.length-1) {
+            for (int i = 1; i <= field[1].length-currentY; i++) {
                 if (field[currentX+i][currentY] != player && field[currentX+i][currentY] != 0) {
                     counter++;
                 } else if (field[currentX+i][currentY] == player) {
                     if (counter > 0) {
-                        Iterator<Points> it = emptySpacesNeighbouringEnemy.iterator();
-                        while (it.hasNext()) {
-                            //System.out.println("hoi");
-                            if (it.next().getX() == currentX) {
-                                if(it.next().getY() == currentY) {
-                                    it.remove();
-                                    //System.out.println("hoi1");
-                                    System.out.println("Possible move east: " + currentX + "," + currentY);
-                                    addPossibleMoves(currentX, currentY);
-                                }
-                            }
-                        }
+                        System.out.println("Possible move east: " + currentX + "," + currentY);
+                        addPossibleMoves(currentX,currentY);
+                        break;
                     }
-
-                    break;
+                    break ;
                 }
-                else if(field[i][currentY] == 0){
+                else if(field[currentX+i][currentY] == 0){
                     break;
                 }
             }
@@ -297,28 +273,17 @@ public class Reversi extends Framework{     //extends framework!!
         int currentX = coordinates[0];
         int currentY = coordinates[1];
         try {
-            if (currentY != field.length-1 && currentX != field.length-1) {
+            if (currentX < field.length && currentY < field.length) {
                 for (int i = 1; i <= field.length; i++) {
                     if (field[currentX + i][currentY + i] != player && field[currentX + i][currentY + i] != 0) {
                         counter++;
                     } else if (field[currentX + i][currentY + i] == player) {
                         if (counter > 0) {
-//                            Iterator<Points> it = emptySpacesNeighbouringEnemy.iterator();
-//                            while (it.hasNext()) {
-//                                //System.out.println("hoi");
-//                                if (it.next().getX() == currentX) {
-//                                    if(it.next().getY() == currentY) {
-//                                        it.remove();
-//                                        //System.out.println("hoi1");
-                                        System.out.println("Possible move southeast: " + currentX + "," + currentY);
-                                        addPossibleMoves(currentX, currentY);
-//                                    }
-//                                }
-//                            }
-                            }
+                            addPossibleMoves(currentX, currentY);
+                            break;
+                        }
                         break;
-                    }
-                    else if(field[currentX+i][currentY+i] == 0){
+                    } else if (field[currentX + i][currentY + i] == 0) {
                         break;
                     }
                 }
@@ -330,28 +295,20 @@ public class Reversi extends Framework{     //extends framework!!
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
-        if (currentY != field[1].length-1) {
-            for (int i = 1; i < field[1].length; i++) {
+        System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
+        if (currentY < field.length-1) {
+            for (int i = 1; i <= field.length-currentY; i++) {
                 if (field[currentX][currentY+i] != player && field[currentX][currentY+i] != 0) {
                     counter++;
                 } else if (field[currentX][currentY+i] == player) {
                     if (counter > 0) {
-                        Iterator<Points> it = emptySpacesNeighbouringEnemy.iterator();
-                        while (it.hasNext()) {
-                            //System.out.println("hoi");
-                            if (it.next().getX() == currentX) {
-                                if(it.next().getY() == currentY) {
-                                    it.remove();
-                                    //System.out.println("hoi1");
-                                    System.out.println("Possible move south: " + currentX + "," + currentY);
-                                    addPossibleMoves(currentX, currentY);
-                                }
-                            }
-                        }
+                        System.out.println("Possible move east: " + currentX + "," + currentY);
+                        addPossibleMoves(currentX,currentY);
+                        break;
                     }
-                    break;
+                    break ;
                 }
-                else if(field[i][currentY] == 0){
+                else if(field[currentX][currentY+i] == 0){
                     break;
                 }
             }
@@ -363,28 +320,17 @@ public class Reversi extends Framework{     //extends framework!!
         int currentX = coordinates[0];
         int currentY = coordinates[1];
         try {
-            if (currentY != field.length-1 && currentX != field.length-1) {
+            if (currentX < field.length && currentY > 0) {
                 for (int i = 1; i <= field.length; i++) {
                     if (field[currentX - i][currentY + i] != player && field[currentX - i][currentY + i] != 0) {
                         counter++;
                     } else if (field[currentX - i][currentY + i] == player) {
                         if (counter > 0) {
-//                            Iterator<Points> it = emptySpacesNeighbouringEnemy.iterator();
-//                            while (it.hasNext()) {
-//                                //System.out.println("hoi");
-//                                if (it.next().getX() == currentX) {
-//                                    if(it.next().getY() == currentY) {
-//                                        it.remove();
-//                                        //System.out.println("hoi1");
-                                        System.out.println("Possible move southwest: " + currentX + "," + currentY);
-                                        addPossibleMoves(currentX, currentY);
-//                                    }
-//                                }
-//                            }
+                            addPossibleMoves(currentX, currentY);
+                            break;
                         }
                         break;
-                    }
-                    else if(field[currentX-i][currentY+i] == 0){
+                    } else if (field[currentX - i][currentY + i] == 0) {
                         break;
                     }
                 }
@@ -393,40 +339,22 @@ public class Reversi extends Framework{     //extends framework!!
     }
 
     public void westpossible(int[][] field, int player, int[] coordinates){
-        //System.out.println("west wordt aangeroepen");
-
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
-        if (currentY != 0) {
-            for (int i = 1; i <= currentY; i++) {
+        System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
+        if (currentX > 0) {
+            for (int i = 1; i <= field.length-currentX; i++) {
                 if (field[currentX-i][currentY] != player && field[currentX-i][currentY] != 0) {
                     counter++;
                 } else if (field[currentX-i][currentY] == player) {
                     if (counter > 0) {
-
-                        Iterator<Points> it = emptySpacesNeighbouringEnemy.iterator();
-                        while (it.hasNext()) {
-                            //System.out.println("hoi");
-                            if (it.next().getX() == currentX) {
-                                if(it.next().getY() == currentY) {
-                                    it.remove();
-                                    //System.out.println("hoi1");
-                                    System.out.println("Possible move west: " + currentX + "," + currentY);
-                                    addPossibleMoves(currentX, currentY);
-                                }
-                            }
-                        }
-//                        x.add(new Points(currentX, currentY));
-//                        removePossibleEmptyPieces(x);
-//                        for (int k = 0; k < emptySpacesNeighbouringEnemy.size(); k++) {
-//                            System.out.println("Dit is een mogelijke move, Mischien..."+emptySpacesNeighbouringEnemy.get(k).getX()+" : "+emptySpacesNeighbouringEnemy.get(k).getY());
-//                        }
+                        addPossibleMoves(currentX,currentY);
                         break;
-                        }
-
+                    }
+                    break ;
                 }
-                else if(field[i][currentY] == 0){
+                else if(field[currentX-1][currentY] == 0){
                     break;
                 }
             }
@@ -438,26 +366,15 @@ public class Reversi extends Framework{     //extends framework!!
         int currentX = coordinates[0];
         int currentY = coordinates[1];
         try {
-            if (currentY != 0 && currentX != 0) {
+            if (currentX > 0 && currentY > 0) {
                 for (int i = 1; i <= field.length; i++) {
                     if (field[currentX - i][currentY - i] != player && field[currentX - i][currentY - i] != 0) {
                         counter++;
                     } else if (field[currentX - i][currentY - i] == player) {
                         if (counter > 0) {
-//                            Iterator<Points> it = emptySpacesNeighbouringEnemy.iterator();
-//                            while (it.hasNext()) {
-//                                //System.out.println("hoi");
-//                                if (it.next().getX() == currentX) {
-//                                    if(it.next().getY() == currentY) {
-//                                        it.remove();
-//                                        //System.out.println("hoi1");
-                                        System.out.println("Possible move northwest: " + currentX + "," + currentY);
-                                        addPossibleMoves(currentX, currentY);
-//                                    }
-//                                }
-//                            }
-                            }
-
+                            addPossibleMoves(currentX, currentY);
+                            break;
+                        }
                         break;
                     } else if (field[currentX - i][currentY - i] == 0) {
                         break;
@@ -467,6 +384,7 @@ public class Reversi extends Framework{     //extends framework!!
         }
         catch (ArrayIndexOutOfBoundsException e){}
     }
+
 
     public void north(int[][] field, int player, int[] coordinates) {
         int counter = 0;
@@ -677,41 +595,19 @@ public class Reversi extends Framework{     //extends framework!!
         calculatingPossibleMoves(board, 1,2);
     }
 }
-/*class Main{
-
+class Main{
     public static void main(String args[]) {
-        int[][] board = new int[8][8];
-        board[5][2] = 1;
-        board[5][3] = 2;
-        board[5][0] = 1;
-        board[5][1] = 2;
-        board[6][2] = 2;
-        board[7][2] = 1;
-        board[5][3] = 2;
-        board[5][4] = 2;
-        board[5][5] = 2;
-        board[5][6] = 2;
-        board[5][7] = 1;
-        board[4][2] = 2;
-        board[3][2] = 2;
-        board[2][2] = 2;
-        board[1][2] = 2;
-        board[0][2] = 1;
-        board[6][1] = 2;
-        board[7][0] = 1;
-        board[6][3] = 2;
-        board[7][4] = 1;
-        board[4][3] = 2;
-        board[3][4] = 2;
-        board[2][5] = 2;
-        board[1][6] = 2;
-        board[0][7] = 1;
-        board[4][1] = 2;
-        board[3][0] = 1;
+        Board b = new Board();
+        int[][] field = new int[8][8];
+        field[3][3] = 2; //begin move
+        field[4][4] = 2; //begin move
+        field[4][3] = 1; //begin move
+        field[3][4] = 1; //begin move
 
-
-        reversi reversi = new reversi(board);
-        reversi.doMove(board);
+        field[5][3] = 2;
+        field[6][3] = 2;
+        field[7][3] = 1;
+        Reversi reversi = new Reversi(field, b);
+        System.out.println(reversi.calculatingPossibleMoves(field, 1, 2));
     }
-}*/
-
+}
