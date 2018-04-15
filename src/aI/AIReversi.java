@@ -161,7 +161,11 @@ public class AIReversi {
         for(Points p : t){
             System.out.println("Krijg binnen via: " + x + " : " + y + "     " + p.getX() + " : " + p.getY());
         }
+<<<<<<< HEAD
         return reversi.calculatingPossibleMoves(field, 2, 1);
+=======
+       return reversi.calculatingPossibleMoves(field, 2, 1);
+>>>>>>> ede54cdc1ad793bcfea9e8868d317d9f412608bc
     }
 
     public class AICalculation implements Runnable {
