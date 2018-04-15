@@ -49,6 +49,9 @@ public class AIReversi {
         //bestMove = (availableMoves.get(0)); // the best move has a starting value
         //removeBadMoves(); // removes bad move as possebility
         //defineCorners();
+//        for (int h = 0; h < reversi.possibleMoves.size(); h++) {
+//            System.out.println("final positions: " + reversi.possibleMoves.get(h).getX() + "," + reversi.possibleMoves.get(h).getY());
+//        }
     }
 
     public void calculateBestMove(){
@@ -216,10 +219,14 @@ class Main{
         int[][] field = new int[8][8];
         Board board = new Board();
         field[3][3] = 2;
-        field[4][3] = 2;
-        field[5][3] = 1;
-        field[6][3] = 2;
+        field[4][4] = 1;
+        field[5][5] = 2;
+        field[5][3] = 2;
+        field[3][5] = 2;
+        field[5][4] = 2;
+        field[3][4] = 2;
         AIReversi ai = new AIReversi(field, board);
         ai.calculateBestMove();
+
     }
 }

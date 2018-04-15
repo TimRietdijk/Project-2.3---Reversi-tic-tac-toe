@@ -12,7 +12,7 @@ public class Reversi extends Framework{     //extends framework!!
     ArrayList<Points> piecesToTurn = new ArrayList<>();
     ArrayList<Points> enemyPieces = new ArrayList<>();
     ArrayList<Points> emptySpacesNeighbouringEnemy = new ArrayList<>();
-    ArrayList<Points> possibleMoves = new ArrayList<>();
+    public ArrayList<Points> possibleMoves = new ArrayList<>();
 
     public Reversi(int[][] field, Board board){
         super(board);
