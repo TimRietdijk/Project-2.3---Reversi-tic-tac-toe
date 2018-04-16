@@ -137,7 +137,7 @@ public class GameEngine {
                             ticTacToeAI.updateField(getField());
                             Points theAIMove = ticTacToeAI.decideMove();
                             System.out.println("-=DEZE AI DOET NU: MOVE x:" + theAIMove.getX() + ", y:" + theAIMove.getY());
-                            board.setMove(theAIMove.getY(), theAIMove.getX());
+                            board.setMove(theAIMove.getX(), theAIMove.getY());
                         } else if(reversiAiIsPlaying){
                            int remainingTime = 4;
                            long timeout = System.currentTimeMillis() + (remainingTime * 1000);
