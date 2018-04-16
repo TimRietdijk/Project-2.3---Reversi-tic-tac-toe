@@ -1,6 +1,5 @@
 package aI;
 
-import framework.Board;
 import reversi.Points;
 import reversi.Reversi;
 
@@ -17,7 +16,6 @@ public class AIReversi {
     //splitten tegenstanders stenen
 
     private int[][] field;
-    private Board board = new Board();
     private ArrayList<Points> badMoves = new ArrayList<>(); // index 0 is worst
     private ArrayList<Points> goodMoves = new ArrayList<>();
     private ArrayList<Points> availableMoves = new ArrayList<>();
@@ -25,21 +23,10 @@ public class AIReversi {
     private ArrayList<Output> calculatedMoves = new ArrayList<>();
 
     private Boolean done = false;
-    Reversi reversi;
+    Reversi reversi = new Reversi();
 
     Points bestMove;
     int bestMoveScore;
-
-    int[][] eval_table = {
-            {99,  -8,  8,  6,  6,  8,  -8, 99},
-            {-8, -24, -4, -3, -3, -4, -24, -8},
-            { 8,  -4,  7,  4,  4,  7,  -4,  8},
-            { 6,  -3,  4,  0,  0,  4,  -3,  6},
-            { 6,  -3,  4,  0,  0,  4,  -3,  6},
-            { 8,  -4,  7,  4,  4,  7,  -4,  8},
-            {-8, -24, -4, -3, -3, -4, -24, -8},
-            {99,  -8,  8,  6,  6,  8,  -8, 99}
-    };
 
     private synchronized void checkIfNewBestMove(int score, int x, int y){
         if(score > bestMoveScore){
@@ -52,8 +39,11 @@ public class AIReversi {
         availableMoves.add(new Points(x, y));
     }
 
-    public AIReversi(int[][] field, Board board){
-        reversi = new Reversi(field, board);
+    public Points getBestMove() {
+        return bestMove;
+    }
+
+    public AIReversi(int[][] field){
         this.field = field;
         //availableMoves = reversi.calculatingPossibleMoves(field, 1, 2);
         defineBadMoves(); // defines bad moves
@@ -292,87 +282,5 @@ public class AIReversi {
         private void getStuck(){
 
         }
-    }
-
-}
-
-class Main{
-    public static void main(String[] args){
-        int[][] field = new int[8][8];
-        Board board = new Board();
-        field[0][0] = 0;
-        field[0][1] = 0;
-        field[0][2] = 0;
-        field[0][3] = 0;
-        field[0][4] = 0;
-        field[0][5] = 0;
-        field[0][6] = 0;
-        field[0][7] = 0;
-
-        field[1][0] = 0;
-        field[1][1] = 0;
-        field[1][2] = 1;
-        field[1][3] = 0;
-        field[1][4] = 0;
-        field[1][5] = 0;
-        field[1][6] = 0;
-        field[1][7] = 0;
-
-        field[2][0] = 2;
-        field[2][1] = 0;
-        field[2][2] = 0;
-        field[2][3] = 1;
-        field[2][4] = 2;
-        field[2][5] = 1;
-        field[2][6] = 0;
-        field[2][7] = 0;
-
-        field[3][0] = 2;
-        field[3][1] = 1;
-        field[3][2] = 1;
-        field[3][3] = 2;
-        field[3][4] = 1;
-        field[3][5] = 1;
-        field[3][6] = 0;
-        field[3][7] = 0;
-
-        field[4][0] = 2;
-        field[4][1] = 2;
-        field[4][2] = 2;
-        field[4][3] = 1;
-        field[4][4] = 2;
-        field[4][5] = 1;
-        field[4][6] = 1;
-        field[4][7] = 0;
-
-        field[5][0] = 0;
-        field[5][1] = 2;
-        field[5][2] = 1;
-        field[5][3] = 1;
-        field[5][4] = 1;
-        field[5][5] = 0;
-        field[5][6] = 0;
-        field[5][7] = 0;
-
-        field[6][0] = 0;
-        field[6][1] = 0;
-        field[6][2] = 0;
-        field[6][3] = 1;
-        field[6][4] = 0;
-        field[6][5] = 0;
-        field[6][6] = 0;
-        field[6][7] = 0;
-
-        field[7][0] = 0;
-        field[7][1] = 0;
-        field[7][2] = 0;
-        field[7][3] = 0;
-        field[7][4] = 0;
-        field[7][5] = 0;
-        field[7][6] = 0;
-        field[7][7] = 0;
-
-        AIReversi ai = new AIReversi(field, board);
-        ai.calculateBestMove(field);
     }
 }

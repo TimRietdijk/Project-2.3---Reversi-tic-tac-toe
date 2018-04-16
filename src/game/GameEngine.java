@@ -1,27 +1,26 @@
 package game;
 
+import aI.AIReversi;
 import aI.AITicTacToe;
 import aI.Points;
 import framework.Board;
 import framework.Framework;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import lobby.Lobby;
-import reversi.Reversi;
-import javafx.application.Platform;
 import javafx.stage.Stage;
+import lobby.Lobby;
 import org.ini4j.Wini;
+import reversi.Reversi;
 import ticTacToe.TicTacToe;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-
-
 
 
 public class GameEngine {
@@ -64,7 +63,11 @@ public class GameEngine {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            reversi = new Reversi(field, board);
+            if(mode.contains("3")||reversiAiIsPlaying){
+                reversiAiIsPlaying = true;
+                aiReversi = new AIReversi(getField());
+            }
+                reversi = new Reversi();
         } else if (game.contains("Tic-tac-toe")) {
             setField(3, 3);
             board = new Board();
@@ -126,7 +129,7 @@ public class GameEngine {
                         PinUp pinUp = new PinUp(stage, "lose");
                     }
                     if(s.contains("SVR GAME YOURTURN")) {
-                        System.out.println("-=DEZE BEURT!=- (nu gaat de ai als het goed is een move maken)");
+                        System.out.println("-=DEZE BEURT!=-");
                         if(ticTacToeAiIsPlaying) {
                             System.out.println("-=DEZE AI GAAT NU EEN ZET MAKEN=-");
                             showField();
@@ -134,38 +137,49 @@ public class GameEngine {
                             Points theAIMove = ticTacToeAI.decideMove();
                             System.out.println("-=DEZE AI DOET NU: MOVE x:" + theAIMove.getX() + ", y:" + theAIMove.getY());
                             board.setMove(theAIMove.getY(), theAIMove.getX());
+                        } else if(reversiAiIsPlaying){
+                           int remainingTime = 4;
+                           long timeout = System.currentTimeMillis() + (remainingTime * 1000);
+                           new Thread(new Runnable() {
+                               public void run() {
+                                   aiReversi.calculateBestMove(field);
+                               }
+                           }).start();
+                           while (System.currentTimeMillis() < timeout) {
+                               try {
+                                   Thread.sleep(1000);
+                               } catch (InterruptedException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                           System.out.println("-=AI GAAT NU EEN ZET MAKEN=-");
+                           reversi.Points theAIMove = aiReversi.getBestMove();
+                           System.out.println("Hij koos slim: " + theAIMove.getY() + " : " + theAIMove.getX());
+                           board.setMove(theAIMove.getY(), theAIMove.getX());
                         }
                     }
 
-                        if (parse != null) {
-                            if(game.equals("Reversi")) {
-                                int pos = Integer.valueOf(parse);
-                                System.out.println("Komt in valid: " + pos);
-                                System.out.println(parse);
-                                //pos = pos % (int) Math.pow(10, (int) Math.log10(pos));
-                                int[] work = calculateMoveToCoordinates(pos);
-                                //if(field[work[0]][work[1]] == 0){
-                                boolean valid = checkState(work[0], work[1], 2);
-                                if (valid) {
-                                    field[work[0]][work[1]] = 2;
-                                    field = reversi.doMove(field, pos);
-                                    Platform.runLater(() -> board.drawBoard(field, game));
-                                }
-                                //}
-                            } else if (game.equals("Tic-tac-toe")) {
-                                int pos = Integer.valueOf(parse);
-                                System.out.println("Komt in valid: " + pos);
-                                System.out.println(parse);
-                                //pos = pos % (int) Math.pow(10, (int) Math.log10(pos));
-                                int[] work = calculateMoveToCoordinates(pos);
-                                //if(field[work[0]][work[1]] == 0){
-                                boolean valid = checkState(work[0], work[1], 2);
-                                if (valid) {
-                                    field[work[0]][work[1]] = 2;
-                                    Platform.runLater(() -> board.drawBoard(field, game));
-                                }
+
+                    if (parse != null) {
+                        parse = parse.replaceAll("[^0-9]", "");
+                        int pos = Integer.valueOf(parse);
+                        System.out.println("Komt in valid: " + pos);
+                        System.out.println(parse);
+                        //pos = pos % (int) Math.pow(10, (int) Math.log10(pos));
+                        int[] work = calculateMoveToCoordinates(pos);
+                        //if(field[work[0]][work[1]] == 0){
+                        boolean valid = checkState(work[0], work[1], 2);
+                        valid = true;
+                        if (valid){
+                            System.out.println("Komt hier vaa in");
+                            field[work[0]][work[1]] = 2;
+                            if(game.equals("Reversi")){
+                                field = reversi.doMove(field, pos);
                             }
+                            Platform.runLater(() -> board.drawBoard(field, game));
                         }
+                        //}
+                    }
                 }
             }
         }).start();
@@ -179,6 +193,7 @@ public class GameEngine {
                         try {
                             boolean mup = (boolean) method.invoke(board);
                             if (mup) {
+                                System.out.println("Mup true");
                                 try {
                                     doMove();
                                 } catch (IOException e) {
@@ -201,13 +216,14 @@ public class GameEngine {
 
     public void doMove() throws IOException {
 
-        System.out.println("hij doet dit");
+        System.out.println("DoMove");
         int[] coordinates = board.getMove();
         calculatedMove = calculateMoveToPosition(coordinates);
         boolean exec = checkState(coordinates[0], coordinates[1], 1);
+        exec = true;
         if (exec) {
             if(game.equals("Reversi") ){ ;
-                showField();
+                //showField();
                 setPlayerField(coordinates[0], coordinates[1], 1);
                 this.field = reversi.doMove(field, calculatedMove);
                 jack.doMove(calculatedMove);

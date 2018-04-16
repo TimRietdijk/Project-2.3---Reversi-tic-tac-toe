@@ -165,16 +165,15 @@ public class CommandCenter {
    public String commandHandling(String command, String name) {
        System.out.println(name);
         if (command.contains("GAME MOVE" )&& !command.contains(name)) {
-            StringBuilder build = new StringBuilder();
-            int length = command.length();
-            for (int i = 0; i < length; i++) {
-                Character character = command.charAt(i);
-                if (Character.isDigit(character)) {
-                    build.append(character);
-                }
+            String parse = command;
+            String[] fixingIt = parse.split(",");
+            if (fixingIt.length > 3){
+                parse = fixingIt[1+fixingIt.length-3];
+            }else{
+                parse = fixingIt[1];
             }
-            String parse = build.toString();
-            int s = Integer.valueOf(parse);
+            System.out.println(parse + fixingIt[0]);
+
             return parse;
 
         } else if (command.contains("YOURTURN")) {

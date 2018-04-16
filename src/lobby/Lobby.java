@@ -53,6 +53,7 @@ public class Lobby {
 
         try {
             BorderPane root = new BorderPane();
+
              commandCenter.ReadReceived();
              commandCenter.ReadReceived();
              String read2 = commandCenter.ReadReceived();
@@ -80,6 +81,7 @@ public class Lobby {
                     while (!gamestart) {
                         read = commandCenter.ReadReceived();
                         // Dit stuk vereist nog te veel tijd doordat commands gecheckt worden met if statements
+                        if(read != null){
                         if(read.contains("SVR GAME CHALLENGE {")) {
                             PopUp challengePopUp = new PopUp();
                             try {
@@ -114,7 +116,7 @@ public class Lobby {
                         }
                     }
 
-                }
+                }}
             }).start();
         } catch (IllegalStateException e) {
             System.out.println("welp");
