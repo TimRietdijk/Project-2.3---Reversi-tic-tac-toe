@@ -188,6 +188,7 @@ public class AIReversi {
     }
 
     private synchronized int getPossibleEnemyMoves(int[][] field){
+        System.out.println("Wrt" + reversi.calculatingPossibleMoves(field, 2, 1).size());
         return reversi.calculatingPossibleMoves(field, 2, 1).size();
     }
 

@@ -23,12 +23,12 @@ public class Reversi extends Framework{     //extends framework!!
     }
 
     public ArrayList<Points> getPiecesTurnedByMove(int[][] field, int move){
-        System.out.println("Reversi, I get: " + move);
+        //.out.println("Reversi, I get: " + move);
         piecesToTurn = new ArrayList<>();
         int[] coordinates = calculateMoveToCoordinates(field, move);
-        System.out.println("Reversi, I get: " + coordinates[0] + " : " + coordinates[1]);
+        //System.out.println("Reversi, I get: " + coordinates[0] + " : " + coordinates[1]);
         int player = getPlayerState(field, coordinates);
-        System.out.println("Reversi, I get: " + coordinates[0] + " : " + coordinates[1] + " Player is " + player);
+        //System.out.println("Reversi, I get: " + coordinates[0] + " : " + coordinates[1] + " Player is " + player);
         north(field, player, coordinates);
         south(field, player, coordinates);
         east(field, player, coordinates);
@@ -37,7 +37,7 @@ public class Reversi extends Framework{     //extends framework!!
         southEast(field,player,coordinates);
         northWest(field,player,coordinates);
         southWest(field,player,coordinates);
-        System.out.println("Create:" + piecesToTurn.size());
+        //System.out.println("Create:" + piecesToTurn.size());
         return piecesToTurn;
     }
 
@@ -47,7 +47,7 @@ public class Reversi extends Framework{     //extends framework!!
     }
 
     private void addPiecesToTurn(int x, int y){
-        System.out.println(x + " : " + y  + "komen erin");
+        //System.out.println(x + " : " + y  + "komen erin");
         piecesToTurn.add(new Points(x,y));
     }
 
@@ -107,7 +107,7 @@ public class Reversi extends Framework{     //extends framework!!
 
         }
         for (int i = 0; i < possibleMoves.size(); i++) {
-            System.out.println(possibleMoves.get(i).getX()+" : "+possibleMoves.get(i).getY());
+            //System.out.println(possibleMoves.get(i).getX()+" : "+possibleMoves.get(i).getY());
         }
         return possibleMoves;
     }
@@ -208,7 +208,7 @@ public class Reversi extends Framework{     //extends framework!!
                     counter++;
                 } else if (field[currentX][currentY-i] == player) {
                     if (counter > 0) {
-                        System.out.println("Possible move north: " + currentX + "," + currentY);
+                        //System.out.println("Possible move north: " + currentX + "," + currentY);
                         addPossibleMoves(currentX,currentY);
                         break;
                     }
@@ -248,14 +248,14 @@ public class Reversi extends Framework{     //extends framework!!
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
-        System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
+        //System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
         if (currentX < field.length-1) {
             for (int i = 1; i <= field[1].length-currentY; i++) {
                 if (field[currentX+i][currentY] != player && field[currentX+i][currentY] != 0) {
                     counter++;
                 } else if (field[currentX+i][currentY] == player) {
                     if (counter > 0) {
-                        System.out.println("Possible move east: " + currentX + "," + currentY);
+                        //System.out.println("Possible move east: " + currentX + "," + currentY);
                         addPossibleMoves(currentX,currentY);
                         break;
                     }
@@ -295,14 +295,14 @@ public class Reversi extends Framework{     //extends framework!!
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
-        System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
+        //System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
         if (currentY < field.length-1) {
             for (int i = 1; i <= field.length-currentY; i++) {
                 if (field[currentX][currentY+i] != player && field[currentX][currentY+i] != 0) {
                     counter++;
                 } else if (field[currentX][currentY+i] == player) {
                     if (counter > 0) {
-                        System.out.println("Possible move east: " + currentX + "," + currentY);
+                        //System.out.println("Possible move east: " + currentX + "," + currentY);
                         addPossibleMoves(currentX,currentY);
                         break;
                     }
@@ -342,7 +342,7 @@ public class Reversi extends Framework{     //extends framework!!
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
-        System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
+        //System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
         if (currentX > 0) {
             for (int i = 1; i <= field.length-currentX; i++) {
                 if (field[currentX-i][currentY] != player && field[currentX-i][currentY] != 0) {
