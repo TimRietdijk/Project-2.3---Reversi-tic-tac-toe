@@ -513,7 +513,7 @@ public class Reversi extends Framework{     //extends framework!!
         int currentY = coordinates[1];
         if (currentY != field[1].length-1) {
             outerloop:
-            for (int i = 1; i < field[1].length; i++) {
+            for (int i = 1; i < field[1].length - currentY; i++) {
                 if (field[currentX][currentY+i] != player && field[currentX][currentY+i] != 0) {
                     counter++;
                 } else if (field[currentX][currentY+i] == player) {
