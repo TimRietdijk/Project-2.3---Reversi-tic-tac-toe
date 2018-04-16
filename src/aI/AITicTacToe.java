@@ -159,14 +159,14 @@ public class AITicTacToe {
         //---System.out.println("                Minimax kon niet toegepast worden");
         if (currentField[1][1] == 0) { //nog geen minimax, dus begin met midden als midden vrij is
             return new Points(1, 1);
-        }else if (currentField[0][0] == 0) { //daarna de hoeken
-            return new Points(0, 0);
+        }else if (currentField[2][0] == 0) { //daarna de hoeken
+            return new Points(2, 0);
         } else if (currentField[2][2] == 0) { //daarna de hoeken
             return new Points(2, 2);
-        } else if (currentField[2][0] == 0) { //daarna de hoeken
-            return new Points(2, 0);
+        } else if (currentField[0][0] == 0) { //daarna de hoeken
+            return new Points(0, 0);
         } else if (currentField[0][2] == 0) { //daarna de hoeken
-             return new Points(0, 2);
+            return new Points(0, 2);
         }
         //het midden en alle hoeken zijn bezet en minimax kan niet toegepast worden dus doe maar random
         //---System.out.println("AI: IK KIES NU RANDOM");

@@ -122,7 +122,7 @@ public class Lobby {
     }
 
         private void newGame(String string){
-            new GameEngine(optionlist, commandCenter, gamestart, fright, true, string);
+            new GameEngine(optionlist, commandCenter, gamestart, fright, true, string, false, false);
         }
         private HBox addHBox () {
             HBox hbox = new HBox();
@@ -355,7 +355,8 @@ class PopUp {
         label1.setText("You received a "+gameType+" challenge from "+challenger);
 
         Button button1 = new Button();
-        button1.setText("Accept");
+        button1.setText("Accept as player");
+        button1.setMinWidth(40);
         button1.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -372,21 +373,53 @@ class PopUp {
                 list.put("option1", "dumdum");
                 list.put("option2", "gumgum");
                 primaryStage.close();
-                new GameEngine(list, commandCenter, isIt, stageFright, false, "");
+                new GameEngine(list, commandCenter, isIt, stageFright, false, "", false, false);
             }
 
         });
+
+        Button button2 = new Button();
+        button2.setText("Accept as AI");
+        button2.setMinWidth(40);
+        button2.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                //Hier wordt een challenge geaccepteerd
+                try {
+                    commandCenter.doChallengeAccept(challengeNumber);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                isIt = true;;
+
+                list.put("game", gameType);
+                list.put("option1", "dumdum");
+                list.put("option2", "gumgum");
+                primaryStage.close();
+                System.out.println("De ontvangen game is: " + gameType);
+                if(gameType.equals("Reversi")) {
+                    new GameEngine(list, commandCenter, isIt, stageFright, false, "", false, true);
+                } else if(gameType.equals("Tic-tac-toe")) {
+                    System.out.println("ER WORDT NU EEN AI GEMAAKT VOOR DE ACCEPTER");
+                    new GameEngine(list, commandCenter, isIt, stageFright, false, "", true, false);
+                }
+            }
+
+        });
+
         pane.add(button1, 0, 1);
+        pane.add(button2, 0, 2);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
 
                 primaryStage = new Stage();
-                Scene scene = new Scene(pane, 250, 70);
+                Scene scene = new Scene(pane, 270, 80);
                 primaryStage.setScene(scene);
                 primaryStage.setTitle("Challenge "+challengeNumber);
-                primaryStage.setMinHeight(70);
-                primaryStage.setMinWidth(250);
+                primaryStage.setMinHeight(80);
+                primaryStage.setMinWidth(270);
                 primaryStage.show();
 
             }
