@@ -17,9 +17,8 @@ public class Reversi extends Framework{     //extends framework!!
 
     }
 
-    public int[][] doMove(int[][] field, int lastMove){ // moet aangeroepen worden van buitenaf
-        int[][] temp = calculating(field, lastMove);
-        return temp;
+    public synchronized int[][] doMove(int[][] field, int lastMove){ // moet aangeroepen worden van buitenaf
+        return calculating(field, lastMove);
     }
 
     public ArrayList<Points> getPiecesTurnedByMove(int[][] field, int move){
@@ -191,11 +190,34 @@ public class Reversi extends Framework{     //extends framework!!
     }
 
     private int[][] createUpdatedField(int[][] field, int player){
-        int[][] tempField = field;
-        for(Points p : piecesToTurn) {
-            tempField[p.getX()][p.getY()] = player;
+
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                if(field[i][j] != 0) {
+                    System.out.println("before Values at arr[" + i + "][" + j + "] is " + field[i][j]);
+                }
+            }
         }
-        return tempField;
+
+        for(Points p : piecesToTurn) {
+            if(player == 0){
+                System.out.println("turn 0" + p.getX() + " : " + p.getY());
+            }else {
+                System.out.println("turn" + p.getX() + " : " + p.getY());
+                field[p.getX()][p.getY()] = player;
+            }
+
+        }
+
+
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                if(field[i][j] != 0) {
+                    System.out.println("after Values at arr[" + i + "][" + j + "] is " + field[i][j]);
+                }
+            }
+        }
+        return field;
     }
 
     public void northpossible(int[][] field, int player, int[] coordinates) {
@@ -589,7 +611,7 @@ public class Reversi extends Framework{     //extends framework!!
     private int[] calculateMoveToCoordinates(int[][] field, int move) {
         int x = (move / (field.length));
         int y = move%(field.length);
-        return new int[]{x, y};
+        return new int[]{y, x};
     }
     public void doMove(int[][] board){
         calculating(board, 20);
