@@ -118,7 +118,7 @@ public class GameEngine {
                             }
                             fuckHanzeKanNietFatsoenlijkServersBouwen = false;
                             wieBenIk = false;
-                            //Platform.runLater(() -> board.drawBoard(field, game));
+                            Platform.runLater(() -> board.drawBoard(field, game));
                         }
                     }
                     if(s.contains("WIN") ){
