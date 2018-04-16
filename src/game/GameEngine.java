@@ -64,7 +64,7 @@ public class GameEngine {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if(mode.contains("3")||reversiAiIsPlaying){
+            if(mode.contains("ai")||reversiAiIsPlaying){
                 reversiAiIsPlaying = true;
                 aiReversi = new AIReversi(getField());
             }
@@ -78,7 +78,7 @@ public class GameEngine {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if(mode.contains("3")||ticTacToeAiIsPlaying) {
+            if(mode.contains("ai")||ticTacToeAiIsPlaying) {
                 ticTacToeAiIsPlaying = true;
                 ticTacToeAI = new AITicTacToe(getField());
             }

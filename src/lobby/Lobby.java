@@ -303,12 +303,11 @@ public class Lobby {
             );
         playerOptions1 = FXCollections.observableArrayList(playerList);
         comboBox1 = new ComboBox(playerOptions1);
-        Label label2 = new Label("difficulty");
+        Label label2 = new Label("gamemode");
         ObservableList<String> options2 =
                 FXCollections.observableArrayList(
-                        "1",
-                        "2",
-                        "3"
+                        "player",
+                        "ai"
                 );
         comboBox2 = new ComboBox(options2);
         comboBox1.setPrefWidth(120);
