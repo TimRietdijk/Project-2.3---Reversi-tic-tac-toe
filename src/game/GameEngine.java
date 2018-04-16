@@ -1,5 +1,6 @@
 package game;
 
+import aI.AIReversi;
 import aI.AITicTacToe;
 import aI.Points;
 import framework.Board;
@@ -44,6 +45,9 @@ public class GameEngine {
     private java.lang.reflect.Method method;
     private boolean ticTacToeAiIsPlaying;
     private AITicTacToe ticTacToeAI;
+    private AIReversi aiReversi;
+    private boolean reversiAiIsPlaying;
+
     public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage, boolean ok, String string) {
         this.fuckHanzeKanNietFatsoenlijkServersBouwen = ok;
         game = optionlist.get("game");
@@ -60,7 +64,11 @@ public class GameEngine {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            reversi = new Reversi(field, board);
+            if(mode.contains("3")){
+                reversiAiIsPlaying = true;
+                aiReversi = new AIReversi(getField() , board);
+            }
+                reversi = new Reversi();
         } else if (game.contains("Tic-tac-toe")) {
             setField(3, 3);
             board = new Board();
@@ -127,6 +135,25 @@ public class GameEngine {
                             ticTacToeAI.updateField(getField());
                             Points theAIMove = ticTacToeAI.decideMove();
                             board.setMove(theAIMove.getY(), theAIMove.getX());
+                        } else if(reversiAiIsPlaying){
+                           int remainingTime = 4;
+                           long timeout = System.currentTimeMillis() + (remainingTime * 1000);
+                           new Thread(new Runnable() {
+                               public void run() {
+                                   aiReversi.calculateBestMove(field);
+                               }
+                           }).start();
+                           while (System.currentTimeMillis() < timeout) {
+                               try {
+                                   Thread.sleep(1000);
+                               } catch (InterruptedException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                           System.out.println("-=AI GAAT NU EEN ZET MAKEN=-");
+                           reversi.Points theAIMove = aiReversi.getBestMove();
+                           System.out.println("Hij koos slim: " + theAIMove.getY() + " : " + theAIMove.getX());
+                           board.setMove(theAIMove.getY(), theAIMove.getX());
                         }
                     }
 
@@ -140,7 +167,9 @@ public class GameEngine {
                         int[] work = calculateMoveToCoordinates(pos);
                         //if(field[work[0]][work[1]] == 0){
                         boolean valid = checkState(work[0], work[1], 2);
+                        valid = true;
                         if (valid){
+                            System.out.println("Komt hier vaa in");
                             field[work[0]][work[1]] = 2;
                             field = reversi.doMove(field, pos);
                             Platform.runLater(() -> board.drawBoard(field, game));
@@ -154,12 +183,12 @@ public class GameEngine {
             @Override
             public void run() {
                 while(gamestart) {
-
                     try {
                         method = board.getClass().getMethod("getMoveMade");
                         try {
                             boolean mup = (boolean) method.invoke(board);
                             if (mup) {
+                                System.out.println("Mup true");
                                 try {
                                     doMove();
                                 } catch (IOException e) {
@@ -182,13 +211,14 @@ public class GameEngine {
 
     public void doMove() throws IOException {
 
-        System.out.println("hij doet dit");
+        System.out.println("DoMove");
         int[] coordinates = board.getMove();
         calculatedMove = calculateMoveToPosition(coordinates);
         boolean exec = checkState(coordinates[0], coordinates[1], 1);
+        exec = true;
         if (exec) {
             if(game.equals("Reversi") ){ ;
-                showField();
+                //showField();
                 setPlayerField(coordinates[0], coordinates[1], 1);
                 this.field = reversi.doMove(field, calculatedMove);
                 jack.doMove(calculatedMove);
