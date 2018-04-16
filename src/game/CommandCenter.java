@@ -167,8 +167,13 @@ public class CommandCenter {
         if (command.contains("GAME MOVE" )&& !command.contains(name)) {
             String parse = command;
             String[] fixingIt = parse.split(",");
+            if (fixingIt.length > 3){
+                parse = fixingIt[1+fixingIt.length-3];
+            }else{
+                parse = fixingIt[1];
+            }
             System.out.println(parse + fixingIt[0]);
-            parse = fixingIt[1];
+
             return parse;
 
         } else if (command.contains("YOURTURN")) {
