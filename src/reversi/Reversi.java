@@ -110,6 +110,7 @@ public class Reversi extends Framework{     //extends framework!!
             System.out.println(possibleMoves.get(i).getX()+" : "+possibleMoves.get(i).getY());
         }
         return possibleMoves;
+
     }
 
     private int calculateMoveToPosition(int[][] field, int i) {
@@ -248,7 +249,7 @@ public class Reversi extends Framework{     //extends framework!!
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
-        System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
+        //System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
         if (currentX < field.length-1) {
             for (int i = 1; i <= field[1].length-currentY; i++) {
                 if (field[currentX+i][currentY] != player && field[currentX+i][currentY] != 0) {
@@ -295,7 +296,7 @@ public class Reversi extends Framework{     //extends framework!!
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
-        System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
+        //System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
         if (currentY < field.length-1) {
             for (int i = 1; i <= field.length-currentY; i++) {
                 if (field[currentX][currentY+i] != player && field[currentX][currentY+i] != 0) {
@@ -342,7 +343,7 @@ public class Reversi extends Framework{     //extends framework!!
         int counter = 0;
         int currentX = coordinates[0];
         int currentY = coordinates[1];
-        System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
+        //System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
         if (currentX > 0) {
             for (int i = 1; i <= field.length-currentX; i++) {
                 if (field[currentX-i][currentY] != player && field[currentX-i][currentY] != 0) {
@@ -596,7 +597,6 @@ public class Reversi extends Framework{     //extends framework!!
     }
 }
 /*class Main{
-
     public static void main(String args[]) {
         int[][] board = new int[8][8];
         board[5][2] = 1;
@@ -626,10 +626,7 @@ public class Reversi extends Framework{     //extends framework!!
         board[0][7] = 1;
         board[4][1] = 2;
         board[3][0] = 1;
-
-
         reversi reversi = new reversi(board);
         reversi.doMove(board);
     }
 }*/
-
