@@ -65,7 +65,11 @@ public class CommandCenter {
     public String ReadReceived() {
                 // receivedCommand houdt het ontvangen command van de server
                 String receivedCommand;
+                try {
                     receivedCommand = sc1.nextLine();
+                } catch (IndexOutOfBoundsException iob) {
+                    return null;
+                }
                     System.out.println("dit is de volgende lijn: "+receivedCommand);
                     return receivedCommand;
     }

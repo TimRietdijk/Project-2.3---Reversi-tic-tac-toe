@@ -35,6 +35,7 @@ public class Lobby {
     private Scene s;
     private boolean gamestart;
     private String read;
+    private ObservableList<String> playerOptions1;
     public void start(Stage fright, boolean start) {
         gamestart = start;
         optionlist = new HashMap<String, String>();
@@ -258,6 +259,39 @@ public class Lobby {
     private VBox options(){
 
     VBox elevator = new VBox();
+    Button refreshPlayers = new Button("refresh playerlist");
+    refreshPlayers.setOnAction(new EventHandler<ActionEvent>() {
+
+        @Override
+        public void handle(ActionEvent e) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        commandCenter.doGetPlayerList();
+                    } catch (IOException exc) {
+                        exc.printStackTrace();
+                    }
+                    boolean looping = true;
+                    while(looping) {
+                        String currentReceiving = commandCenter.ReadReceived();
+                        if(currentReceiving==null) {
+
+                        } else {
+                            String read2 = currentReceiving;
+                            if (read2.contains("SVR PLAYERLIST [")) {
+                                updatePlayerList(read2);
+                                playerOptions1 = FXCollections.observableArrayList(playerList);
+                                comboBox1.setItems(playerOptions1);
+                                looping = false;
+                            }
+                        }
+                    }
+                }
+            }).start();
+
+        }
+    });
     Label labell = new Label("players");
     ObservableList<String> options1 =
             FXCollections.observableArrayList(
@@ -265,7 +299,7 @@ public class Lobby {
                     "Player vs aI",
                     "aI vs aI"
             );
-    ObservableList<String> playerOptions1 = FXCollections.observableArrayList(playerList);
+        playerOptions1 = FXCollections.observableArrayList(playerList);
         comboBox1 = new ComboBox(playerOptions1);
         Label label2 = new Label("difficulty");
         ObservableList<String> options2 =
@@ -277,7 +311,7 @@ public class Lobby {
         comboBox2 = new ComboBox(options2);
         comboBox1.setPrefWidth(120);
         comboBox2.setPrefWidth(120);
-        elevator.getChildren().addAll(labell, comboBox1, label2, comboBox2);
+        elevator.getChildren().addAll(refreshPlayers, labell, comboBox1, label2, comboBox2);
         elevator.setStyle("-fx-background-color: #336666;");
         elevator.setSpacing(10);
         elevator.setAlignment(Pos.CENTER);
