@@ -1,14 +1,21 @@
 package reversi;
 
+import framework.Board;
+import framework.Framework;
+
 import java.util.ArrayList;
 
-public class Reversi{
+public class Reversi extends Framework{     //extends framework!!
 
     ArrayList<Points> piecesToTurn = new ArrayList<>();
     ArrayList<Points> enemyPieces = new ArrayList<>();
     ArrayList<Points> emptySpacesNeighbouringEnemy = new ArrayList<>();
     public ArrayList<Points> possibleMoves = new ArrayList<>();
 
+    public Reversi(int[][] field, Board board){
+        super(board);
+
+    }
 
     public synchronized int[][] doMove(int[][] field, int lastMove){ // moet aangeroepen worden van buitenaf
         return calculating(field, lastMove);
@@ -360,7 +367,7 @@ public class Reversi{
         int currentY = coordinates[1];
         //System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
         if (currentX > 0) {
-            for (int i = 1; i <= currentX; i++) {
+            for (int i = 1; i <= field.length-currentX; i++) {
                 if (field[currentX-i][currentY] != player && field[currentX-i][currentY] != 0) {
                     counter++;
                 } else if (field[currentX-i][currentY] == player) {
@@ -507,7 +514,7 @@ public class Reversi{
         int currentY = coordinates[1];
         if (currentY != field[1].length-1) {
             outerloop:
-            for (int i = 1; i < field[1].length-currentY; i++) {
+            for (int i = 1; i < field[1].length - currentY; i++) {
                 if (field[currentX][currentY+i] != player && field[currentX][currentY+i] != 0) {
                     counter++;
                 } else if (field[currentX][currentY+i] == player) {

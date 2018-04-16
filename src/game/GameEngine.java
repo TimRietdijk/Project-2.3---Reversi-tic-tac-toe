@@ -21,8 +21,8 @@ import ticTacToe.TicTacToe;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class GameEngine {
@@ -103,7 +103,7 @@ public class GameEngine {
                     String s = jack.ReadReceived();
                     System.out.println(s);
                     String parse = jack.commandHandling(s, name);
-                    if(s.contains("GAME MATCH") && wieBenIk || fuckHanzeKanNietFatsoenlijkServersBouwen){
+                    if(s.contains(" GAME MATCH") && wieBenIk || fuckHanzeKanNietFatsoenlijkServersBouwen){
                         if(game.equals("Reversi")) {
                             if (s.contains(name) || string.contains(name)) {
                                 setPlayerField(3,3,2);
@@ -158,8 +158,8 @@ public class GameEngine {
                     }
 
 
-
                     if (parse != null) {
+                        parse = parse.replaceAll("[^0-9]", "");
                         int pos = Integer.valueOf(parse);
                         System.out.println("Komt in valid: " + pos);
                         System.out.println(parse);
@@ -171,7 +171,9 @@ public class GameEngine {
                         if (valid){
                             System.out.println("Komt hier vaa in");
                             field[work[0]][work[1]] = 2;
+                            if(game.equals("Reversi")){
                             field = reversi.doMove(field, pos);
+                            }
                             Platform.runLater(() -> board.drawBoard(field, game));
                         }
                         //}
