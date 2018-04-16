@@ -1,21 +1,13 @@
 package reversi;
 
-import framework.Board;
-import framework.Framework;
-
 import java.util.ArrayList;
 
-public class Reversi extends Framework{     //extends framework!!
+public class Reversi{     //extends framework!!
 
     ArrayList<Points> piecesToTurn = new ArrayList<>();
     ArrayList<Points> enemyPieces = new ArrayList<>();
     ArrayList<Points> emptySpacesNeighbouringEnemy = new ArrayList<>();
     public ArrayList<Points> possibleMoves = new ArrayList<>();
-
-    public Reversi(int[][] field, Board board){
-        super(board);
-
-    }
 
     public synchronized int[][] doMove(int[][] field, int lastMove){ // moet aangeroepen worden van buitenaf
         return calculating(field, lastMove);

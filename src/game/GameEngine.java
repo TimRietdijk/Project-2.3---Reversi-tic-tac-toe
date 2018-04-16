@@ -5,24 +5,22 @@ import aI.AITicTacToe;
 import aI.Points;
 import framework.Board;
 import framework.Framework;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import lobby.Lobby;
-import reversi.Reversi;
-import javafx.application.Platform;
 import javafx.stage.Stage;
+import lobby.Lobby;
 import org.ini4j.Wini;
+import reversi.Reversi;
 import ticTacToe.TicTacToe;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class GameEngine {
