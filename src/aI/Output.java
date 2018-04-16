@@ -7,11 +7,13 @@ import java.util.ArrayList;
 public class Output {
     private int x;
     private int y;
-    private int availableMoves;
-    private int availableMovesEnemy;
-    private int centerPeaces;
-    private int peacesTurned;
+    private int availableMoves = 0;
+    private int availableMovesEnemy = 0;
+    private int centerPeaces = 0;
+    private int peacesTurned = 0;
     ArrayList<Points> peacesTurnedArray;
+    int[] scoreArray = {10, -10, 100, 5};
+    int score;
 
     public Output(int x, int y){
         this.x = x;
@@ -24,6 +26,13 @@ public class Output {
         this.availableMoves = availableMoves;
         this.availableMovesEnemy = availableMovesEnemy;
         this.centerPeaces = centerPeaces;
+    }
+
+    public int calculateScore(){
+        int score = (availableMoves * scoreArray[0]) + (availableMovesEnemy * scoreArray[1]) + (centerPeaces * scoreArray[2]) + (peacesTurned * scoreArray[3]);
+        this.score = score;
+        System.out.println("Move " + x + " : " + y + " Score = " + this.score);
+        return score;
     }
 
     public int getX() {
