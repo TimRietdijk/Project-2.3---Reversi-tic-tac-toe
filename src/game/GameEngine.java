@@ -45,6 +45,7 @@ public class GameEngine {
     private boolean ticTacToeAiIsPlaying;
     private boolean reversiAiIsPlaying;
     private AITicTacToe ticTacToeAI;
+    private AIReversi aiReversi;
     public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage, boolean ok, String string, boolean playAsTicTacToeAI, boolean playAsReversiAI) {
         ticTacToeAiIsPlaying = playAsTicTacToeAI;
         reversiAiIsPlaying = playAsReversiAI;
