@@ -102,11 +102,8 @@ public class Board {
             for (int j = 0; j < field[i].length; j++) {
                 if (field[i][j] == 1){
                     yourPoints = yourPoints + 1;
-                    System.out.println("zijn er ook lege");
-                }else if(field[i][j] == 2){
+                }else if(field[i][j] == 2) {
                     loserPoints = loserPoints + 1;
-                }else{
-
                 }
             }
             label.setText("Your Points:\n" + yourPoints);
