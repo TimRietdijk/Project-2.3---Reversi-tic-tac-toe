@@ -90,9 +90,10 @@ public class AITicTacToe {
         for (Points move : availableMoves) {
             //---System.out.println();
 
+
             /*
             //HIER WORDT CURRENTFIELD UITGEPRINT
-            stringCurrentField = "currentField: ";
+            String stringCurrentField = "currentField: ";
             for(int[] i:currentField) {
                 for(int j:i) {
                     stringCurrentField+=j+", ";
@@ -100,6 +101,7 @@ public class AITicTacToe {
             }
             System.out.println(stringCurrentField);
             */
+
 
             int[][] possibleFutureField = new int[3][3];
 
@@ -116,7 +118,7 @@ public class AITicTacToe {
 
 
 
-            /*
+
             //HIER WORDT HET MOGELIJKE TOEKOMSTIGE FIELD GEPRINT
             String stringPossibleFutureField = "stringPossibleFutureField: ";
             for(int[] i:possibleFutureField) {
@@ -125,7 +127,6 @@ public class AITicTacToe {
                 }
             }
             System.out.println(stringPossibleFutureField);
-            */
 
 
 
@@ -143,10 +144,13 @@ public class AITicTacToe {
                 //deze zet wint het spel
                 return move;
             } else if (score == 0) {
+                System.out.println("IK KOM HIER 1");
                 //deze zet wint niet het spel, maar de tegenstander kan nu misschien wel winnen
                 //tegenstander wil ook winnen
                 Points preventionMove = minMove(possibleFutureField, player2);
                 if(preventionMove != null) { //als minMove voor speler2 niet null returned moeten wij deze zet maken om te voorkomen dat speler2 hiermee wint
+                    System.out.println("IK KOM HIER 2");
+                    System.out.println("DEZE MOVE GAAT TEGENSTANDER TEGENHOUDEN: "+preventionMove.getX()+" "+preventionMove.getY());
                     //---System.out.println("Deze zet zou winnend zijn voor tegenstander, maar ik doe hem om dat te voorkomen");
                     return preventionMove;
                 }
@@ -198,7 +202,7 @@ public class AITicTacToe {
 
 
 
-            /*
+
             //HIER WORDT HET MOGELIJKE VERDERE TOEKOMSTIGE VELD GEPRINT
             String stringFurtherPossibleFutureField = "stringFurtherPossibleFutureField: ";
             for(int[] i:furtherPossibleFutureField) {
@@ -207,7 +211,6 @@ public class AITicTacToe {
                 }
             }
             System.out.println(stringFurtherPossibleFutureField);
-            */
 
 
 
@@ -222,10 +225,10 @@ public class AITicTacToe {
                 //deze zet is interessant voor de tegenspeler, met deze move wint speler 2 namelijk
                 return move;
             } else if (score==0){
-                Points aiMove = maxMove(furtherPossibleFutureField, player1);
+                /*Points aiMove = maxMove(furtherPossibleFutureField, player1);
                 if(aiMove!=null) {
                     return move;
-                }
+                }*/
             } else {
                 //---System.out.println("AI IS GOING TO WIN");
             }
@@ -310,36 +313,4 @@ public class AITicTacToe {
             return 0;
         }
     }
-
-    /*
-    public static void main(String[] args) {
-        int[][] oefenveldje = {{0,0,0},{0,0,0},{0,0,0}};
-        AITicTacToe aiTicTacToe = new AITicTacToe(oefenveldje);
-
-        oefenveldje[1][1] = 2;
-        Points moveAI1 = aiTicTacToe.decideMove(oefenveldje);
-        oefenveldje[moveAI1.getX()][moveAI1.getY()] = 1;
-        System.out.println(moveAI1.getX() + " " + moveAI1.getY());
-
-        oefenveldje[0][2] = 2;
-        Points moveAI2 = aiTicTacToe.decideMove(oefenveldje);
-        oefenveldje[moveAI2.getX()][moveAI2.getY()] = 1;
-        System.out.println(moveAI2.getX() + " " + moveAI2.getY());
-
-        oefenveldje[1][0] = 2;
-        Points moveAI3 = aiTicTacToe.decideMove(oefenveldje);
-        oefenveldje[moveAI3.getX()][moveAI3.getY()] = 1;
-        System.out.println(moveAI3.getX() + " " + moveAI3.getY());
-
-        oefenveldje[0][0] = 2;
-        Points moveAI4 = aiTicTacToe.decideMove(oefenveldje);
-        oefenveldje[moveAI4.getX()][moveAI4.getY()] = 1;
-        System.out.println(moveAI4.getX() + " " + moveAI4.getY());
-
-        oefenveldje[0][1] = 2;
-        Points moveAI5 = aiTicTacToe.decideMove(oefenveldje);
-        oefenveldje[moveAI5.getX()][moveAI5.getY()] = 1;
-        System.out.println(moveAI5.getX() + " " + moveAI5.getY());
-    }
-    */
 }
