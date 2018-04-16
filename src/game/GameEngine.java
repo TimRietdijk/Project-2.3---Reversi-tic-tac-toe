@@ -1,5 +1,7 @@
 package game;
 
+import aI.AITicTacToe;
+import aI.Points;
 import framework.Board;
 import framework.Framework;
 import javafx.event.ActionEvent;
@@ -20,6 +22,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 
+
+
 public class GameEngine {
     private boolean fuckHanzeKanNietFatsoenlijkServersBouwen;
     private boolean wieBenIk;
@@ -27,6 +31,7 @@ public class GameEngine {
     private String game;
     private Wini ini;
     private String name;
+    private String mode;
     protected int[][] field;
     private int numberofstates = 3;
     protected String[] states = new String[100];
@@ -37,12 +42,13 @@ public class GameEngine {
     private int calculatedMove;
     private Board board;
     private java.lang.reflect.Method method;
-    private boolean started = false;
-
+    private boolean ticTacToeAiIsPlaying;
+    private AITicTacToe ticTacToeAI;
     public GameEngine(Map<String, String> optionlist, CommandCenter commandCenter, boolean start, Stage stage, boolean ok, String string) {
         this.fuckHanzeKanNietFatsoenlijkServersBouwen = ok;
         game = optionlist.get("game");
         name = optionlist.get("name");
+        mode = optionlist.get("option2");
         if (game.contains("Reversi")) {
             setField(8, 8);
             wieBenIk = true;
@@ -64,6 +70,11 @@ public class GameEngine {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            if(mode.contains("3")) {
+                ticTacToeAiIsPlaying = true;
+                ticTacToeAI = new AITicTacToe(getField());
+            }
+
             framework = new TicTacToe(board);
         }else{
             System.out.println("Hopscotch");
@@ -84,8 +95,8 @@ public class GameEngine {
                     String s = jack.ReadReceived();
                     System.out.println(s);
                     String parse = jack.commandHandling(s, name);
-                    if(s.contains("GAME MATCH") && wieBenIk || fuckHanzeKanNietFatsoenlijkServersBouwen) {
-                        if (game.contains("Reversi") && !started) {
+                    if(s.contains("GAME MATCH") && wieBenIk || fuckHanzeKanNietFatsoenlijkServersBouwen){
+                        if(game.contains("Reversi")) {
                             if (s.contains(name) || string.contains(name)) {
                                 field[3][3] = 2;
                                 field[4][4] = 2;
@@ -99,17 +110,26 @@ public class GameEngine {
                                 field[3][4] = 2;
                                 System.out.println("Hier ook");
                             }
-                            started = true;
+                            fuckHanzeKanNietFatsoenlijkServersBouwen = false;
+                            wieBenIk = false;
+                            Platform.runLater(() -> board.drawBoard(field, game));
                         }
-                        fuckHanzeKanNietFatsoenlijkServersBouwen = false;
-                        wieBenIk = false;
-                        Platform.runLater(() -> board.drawBoard(field, game));
                     }
                     if(s.contains("WIN") ){
                         PinUp pinUp = new PinUp(stage, "win");
                     }else if(s.contains("LOSS")){
                         PinUp pinUp = new PinUp(stage, "lose");
                     }
+                    if(s.contains("SVR GAME YOURTURN")) {
+                        System.out.println("als difficulty 3 staat geselecteerd hoort er nu een ai move te komen");
+                        if(ticTacToeAiIsPlaying) {
+                            System.out.println("-=AI GAAT NU EEN ZET MAKEN=-");
+                            ticTacToeAI.updateField(getField());
+                            Points theAIMove = ticTacToeAI.decideMove();
+                            board.setMove(theAIMove.getY(), theAIMove.getX());
+                        }
+                    }
+
 
 
                     if (parse != null) {
@@ -191,6 +211,7 @@ public class GameEngine {
     private int calculateMoveToPosition(int[] move) {
         return (((move[1]) * field.length) + move[0]);
     }
+
     private int[] calculateMoveToCoordinates(int move) {
         int y = (move/(field.length));
         int x = move%(field.length);

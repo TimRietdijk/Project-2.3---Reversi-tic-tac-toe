@@ -61,11 +61,10 @@ public class AITicTacToe {
         return availableMoves;
     }
 
-    public Points decideMove(int[][] updatedField) {
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        updateField(updatedField);
+    public Points decideMove() {
+        //---System.out.println();
+        //---System.out.println();
+        //---System.out.println();
         List<Points> availableMoves = getPlayerMoves(0, currentField);
 
 
@@ -73,6 +72,7 @@ public class AITicTacToe {
 
 
         //HIER WORDT CURRENTFIELD UITGEPRINT
+        /*
         String stringCurrentField = "currentField: ";
         for(int[] i:currentField) {
             for(int j:i) {
@@ -80,6 +80,7 @@ public class AITicTacToe {
             }
         }
         System.out.println(stringCurrentField);
+        */
 
 
 
@@ -87,8 +88,9 @@ public class AITicTacToe {
 
 
         for (Points move : availableMoves) {
-            System.out.println();
+            //---System.out.println();
 
+            /*
             //HIER WORDT CURRENTFIELD UITGEPRINT
             stringCurrentField = "currentField: ";
             for(int[] i:currentField) {
@@ -97,6 +99,7 @@ public class AITicTacToe {
                 }
             }
             System.out.println(stringCurrentField);
+            */
 
             int[][] possibleFutureField = new int[3][3];
 
@@ -113,7 +116,7 @@ public class AITicTacToe {
 
 
 
-
+            /*
             //HIER WORDT HET MOGELIJKE TOEKOMSTIGE FIELD GEPRINT
             String stringPossibleFutureField = "stringPossibleFutureField: ";
             for(int[] i:possibleFutureField) {
@@ -122,6 +125,7 @@ public class AITicTacToe {
                 }
             }
             System.out.println(stringPossibleFutureField);
+            */
 
 
 
@@ -131,11 +135,11 @@ public class AITicTacToe {
 
             int score = score(possibleFutureField);
 
-            System.out.println("score: "+score);
+            //---System.out.println("score: "+score);
 
             //MINIMAX
             if (score > 0) {
-                System.out.println("    Dit is een winnende zet voor mij");
+                //---System.out.println("    Dit is een winnende zet voor mij");
                 //deze zet wint het spel
                 return move;
             } else if (score == 0) {
@@ -143,16 +147,16 @@ public class AITicTacToe {
                 //tegenstander wil ook winnen
                 Points preventionMove = minMove(possibleFutureField, player2);
                 if(preventionMove != null) { //als minMove voor speler2 niet null returned moeten wij deze zet maken om te voorkomen dat speler2 hiermee wint
-                    System.out.println("Deze zet zou winnend zijn voor tegenstander, maar ik doe hem om dat te voorkomen");
+                    //---System.out.println("Deze zet zou winnend zijn voor tegenstander, maar ik doe hem om dat te voorkomen");
                     return preventionMove;
                 }
             } else if(score<0){
-                System.out.println("AI: SPEL IS OVER, ONZE aI VERLOOR :(");
+                //---System.out.println("AI: SPEL IS OVER, ONZE aI VERLOOR :(");
                 break;
             }
 
         }
-        System.out.println("                Minimax kon niet toegepast worden");
+        //---System.out.println("                Minimax kon niet toegepast worden");
         if (currentField[1][1] == 0) { //nog geen minimax, dus begin met midden als midden vrij is
             return new Points(1, 1);
         }else if (currentField[0][0] == 0) { //daarna de hoeken
@@ -165,7 +169,7 @@ public class AITicTacToe {
              return new Points(0, 2);
         }
         //het midden en alle hoeken zijn bezet en minimax kan niet toegepast worden dus doe maar random
-        System.out.println("AI: IK KIES NU RANDOM");
+        //---System.out.println("AI: IK KIES NU RANDOM");
         return randomMove(currentField);
 
 
@@ -173,7 +177,7 @@ public class AITicTacToe {
 
 
     private Points minMove(int[][] testField, int player) {
-        System.out.println("IK KIJK NU WAT MIJN TEGENSTANDER KAN AANRICHTEN");
+        //---System.out.println("IK KIJK NU WAT MIJN TEGENSTANDER KAN AANRICHTEN");
         List<Points> testAvailableMoves = getPlayerMoves(0, testField);
         for (Points move : testAvailableMoves) {
 
@@ -194,6 +198,7 @@ public class AITicTacToe {
 
 
 
+            /*
             //HIER WORDT HET MOGELIJKE VERDERE TOEKOMSTIGE VELD GEPRINT
             String stringFurtherPossibleFutureField = "stringFurtherPossibleFutureField: ";
             for(int[] i:furtherPossibleFutureField) {
@@ -202,6 +207,7 @@ public class AITicTacToe {
                 }
             }
             System.out.println(stringFurtherPossibleFutureField);
+            */
 
 
 
@@ -211,7 +217,7 @@ public class AITicTacToe {
 
             int score = score(furtherPossibleFutureField);
 
-            System.out.println("MOGELIJKE SCORE: " + score +" , bij x "+ move.getX()+ " en y "+ move.getY());
+            //---System.out.println("MOGELIJKE SCORE: " + score +" , bij x "+ move.getX()+ " en y "+ move.getY());
             if (score < 0) { //tegenstander wil een zo minimaal mogelijke score
                 //deze zet is interessant voor de tegenspeler, met deze move wint speler 2 namelijk
                 return move;
@@ -221,14 +227,14 @@ public class AITicTacToe {
                     return move;
                 }
             } else {
-                System.out.println("AI IS GOING TO WIN");
+                //---System.out.println("AI IS GOING TO WIN");
             }
         }
         return null;
     }
 
     private Points maxMove(int[][] testField, int player) {
-        System.out.println("IK KIJK NU WAT MIJN TEGENSTANDER DENKT DAT IK DAAR KAN AANRICHTEN");
+        //---System.out.println("IK KIJK NU WAT MIJN TEGENSTANDER DENKT DAT IK DAAR KAN AANRICHTEN");
         List<Points> testAvailableMoves = getPlayerMoves(0, testField);
         for (Points move : testAvailableMoves) {
 
@@ -249,7 +255,7 @@ public class AITicTacToe {
 
 
 
-
+            /*
             //HIER WORDT HET MOGELIJKE VERDERE TOEKOMSTIGE VELD GEPRINT
             String stringFurtherPossibleFutureField = "stringFurtherPossibleFutureField: ";
             for(int[] i:furtherPossibleFutureField) {
@@ -258,8 +264,7 @@ public class AITicTacToe {
                 }
             }
             System.out.println(stringFurtherPossibleFutureField);
-
-
+            */
 
 
 
@@ -267,9 +272,9 @@ public class AITicTacToe {
 
             int score = score(furtherPossibleFutureField);
 
-            System.out.println("MOGELIJKE SCORE: " + score +" , bij x "+ move.getX()+ " en y "+ move.getY());
+            //---System.out.println("MOGELIJKE SCORE: " + score +" , bij x "+ move.getX()+ " en y "+ move.getY());
             if (score > 0) {
-                System.out.println("Deze toekomstige zet is al winnend voor onze AI");
+                //---System.out.println("Deze toekomstige zet is al winnend voor onze AI");
             } /*else if (score==0){
                 Points opponentMove = minMove(furtherPossibleFutureField, player2);
                 if(opponentMove!=null) {
@@ -306,6 +311,7 @@ public class AITicTacToe {
         }
     }
 
+    /*
     public static void main(String[] args) {
         int[][] oefenveldje = {{0,0,0},{0,0,0},{0,0,0}};
         AITicTacToe aiTicTacToe = new AITicTacToe(oefenveldje);
@@ -335,4 +341,5 @@ public class AITicTacToe {
         oefenveldje[moveAI5.getX()][moveAI5.getY()] = 1;
         System.out.println(moveAI5.getX() + " " + moveAI5.getY());
     }
+    */
 }
