@@ -96,7 +96,7 @@ public class GameEngine {
                     System.out.println(s);
                     String parse = jack.commandHandling(s, name);
                     if(s.contains("GAME MATCH") && wieBenIk || fuckHanzeKanNietFatsoenlijkServersBouwen){
-                        if(game.contains("Reversi")) {
+                        if(game.equals("Reversi")) {
                             if (s.contains(name) || string.contains(name)) {
                                 setPlayerField(3,3,2);
                                 setPlayerField(4,4,2);
