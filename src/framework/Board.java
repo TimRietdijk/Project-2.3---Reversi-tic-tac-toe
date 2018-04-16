@@ -74,8 +74,8 @@ public class Board {
     }
 
     public void drawBoard(int[][] field, String game){
-        for(int y = 0; y < field.length; y++){
-            for(int x = 0; x < field[1].length; x++) {
+        for(int x = 0; x < field.length; x++){
+            for(int y = 0; y < field[1].length; y++) {
                 // later nog even terug komen om te kijken of de field.length en de field[1].length op de juiste plaats staan
                 Rectangle rect = new Rectangle(x, y, 200, 200);
                 if(game.equals(games[1])) {
