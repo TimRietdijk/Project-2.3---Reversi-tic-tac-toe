@@ -66,7 +66,7 @@ public class GameEngine {
             }
             if(mode.contains("3")){
                 reversiAiIsPlaying = true;
-                aiReversi = new AIReversi(getField() , board);
+                aiReversi = new AIReversi(getField());
             }
                 reversi = new Reversi();
         } else if (game.contains("Tic-tac-toe")) {
@@ -120,7 +120,7 @@ public class GameEngine {
                             }
                             fuckHanzeKanNietFatsoenlijkServersBouwen = false;
                             wieBenIk = false;
-                            Platform.runLater(() -> board.drawBoard(field, game));
+                            //Platform.runLater(() -> board.drawBoard(field, game));
                         }
                     }
                     if(s.contains("WIN") ){
