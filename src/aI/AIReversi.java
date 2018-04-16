@@ -175,7 +175,7 @@ public class AIReversi {
         }
     }
 
-    private int calculateMoveToPosition(int[] move) {
+    private synchronized int calculateMoveToPosition(int[] move) {
         return (((move[1]) * field.length) + move[0]);
     }
 
@@ -242,11 +242,6 @@ public class AIReversi {
 
         private void ownAvailableMoves(){
             System.out.println("Test own");
-            for(int[] i : tempField){
-               for(int j : i){
-                   System.out.println(j);
-               }
-            }
             int move = getPossibleMoves(tempField);
             System.out.println(move);
             System.out.println("Own moves: " + move);

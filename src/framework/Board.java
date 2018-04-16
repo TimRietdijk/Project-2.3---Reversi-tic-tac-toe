@@ -20,14 +20,14 @@ public class Board {
     String[] games = {"TicTacToe", "Reversi"};
 
     public Board(){
-/*        Image player1 = new Image(getClass().getResourceAsStream("x.png"));
+        Image player1 = new Image(getClass().getResourceAsStream("x.png"));
         Image player2 = new Image(getClass().getResourceAsStream("o.png"));
         imagesTicTacToe.add(player1);
         imagesTicTacToe.add(player2);
-        player1 = new Image(getClass().getResourceAsStream("x.png"));
-        player2 = new Image(getClass().getResourceAsStream("o.png"));
+        player1 = new Image(getClass().getResourceAsStream("w.png"));
+        player2 = new Image(getClass().getResourceAsStream("b.png"));
         imagesReversie.add(player1);
-        imagesReversie.add(player2);*/
+        imagesReversie.add(player2);
     }
 
     public int[] getMove() {

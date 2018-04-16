@@ -98,16 +98,16 @@ public class GameEngine {
                     if(s.contains("GAME MATCH") && wieBenIk || fuckHanzeKanNietFatsoenlijkServersBouwen){
                         if(game.contains("Reversi")) {
                             if (s.contains(name) || string.contains(name)) {
-                                field[3][3] = 2;
-                                field[4][4] = 2;
-                                field[4][3] = 1;
-                                field[3][4] = 1;
+                                setPlayerField(3,3,2);
+                                setPlayerField(4,4,2);
+                                setPlayerField(4,3,1);
+                                setPlayerField(3,4,1);
                                 System.out.println("hij komt hier");
                             } else {
-                                field[3][3] = 1;
-                                field[4][4] = 1;
-                                field[4][3] = 2;
-                                field[3][4] = 2;
+                                setPlayerField(3,3,1);
+                                setPlayerField(4,4,1);
+                                setPlayerField(4,3,2);
+                                setPlayerField(3,4,2);
                                 System.out.println("Hier ook");
                             }
                             fuckHanzeKanNietFatsoenlijkServersBouwen = false;
@@ -134,19 +134,17 @@ public class GameEngine {
 
                     if (parse != null) {
                         int pos = Integer.valueOf(parse);
+                        System.out.println("Komt in valid: " + pos);
+                        System.out.println(parse);
+                        //pos = pos % (int) Math.pow(10, (int) Math.log10(pos));
                         int[] work = calculateMoveToCoordinates(pos);
                         //if(field[work[0]][work[1]] == 0){
                         boolean valid = checkState(work[0], work[1], 2);
                         if (valid){
                             field[work[0]][work[1]] = 2;
+                            field = reversi.doMove(field, pos);
+                            Platform.runLater(() -> board.drawBoard(field, game));
                         }
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                board.drawBoard(field, game);
-                                showField();
-                            }
-                        });
                         //}
                     }
                 }
@@ -190,7 +188,9 @@ public class GameEngine {
         boolean exec = checkState(coordinates[0], coordinates[1], 1);
         if (exec) {
             if(game.equals("Reversi") ){ ;
-                field = reversi.doMove(getField(), calculatedMove);
+                showField();
+                setPlayerField(coordinates[0], coordinates[1], 1);
+                this.field = reversi.doMove(field, calculatedMove);
                 jack.doMove(calculatedMove);
                 Platform.runLater(() -> board.drawBoard(field, game));
             }else {
@@ -206,6 +206,9 @@ public class GameEngine {
         field = new int[x][y];
     }
 
+    public void setPlayerField(int x, int y, int player){
+        this.field[x][y] = player;
+    }
 
 
     private int calculateMoveToPosition(int[] move) {
@@ -217,6 +220,7 @@ public class GameEngine {
         int x = move%(field.length);
         return new int[] {x, y};
     }
+
 
 
     public int[][] getField() {
