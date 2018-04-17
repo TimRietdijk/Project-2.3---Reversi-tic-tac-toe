@@ -28,6 +28,7 @@ public class GameEngine {
     private boolean wieBenIk;
     private  boolean gamestart;
     private String game;
+    private boolean trying;
     private Wini ini;
     private String name;
     private String mode;
@@ -130,6 +131,7 @@ public class GameEngine {
                         PinUp pinUp = new PinUp(stage, "lose");
                     }
                     if(s.contains("SVR GAME YOURTURN")) {
+                        trying = true;
                        // System.out.println("-=DEZE BEURT!=-");
                         if(ticTacToeAiIsPlaying) {
                          //   System.out.println("-=DEZE AI GAAT NU EEN ZET MAKEN=-");
@@ -138,25 +140,16 @@ public class GameEngine {
                             Points theAIMove = ticTacToeAI.decideMove();
                           //  System.out.println("-=DEZE AI DOET NU: MOVE x:" + theAIMove.getX() + ", y:" + theAIMove.getY());
                             board.setMove(theAIMove.getX(), theAIMove.getY());
-                        } else if(reversiAiIsPlaying){
-                           int remainingTime = 4;
-                           long timeout = System.currentTimeMillis() + (remainingTime * 1000);
-                           new Thread(new Runnable() {
-                               public void run() {
-                                   aiReversi.calculateBestMove(field);
-                               }
-                           }).start();
-                           while (System.currentTimeMillis() < timeout) {
-                               try {
-                                   Thread.sleep(1000);
-                               } catch (InterruptedException e) {
-                                   e.printStackTrace();
-                               }
-                           }
-                         //  System.out.println("-=AI GAAT NU EEN ZET MAKEN=-");
-                           reversi.Points theAIMove = aiReversi.getBestMove();
-                        //   System.out.println("Hij koos slim: " + theAIMove.getY() + " : " + theAIMove.getX());
-                           board.setMove(theAIMove.getY(), theAIMove.getX());
+                        } else if(reversiAiIsPlaying) {
+
+
+                            //  System.out.println("-=AI GAAT NU EEN ZET MAKEN=-");
+                            reversi.Points theAIMove = aiReversi.calculateBestMove(field);
+                            //   System.out.println("Hij koos slim: " + theAIMove.getY() + " : " + theAIMove.getX());
+                            if (trying) {
+                                board.setMove(theAIMove.getY(), theAIMove.getX());
+                                trying = false;
+                            }
                         }
                     }
 

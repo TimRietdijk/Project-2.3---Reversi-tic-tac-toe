@@ -51,7 +51,7 @@ public class AIReversi {
         defineCenterPeaces();
     }
 
-    public void calculateBestMove(int[][] field){
+    public Points calculateBestMove(int[][] field){
         this.field = field;
         availableMoves = reversi.calculatingPossibleMoves(field, 1, 2);
         for(Points p : availableMoves){
@@ -63,9 +63,10 @@ public class AIReversi {
             checkForBadMoves(); // and remove
             setBestMove(availableMoves.get(0).getX(), availableMoves.get(0).getY()); // set standard move
             checkForObligatedMove();
-            calculateDepth();
+            //calculateDepth();
         }
         System.out.println("Calculation = " + done);
+        return bestMove;
     }
 
     private void defineCenterPeaces(){
@@ -156,12 +157,11 @@ public class AIReversi {
     }
 
     private void activateThreads(int availableMoves) {
-        if (availableMoves > 0){
-            ExecutorService e = Executors.newFixedThreadPool(availableMoves);
+        if (availableMoves > 0) {
             for (int i = 0; i < availableMoves; i++) {
-                e.submit(new AICalculation(this.availableMoves.get(i)));
+                AICalculation d = new AICalculation(this.availableMoves.get(i));
+                d.run();
             }
-            e.shutdown();
         }
     }
 
@@ -186,7 +186,8 @@ public class AIReversi {
         return reversi.calculatingPossibleMoves(field, 1, 2).size();
     }
 
-    public class AICalculation implements Runnable {
+
+    public class AICalculation {
         Points move;
         int[][] tempField;
         Output output;
@@ -204,7 +205,7 @@ public class AIReversi {
             output = new Output(x, y);
         }
 
-        @Override
+
         public void run() {
             calculatePiecesTurend();
             enemyAvailableMoves();
@@ -258,7 +259,7 @@ public class AIReversi {
         }
     }
 
-    public class nextDeph implements Runnable{
+    public class nextDeph {
 
         Points move;
         int[][] tempField;
@@ -274,10 +275,7 @@ public class AIReversi {
             this.y = move.getY();
         }
 
-        @Override
-        public void run() {
 
-        }
 
         private void getStuck(){
 

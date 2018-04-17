@@ -105,7 +105,7 @@ public class Reversi{     //extends framework!!
     }
 
     private int calculateMoveToPosition(int[][] field, int i) {
-        return (((emptySpacesNeighbouringEnemy.get(i).getX()) * field.length) + emptySpacesNeighbouringEnemy.get(i).getY());
+        return (((emptySpacesNeighbouringEnemy.get(i).getY()) * field.length) + emptySpacesNeighbouringEnemy.get(i).getX());
     }
 
     public ArrayList findEmptyNeighbouringEnemy(int[][] field, int enemy){
@@ -456,7 +456,7 @@ public class Reversi{     //extends framework!!
         int currentY = coordinates[1];
         if (currentX != field.length-1) {
             outerloop:
-            for (int i = 1; i < field.length; i++) {
+            for (int i = 1; i < field.length-currentX; i++) {
                 if (field[currentX+i][currentY] != player && field[currentX+i][currentY] != 0) {
                     counter++;
                 } else if (field[currentX+i][currentY] == player) {
@@ -601,8 +601,8 @@ public class Reversi{     //extends framework!!
     }
 
     private int[] calculateMoveToCoordinates(int[][] field, int move) {
-        int x = (move / (field.length));
-        int y = move%(field.length);
+        int y = (move / (field.length));
+        int x = move%(field.length);
         return new int[]{y, x};
     }
     public void doMove(int[][] board){
