@@ -44,6 +44,7 @@ public class Reversi{     //extends framework!!
 
     public void addEnemyPieces(int x, int y) {enemyPieces.add(new Points(x,y));}
     public void addPossibleEmptyPieces(int x, int y) {emptySpacesNeighbouringEnemy.add(new Points(x,y));}
+
     public void addPossibleMoves(int x, int y) {
         boolean isIn = false;
         for(Points p : possibleMoves) {
@@ -359,7 +360,7 @@ public class Reversi{     //extends framework!!
         int currentY = coordinates[1];
         //System.out.println("dit zijn de coordinaten: "+currentX+","+currentY);
         if (currentX > 0) {
-            for (int i = 1; i <= field.length-currentX; i++) {
+            for (int i = 1; i <= currentX; i++) {
                 if (field[currentX-i][currentY] != player && field[currentX-i][currentY] != 0) {
                     counter++;
                 } else if (field[currentX-i][currentY] == player) {
@@ -430,7 +431,7 @@ public class Reversi{     //extends framework!!
         int currentX = coordinates[0];
         int currentY = coordinates[1];
         try {
-            if (currentY != field.length-1 && currentX != 0)
+            if (currentX != field.length-1 && currentY != 0)
                 outerloop:
                         for (int i = 1; i <= field.length; i++) {
                             if (field[currentX + i][currentY - i] != player && field[currentX + i][currentY - i] != 0) {
@@ -455,21 +456,23 @@ public class Reversi{     //extends framework!!
         int currentX = coordinates[0];
         int currentY = coordinates[1];
         if (currentX != field.length-1) {
-            outerloop:
-            for (int i = 1; i < field.length; i++) {
-                if (field[currentX+i][currentY] != player && field[currentX+i][currentY] != 0) {
-                    counter++;
-                } else if (field[currentX+i][currentY] == player) {
-                    if (counter > 0) {
-                        for (int j = 1; j <= counter; j++) {
-                            addPiecesToTurn((currentX+j), currentY);
+            try {
+                outerloop:
+                for (int i = 1; i < field.length - 1; i++) {
+                    if (field[currentX + i][currentY] != player && field[currentX + i][currentY] != 0) {
+                        counter++;
+                    } else if (field[currentX + i][currentY] == player) {
+                        if (counter > 0) {
+                            for (int j = 1; j <= counter; j++) {
+                                addPiecesToTurn((currentX + j), currentY);
+                            }
                         }
+                        break outerloop;
+                    } else if (field[i][currentY] == 0) {
+                        break outerloop;
                     }
-                    break outerloop;
                 }
-                else if(field[i][currentY] == 0){
-                    break outerloop;
-                }
+            } catch (ArrayIndexOutOfBoundsException e) {
             }
         }
     }
@@ -529,7 +532,7 @@ public class Reversi{     //extends framework!!
         int currentX = coordinates[0];
         int currentY = coordinates[1];
         try {
-            if (currentY != field.length-1 && currentX != field.length-1) {
+            if (currentY != field.length-1 && currentX > 0) {
                 outerloop:
                 for (int i = 1; i <= field.length; i++) {
                     if (field[currentX - i][currentY + i] != player && field[currentX - i][currentY + i] != 0) {
@@ -601,9 +604,9 @@ public class Reversi{     //extends framework!!
     }
 
     private int[] calculateMoveToCoordinates(int[][] field, int move) {
-        int x = (move / (field.length));
+        int x = (move/(field.length));
         int y = move%(field.length);
-        return new int[]{y, x};
+        return new int[] {x, y};
     }
     public void doMove(int[][] board){
         calculating(board, 20);

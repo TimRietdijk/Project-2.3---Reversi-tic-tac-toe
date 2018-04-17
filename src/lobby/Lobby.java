@@ -308,7 +308,7 @@ public class Lobby {
                 FXCollections.observableArrayList(
                         "1",
                         "2",
-                        "3"
+                        "ai"
                 );
         comboBox2 = new ComboBox(options2);
         comboBox1.setPrefWidth(120);
