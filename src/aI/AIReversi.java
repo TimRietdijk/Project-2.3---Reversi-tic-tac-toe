@@ -72,7 +72,7 @@ public class AIReversi {
             checkForBadMoves();
             setBestMove(availableMoves.get(0).getX(), availableMoves.get(0).getY());
             checkForObligatedMove();
-          // calculateDepth();
+            calculateDepth();
         }
         System.out.println("Calculation = " + done);
     }
@@ -199,7 +199,7 @@ public class AIReversi {
     }
 
     public class AICalculation implements Runnable {
-        Points move;
+        final Points move;
         int[][] tempField;
         Output output;
         int x;
@@ -208,10 +208,10 @@ public class AIReversi {
 
         public AICalculation(Points move){
             //System.out.println("Thread " + move.getX() + " : " + move.getY());
+            this.tempField = copyArray(field);
             this.x = move.getX();
             this.y = move.getY();
             this.move = move;
-            tempField = field;
             tempField[x][y] = 1;
             output = new Output(x, y);
         }
@@ -225,6 +225,16 @@ public class AIReversi {
             checkForCenter();
             calculateScore();
             checkIfNewBestMove(score, x, y);
+        }
+
+        private int[][] copyArray(int[][] field) {
+            int[][] tempField = new int[field.length][field.length];
+            for (int i = 0; i < field.length; i++) {
+                for(int j = 0; j < field[i].length; j++) {
+                    tempField[i][j] = field[i][j];
+                }
+            }
+            return tempField;
         }
 
         private void calculateScore(){

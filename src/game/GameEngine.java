@@ -241,6 +241,7 @@ public class GameEngine {
             if(game.equals("Reversi") ){ ;
                 //showField();
                 setPlayerField(coordinates[0], coordinates[1], 1);
+                System.out.println("Update board");
                 doMoveReversi(coordinates);
                 //jack.doMove(calculatedMove);
                 sendMoveToServer(coordinates);//send to jack
