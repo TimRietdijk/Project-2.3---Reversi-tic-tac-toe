@@ -113,6 +113,7 @@ public class GameEngine {
                                 setPlayerField(4,3,1);
                                 setPlayerField(3,4,1);
                                 //System.out.println("hij komt hier");
+
                             } else {
                                 setPlayerField(3,3,1);
                                 setPlayerField(4,4,1);
@@ -122,15 +123,30 @@ public class GameEngine {
                             }
                             fuckHanzeKanNietFatsoenlijkServersBouwen = false;
                             wieBenIk = false;
-                            Platform.runLater(() -> board.drawBoard(field, game));
+                            Platform.runLater(() -> board.drawBoard(field, game, ""));
                         }
                     }
                     if(s.contains("WIN") ){
-                        PinUp pinUp = new PinUp(stage, "win");
+                        if(s.contains("Illegal")) {
+                            PinUp pinUp = new PinUp(stage, "win because opponent made a wrong move");
+                        }else if(s.contains("timelimit")){
+                            PinUp pinUp = new PinUp(stage, "win because opponent timed out");
+                        }else{
+                            PinUp pinUp = new PinUp(stage, "win");
+                        }
                     }else if(s.contains("LOSS")){
-                        PinUp pinUp = new PinUp(stage, "lose");
+                        if(s.contains("Illegal")){
+                            PinUp pinUp = new PinUp(stage, "lose beause you made a wrong move");
+                        }else if(s.contains("timelimit")){
+                            PinUp pinUp = new PinUp(stage, "lose because you timed out");
+                        }else{
+                            PinUp pinUp = new PinUp(stage, "lose");
+                        }
+                    }else if(s.contains("DRAW")){
+                        PinUp pinUp = new PinUp(stage, "Tied");
                     }
                     if(s.contains("SVR GAME YOURTURN")) {
+                        Platform.runLater(() -> board.drawBoard(field, game, "It is your turn"));
                         trying = true;
                        // System.out.println("-=DEZE BEURT!=-");
                         if(ticTacToeAiIsPlaying) {
@@ -146,10 +162,9 @@ public class GameEngine {
                             //  System.out.println("-=AI GAAT NU EEN ZET MAKEN=-");
                             reversi.Points theAIMove = aiReversi.calculateBestMove(field);
                             //   System.out.println("Hij koos slim: " + theAIMove.getY() + " : " + theAIMove.getX());
-                            if (trying) {
-                                board.setMove(theAIMove.getY(), theAIMove.getX());
+                                board.setMove(theAIMove.getX(), theAIMove.getY());
                                 trying = false;
-                            }
+
                         }
                     }
 
@@ -170,7 +185,7 @@ public class GameEngine {
                             if(game.equals("Reversi")){
                                 field = reversi.doMove(field, pos);
                             }
-                            Platform.runLater(() -> board.drawBoard(field, game));
+                            Platform.runLater(() -> board.drawBoard(field, game, "It is your turn"));
                         }
                         //}
                     }
@@ -214,18 +229,17 @@ public class GameEngine {
         int[] coordinates = board.getMove();
         calculatedMove = calculateMoveToPosition(coordinates);
         boolean exec = checkState(coordinates[0], coordinates[1], 1);
-        exec = true;
         if (exec) {
             if(game.equals("Reversi") ){ ;
                 //showField();
                 setPlayerField(coordinates[0], coordinates[1], 1);
                 this.field = reversi.doMove(field, calculatedMove);
                 jack.doMove(calculatedMove);
-                Platform.runLater(() -> board.drawBoard(field, game));
+                Platform.runLater(() -> board.drawBoard(field, game, ""));
             }else {
                 field[coordinates[0]][coordinates[1]] = 1;
                 jack.doMove(calculatedMove);
-                Platform.runLater(() -> board.drawBoard(field, game));
+                Platform.runLater(() -> board.drawBoard(field, game, ""));
 
             }
         }

@@ -26,6 +26,7 @@ public class Board {
     private VBox hb;
     private Label label;
     private Label notLabel;
+    private Label label2;
     String[] games = {"TicTacToe", "Reversi"};
 
     public Board(){
@@ -73,7 +74,7 @@ public class Board {
         rect.setFill(imagePattern);
     }
 
-    public void drawBoard(int[][] field, String game){
+    public void drawBoard(int[][] field, String game, String text){
         for(int x = 0; x < field.length; x++){
             for(int y = 0; y < field[1].length; y++) {
                 // later nog even terug komen om te kijken of de field.length en de field[1].length op de juiste plaats staan
@@ -81,6 +82,7 @@ public class Board {
                 if(game.equals(games[1])) {
                     rect = new Rectangle(x, y, 80, 80);
                 }
+                text(text);
                 counter(field);
                 Rectangle finalRect = rect;
                 rect.setOnMouseClicked((e) -> fieldClicked(finalRect, game));
@@ -94,7 +96,9 @@ public class Board {
             }
         }
     }
-
+    private void text(String text){
+        label2.setText(text);
+    }
     private void counter(int[][] field){
         loserPoints = 0;
         yourPoints = 0;
@@ -119,12 +123,14 @@ public class Board {
         gridPane = new GridPane();
         label = new Label("Your Points:\n" + yourPoints);
         notLabel = new Label("Their points: \n" + loserPoints);
+        label2 = new Label();
         counter(field);
         hb.getChildren().addAll(label, notLabel);
         root.setCenter(gridPane);
+        root.setTop(label2);
         root.setRight(hb);
         Scene scene = new Scene(root);
-        drawBoard(field, game);
+        drawBoard(field, game, "");
         primaryStage.setTitle(name);
         primaryStage.setScene(scene);
         primaryStage.show();
