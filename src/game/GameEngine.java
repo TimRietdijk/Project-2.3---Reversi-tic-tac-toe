@@ -183,7 +183,7 @@ public class GameEngine {
                         }
                     }
                 }
-            }
+
         }).start();
         new Thread(new Runnable() {
             @Override
@@ -263,16 +263,10 @@ public class GameEngine {
                     doMoveReversi(coordinates);
                     //jack.doMove(calculatedMove);
                     sendMoveToServer(coordinates);//send to jack
-                    doDrawBoard();
-                    this.field = reversi.doMove(field, calculatedMove);
-                    jack.doMove(calculatedMove);
                     Platform.runLater(() -> board.drawBoard(field, game, ""));
                 } else {
                     setPlayerField(coordinates[0], coordinates[1], 1);
                     sendMoveToServer(coordinates);
-                    doDrawBoard();
-                    field[coordinates[0]][coordinates[1]] = 1;
-                    jack.doMove(calculatedMove);
                     Platform.runLater(() -> board.drawBoard(field, game, ""));
 
                 }
@@ -309,9 +303,6 @@ public class GameEngine {
         field = reversi.doMove(field, lastMove);
     }
 
-    private void doDrawBoard(){
-        Platform.runLater(() -> board.drawBoard(field, game));
-    }
 
 
     public int[][] getField() {
