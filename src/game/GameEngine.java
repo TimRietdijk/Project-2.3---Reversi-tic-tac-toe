@@ -125,12 +125,27 @@ public class GameEngine {
                         }
                     }
                     if(s.contains("WIN") ){
-                        //PinUp pinUp = new PinUp(stage, "win");
+                        if(s.contains("Illegal")) {
+                            PinUp pinUp = new PinUp(stage, "win because opponent made a wrong move");
+                        }else if(s.contains("timelimit")){
+                            PinUp pinUp = new PinUp(stage, "win because opponent timed out");
+                        }else{
+                            PinUp pinUp = new PinUp(stage, "win");
+                        }
                     }else if(s.contains("LOSS")){
-                        //PinUp pinUp = new PinUp(stage, "lose");
+                        if(s.contains("Illegal")){
+                            PinUp pinUp = new PinUp(stage, "lose beause you made a wrong move");
+                        }else if(s.contains("timelimit")){
+                            PinUp pinUp = new PinUp(stage, "lose because you timed out");
+                        }else{
+                            PinUp pinUp = new PinUp(stage, "lose");
+                        }
+                    }else if(s.contains("DRAW")){
+                        PinUp pinUp = new PinUp(stage, "Tied");
                     }
                     if(s.contains("SVR GAME YOURTURN")) {
-                        // System.out.println("-=DEZE BEURT!=-");
+                        Platform.runLater(() -> board.drawBoard(field, game, "It is your turn"));
+                       // System.out.println("-=DEZE BEURT!=-");
                         if(ticTacToeAiIsPlaying) {
                             //   System.out.println("-=DEZE AI GAAT NU EEN ZET MAKEN=-");
                             // showField();
@@ -241,7 +256,6 @@ public class GameEngine {
             if(game.equals("Reversi") ){ ;
                 //showField();
                 setPlayerField(coordinates[0], coordinates[1], 1);
-                System.out.println("Update board");
                 doMoveReversi(coordinates);
                 //jack.doMove(calculatedMove);
                 sendMoveToServer(coordinates);//send to jack
