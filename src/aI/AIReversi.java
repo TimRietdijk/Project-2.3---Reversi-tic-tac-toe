@@ -31,8 +31,13 @@ public class AIReversi {
     private synchronized void checkIfNewBestMove(int score, int x, int y){
         if(score > bestMoveScore){
             bestMoveScore = score;
+            bestMove = new Points(x,y);
             System.out.println("Best move = " + x + " : " + y + " score: " + bestMoveScore);
         }
+    }
+
+    public Points getAvailableMovesArry(int index){
+        return availableMoves.get(index);
     }
 
     public void addAvailableMoves(int x, int y){
@@ -51,22 +56,25 @@ public class AIReversi {
         defineCenterPeaces();
     }
 
-    public Points calculateBestMove(int[][] field){
+    public synchronized void calculateBestMove(int[][] field){
+        this.done = false;
+        availableMoves.clear();
         this.field = field;
+
         availableMoves = reversi.calculatingPossibleMoves(field, 1, 2);
+        //setBestMove(availableMoves.get(0).getX(), availableMoves.get(0).getY()); // set standard move
         for(Points p : availableMoves){
             System.out.println(p.getX() + " : " + p.getY());
         }
         checkForGoodMoves();
         if(!this.done){
             checkForObligatedMove();
-            checkForBadMoves(); // and remove
-            setBestMove(availableMoves.get(0).getX(), availableMoves.get(0).getY()); // set standard move
+            checkForBadMoves();
+            setBestMove(availableMoves.get(0).getX(), availableMoves.get(0).getY());
             checkForObligatedMove();
-            //calculateDepth();
+          // calculateDepth();
         }
         System.out.println("Calculation = " + done);
-        return bestMove;
     }
 
     private void defineCenterPeaces(){
@@ -157,13 +165,17 @@ public class AIReversi {
     }
 
     private void activateThreads(int availableMoves) {
-        if (availableMoves > 0) {
+        System.out.println("Available moves: " + availableMoves);
+        if (availableMoves > 0){
+            ExecutorService e = Executors.newFixedThreadPool(1);
             for (int i = 0; i < availableMoves; i++) {
-                AICalculation d = new AICalculation(this.availableMoves.get(i));
-                d.run();
+              e.submit(new AICalculation(getAvailableMovesArry(i)));
             }
+            e.shutdown();
         }
+
     }
+
 
     private synchronized int calculateMoveToPosition(int[] move) {
         return (((move[1]) * field.length) + move[0]);
@@ -186,8 +198,7 @@ public class AIReversi {
         return reversi.calculatingPossibleMoves(field, 1, 2).size();
     }
 
-
-    public class AICalculation {
+    public class AICalculation implements Runnable {
         Points move;
         int[][] tempField;
         Output output;
@@ -205,11 +216,11 @@ public class AIReversi {
             output = new Output(x, y);
         }
 
-
+        @Override
         public void run() {
             calculatePiecesTurend();
-            enemyAvailableMoves();
-            ownAvailableMoves();
+            //enemyAvailableMoves();
+            //ownAvailableMoves();
             System.out.println("Why nut");
             checkForCenter();
             calculateScore();
@@ -259,7 +270,7 @@ public class AIReversi {
         }
     }
 
-    public class nextDeph {
+    public class nextDeph implements Runnable{
 
         Points move;
         int[][] tempField;
@@ -275,7 +286,10 @@ public class AIReversi {
             this.y = move.getY();
         }
 
+        @Override
+        public void run() {
 
+        }
 
         private void getStuck(){
 
