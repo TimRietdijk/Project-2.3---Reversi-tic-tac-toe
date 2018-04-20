@@ -111,17 +111,19 @@ public class GameEngine {
                                 setPlayerField(4,4,2);
                                 setPlayerField(4,3,1);
                                 setPlayerField(3,4,1);
+                                doDrawBoard("Your turn");
                                 //System.out.println("hij komt hier");
                             } else {
                                 setPlayerField(3,3,1);
                                 setPlayerField(4,4,1);
                                 setPlayerField(4,3,2);
                                 setPlayerField(3,4,2);
+                                doDrawBoard("Opponent's turn");
                                 //System.out.println("Hier ook");
                             }
                             fuckHanzeKanNietFatsoenlijkServersBouwen = false;
                             wieBenIk = false;
-                            doDrawBoard();
+
                         }
                     }
                     if(s.contains("WIN") ){
@@ -176,7 +178,7 @@ public class GameEngine {
                             if(game.equals("Reversi")){
                                 doMoveReversi(work);
                             }
-                            doDrawBoard();
+                            doDrawBoard("Your turn");
                         //}
                         }
                     }
@@ -252,21 +254,21 @@ public class GameEngine {
         //   System.out.println("DoMove");
         int[] coordinates = board.getMove();
         boolean exec = checkState(coordinates[0], coordinates[1], 1);
-        //if (exec) {
+        if (exec) {
             if(game.equals("Reversi") ){ ;
                 //showField();
                 setPlayerField(coordinates[0], coordinates[1], 1);
                 doMoveReversi(coordinates);
                 //jack.doMove(calculatedMove);
                 sendMoveToServer(coordinates);//send to jack
-                doDrawBoard();
+                doDrawBoard("Opponent's turn");
             }else {
                 setPlayerField(coordinates[0], coordinates[1], 1);
                 sendMoveToServer(coordinates);
-                doDrawBoard();
+                doDrawBoard("Opponent's turn");
 
             }
-        //}
+        }
     }
 
     public void setField(int x, int y) {
@@ -298,8 +300,8 @@ public class GameEngine {
         field = reversi.doMove(field, lastMove);
     }
 
-    private void doDrawBoard(){
-        Platform.runLater(() -> board.drawBoard(field, game));
+    private void doDrawBoard(String text){
+        Platform.runLater(() -> board.drawBoard(field, game, text));
     }
 
 

@@ -70,8 +70,8 @@ public class CommandCenter {
                 } catch (IndexOutOfBoundsException iob) {
                     return null;
                 }
-                    System.out.println("dit is de volgende lijn: "+receivedCommand);
-                    return receivedCommand;
+                System.out.println("dit is de volgende lijn: "+receivedCommand);
+                return receivedCommand;
     }
 
     /*
